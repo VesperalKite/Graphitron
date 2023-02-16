@@ -1,0 +1,32 @@
+const kDamp : double = 0.85;
+const kDampFixPoint : int = 108;
+
+func preprocessProperty(srcProp: prop_t)->(srcProp: prop_t)
+end
+
+func scatterFunc(srcProp: prop_t, edgeProp: prop_t)->(srcProp: prop_t)
+end
+
+func gatherFunc(ori: prop_t, update: prop_t)->(update: prop_t)
+   update = ori+ update;
+end
+
+func applyFunc(tProp: prop_t, source: prop_t, outDeg: prop_t, extra: uint, arg: uint)->(update: prop_t)
+   var old_score: prop_t = source;
+   var new_score: prop_t = arg + ((kDampFixPoint * tProp)>>7);
+   var tmp: prop_t;
+   if outDeg != 0
+  	 tmp = (1<<16) / outDeg;
+   else
+         tmp = 0;
+   end
+   var update: prop_t = (new_score * tmp) >> 16;
+   if new_score-old_score > 0
+  	 extra[0] = new_score-old_score;
+   else 
+    	 extra[0] = old_score-new_score;
+   end
+end
+
+schedule:
+	program->configApplyPartition("secondOrderEstimator");

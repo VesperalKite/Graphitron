@@ -1,0 +1,5 @@
+const damp : double = 0.85;
+
+func preprocessProperty(srcProp)
+    return (srcProp);
+end
