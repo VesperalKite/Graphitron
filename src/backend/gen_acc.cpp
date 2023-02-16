@@ -2,10 +2,10 @@
 // Created by Zheng Feng on 01/05/23.
 //
 
-#include <facet/backend/gen_acc.h>
-#include <facet/midend/mir.h>
+#include <graphitron/backend/gen_acc.h>
+#include <graphitron/midend/mir.h>
 
-namespace facet {
+namespace graphitron {
     int GenAcc::genMIR() {
         oss << "mir:" << std::endl;
         oss << "### const edge sets ###" << std::endl;

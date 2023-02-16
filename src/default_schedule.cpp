@@ -1,6 +1,6 @@
-#include <facet/midend/schedule.h>
-namespace facet {
-void user_defined_schedule (facet::mir::schedule::ProgramScheduleNode::Ptr program) {
+#include <graphitron/midend/schedule.h>
+namespace graphitron {
+void user_defined_schedule (graphitron::mir::schedule::ProgramScheduleNode::Ptr program) {
     
 }
 }

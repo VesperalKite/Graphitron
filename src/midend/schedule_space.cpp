@@ -3,9 +3,9 @@
 //
 
 #include <ostream>
-#include <facet/midend/schedule_space.h>
+#include <graphitron/midend/schedule_space.h>
 
-namespace facet {
+namespace graphitron {
     std::ostream &operator<<(std::ostream &oss, ScheduleSpace &schedule) {
         oss << "### Schedule Space ###" << std::endl;
         oss << "## FPGA Schedule ##" << std::endl;

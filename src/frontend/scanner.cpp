@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 11/16/22.
 //
 
-#include <facet/frontend/scanner.h>
+#include <graphitron/frontend/scanner.h>
 
-namespace facet {
+namespace graphitron {
 
     Token::Type Scanner::getTokenType(const std::string token){
         if (token == "intx") return Token::Type::INTX;

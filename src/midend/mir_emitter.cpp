@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 01/04/23.
 //
 
-#include <facet/midend/mir_emitter.h>
+#include <graphitron/midend/mir_emitter.h>
 
-namespace facet {
+namespace graphitron {
 
     void MIREmitter::visit(fir::ElementTypeDecl::Ptr element_type_decl) {
         const auto mir_element_type = std::make_shared<mir::ElementType>();

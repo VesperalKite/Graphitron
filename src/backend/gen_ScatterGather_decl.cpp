@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 02/15/23.
 //
 
-#include <facet/backend/gen_ScatterGather_decl.h>
+#include <graphitron/backend/gen_ScatterGather_decl.h>
 
-namespace facet {
+namespace graphitron {
     using namespace std;
 
     void ScatterGatherFunctionDeclGenerator::visit(mir::GsExpr::Ptr gs){

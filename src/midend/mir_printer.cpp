@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 01/04/23.
 //
 
-#include <facet/midend/mir_printer.h>
+#include <graphitron/midend/mir_printer.h>
 
-namespace facet {
+namespace graphitron {
     namespace mir {
         void MIRPrinter::visit(Expr::Ptr expr) {
             expr->accept(this);

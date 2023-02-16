@@ -1,0 +1,37 @@
+mir:
+### const edge sets ###
+  * edges: unweighted edgeset 
+
+### const vertex sets ###
+  * vertices: Vertexset
+
+### constants list ###
+null
+
+### function list ###
+  * reset(v: element->Vertex)
+  * ScatterFunc(src: element->Vertex), return update: intx 
+  * ActiveFunc(update: intx ), return flag: bool 
+  * GatherFunc(ori: intx , update: intx ), return tprop: intx 
+  * ApplyFunc(tprop: intx , v: element->Vertex), return newprop: intx 
+  * main()
+
+### Main function###
+  expr stmt
+    * Init target "vertices"
+      * Init Phase function: reset(v: element->Vertex)
+  assign stmt
+  for stmt ( var: tail )
+    expr stmt
+    expr stmt
+      * GsActive target "edges", and it's label is #s1#.
+        * Gather Phase function: ScatterFunc(src: element->Vertex), return update: intx 
+        * Active Phase function: ActiveFunc(update: intx ), return flag: bool 
+        * Scatter Phase function: GatherFunc(ori: intx , update: intx ), return tprop: intx 
+    expr stmt
+      * Apply target "vertices"
+        * Apply Phase function: ApplyFunc(tprop: intx , v: element->Vertex), return newprop: intx 
+    * elapsed_time: float 
+    print stmt
+    print stmt
+    expr stmt

@@ -2,10 +2,10 @@
 // Created by Zheng Feng on 01/04/23.
 //
 
-#include <facet/midend/mir_visitor.h>
-#include <facet/midend/mir.h>
+#include <graphitron/midend/mir_visitor.h>
+#include <graphitron/midend/mir.h>
 
-namespace facet {
+namespace graphitron {
     namespace mir {
     void MIRVisitor::visit(Var* var) {
 		if (var->getType())

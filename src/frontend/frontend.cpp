@@ -2,11 +2,11 @@
 // Created by Zheng Feng on 11/16/22.
 //
 
-#include <facet/frontend/frontend.h>
-#include <facet/frontend/parser.h>
+#include <graphitron/frontend/frontend.h>
+#include <graphitron/frontend/parser.h>
 
 
-namespace facet{
+namespace graphitron{
         /// Parses, typechecks and turns a given Simit-formated stream into Simit IR.
     int Frontend::parseStream(std::istream &programStream, FIRContext *context, std::vector<ParseError> *errors) {
 

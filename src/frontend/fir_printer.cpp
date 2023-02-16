@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 11/30/22.
 //
 
-#include <facet/frontend/fir_printer.h>
+#include <graphitron/frontend/fir_printer.h>
 
-namespace facet {
+namespace graphitron {
     namespace fir {
         void FIRPrinter::visit(Program::Ptr program) {
             for (auto elem : program->elems) {

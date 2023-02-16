@@ -2,11 +2,11 @@
 // Created by Yunming Zhang on 1/24/17.
 //
 
-#include <facet/utils/util.h>
+#include <graphitron/utils/util.h>
 
 #include <fstream>
 
-namespace facet {
+namespace graphitron {
     namespace util {
 
         std::string indent(std::string str, unsigned int num) {

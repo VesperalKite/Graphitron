@@ -2,10 +2,10 @@
 // Created by Zheng Feng on 01/05/23.
 //
 
-#include <facet/backend/backend.h>
+#include <graphitron/backend/backend.h>
 #include <fstream>
 
-namespace facet {
+namespace graphitron {
     int Backend::emitACC(std::string output_path){
         std::ofstream l2_h(output_path+"l2.h");
         std::ofstream mir_txt(output_path+"mir.txt");

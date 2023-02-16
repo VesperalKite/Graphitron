@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 02/16/23.
 //
 
-#include <facet/backend/gen_Expr.h>
+#include <graphitron/backend/gen_Expr.h>
 
-namespace facet {
+namespace graphitron {
     using namespace std;
 
     void ExprGenerator::visit(mir::VarExpr::Ptr expr) {

@@ -2,10 +2,10 @@
 // Created by Zheng Feng on 11/24/22.
 //
 
-#include <facet/frontend/fir.h>
-#include <facet/frontend/token.h>
+#include <graphitron/frontend/fir.h>
+#include <graphitron/frontend/token.h>
 
-namespace facet {
+namespace graphitron {
     namespace fir {
 
         void FIRNode::setBeginLoc(const Token &token) {

@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 01/04/23.
 //
 
-#include <facet/midend/mir.h>
+#include <graphitron/midend/mir.h>
 
-namespace facet {
+namespace graphitron {
     namespace mir {
         
     }

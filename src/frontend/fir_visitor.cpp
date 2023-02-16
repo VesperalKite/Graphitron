@@ -2,10 +2,10 @@
 // Created by Zheng Feng on 11/18/22.
 //
 
-#include <facet/frontend/fir_visitor.h>
-#include <facet/frontend/fir.h>
+#include <graphitron/frontend/fir_visitor.h>
+#include <graphitron/frontend/fir.h>
 
-namespace facet {
+namespace graphitron {
     namespace fir {
         
         void FIRVisitor::visit(Program::Ptr program) {

@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 11/23/22.
 //
 
-#include <facet/frontend/parser.h>
+#include <graphitron/frontend/parser.h>
 
-namespace facet {
+namespace graphitron {
 
     Parser::Parser(std::vector<ParseError> *errors) : errors(errors) {}
     fir::Program::Ptr Parser::parse(const TokenStream &tokens) {

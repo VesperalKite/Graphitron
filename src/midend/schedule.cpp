@@ -2,9 +2,9 @@
 // Created by Zheng Feng on 01/07/23.
 //
 
-#include <facet/midend/schedule.h>
+#include <graphitron/midend/schedule.h>
 
-namespace facet {
+namespace graphitron {
     namespace mir {
         schedule::ProgramScheduleNode::Ptr
         schedule::ProgramScheduleNode::configFreq(int freq) {

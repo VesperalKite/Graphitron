@@ -7,10 +7,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <facet/frontend/token.h>
-#include <facet/utils/util.h>
+#include <graphitron/frontend/token.h>
+#include <graphitron/utils/util.h>
 
-namespace facet {
+namespace graphitron {
     std::string Token::tokenTypeString(Token::Type type){
         switch (type) {
             case Token::Type::INTX:

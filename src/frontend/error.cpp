@@ -2,12 +2,12 @@
 // Created by Yunming Zhang on 3/22/17.
 //
 
-#include <facet/frontend/error.h>
+#include <graphitron/frontend/error.h>
 
 
 using namespace std;
 
-namespace facet {
+namespace graphitron {
 
 // class Error
     ParseError::ParseError(int firstLine, int firstColumn, int lastLine, int lastColumn,
