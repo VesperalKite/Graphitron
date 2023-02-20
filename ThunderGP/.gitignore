@@ -19,8 +19,8 @@ xrt.ini
 csr
 *.xclbin
 *.sh
-tmp_fpga_top
-tmp_para
+#tmp_fpga_top
+#tmp_para
 code_gen
 para_gen
 makefile_gen
