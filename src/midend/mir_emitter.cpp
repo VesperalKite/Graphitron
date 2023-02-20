@@ -128,6 +128,28 @@ namespace graphitron {
         //we support printing only one argument first
         assert(print_stmt->args.size() == 1);
         mir_print_stmt->expr = emitExpr(print_stmt->args.front());
+        mir_print_stmt->printNewline = print_stmt->printNewline;
+        if (mir::isa<mir::VarExpr>(mir_print_stmt->expr)) {
+            auto type = mir::to<mir::VarExpr>(mir_print_stmt->expr)->var.getType();
+            if (mir::isa<mir::ScalarType>(type)){
+                switch(mir::to<mir::ScalarType>(type)->type) {
+                    case mir::ScalarType::Type::FLOAT:
+                        mir_print_stmt->format = "%f";
+                        break;
+                    case mir::ScalarType::Type::INT:
+                        mir_print_stmt->format = "%d";
+                        break;
+                    case mir::ScalarType::Type::DOUBLE: 
+                        mir_print_stmt->format = "%lf";
+                        break;
+                    case mir::ScalarType::Type::STRING:
+                        mir_print_stmt->format = "%s";
+                        break;
+            }
+            }
+        } else {
+            mir_print_stmt->format = "";
+        }
         retStmt = mir_print_stmt;
     }
 

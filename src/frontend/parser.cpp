@@ -572,9 +572,9 @@ namespace graphitron {
                 consume(Token::Type::LP);
                 auto gs_expr = std::make_shared<fir::GsExpr>();
                 gs_expr->target = expr;
-                gs_expr->input_gather_function = parseFunctorExpr();
-                consume(Token::Type::COMMA);
                 gs_expr->input_scatter_function = parseFunctorExpr();
+                consume(Token::Type::COMMA);
+                gs_expr->input_gather_function = parseFunctorExpr();
                 consume(Token::Type::RP);
                 expr = gs_expr;
 
@@ -582,11 +582,11 @@ namespace graphitron {
                 consume(Token::Type::LP);
                 auto gsactive_expr = std::make_shared<fir::GsActiveExpr>();
                 gsactive_expr->target = expr;
-                gsactive_expr->input_gather_function = parseFunctorExpr();
+                gsactive_expr->input_scatter_function = parseFunctorExpr();
                 consume(Token::Type::COMMA);
                 gsactive_expr->input_active_function = parseFunctorExpr();
                 consume(Token::Type::COMMA);
-                gsactive_expr->input_scatter_function = parseFunctorExpr();
+                gsactive_expr->input_gather_function = parseFunctorExpr();
                 consume(Token::Type::RP);
                 expr = gsactive_expr;
             } else if (tryConsume(Token::Type::APPLY)) {

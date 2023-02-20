@@ -5,9 +5,10 @@ const vertices : vertexset{Vertex} = edges.getVertices();
 const prop : vector{Vertex}(intx);
 func reset(v : Vertex)
     prop[v]=0;
+    prop[1]=1;
 end
-func ScatterFunc(src : Vertex) -> update : intx
-    update = prop[src];
+func ScatterFunc(srcProp : intx) -> update : intx
+    update = srcProp;
 end
 func ActiveFunc(update : intx) -> flag : bool
     flag = (update==1);
@@ -19,18 +20,17 @@ func GatherFunc(ori : intx, update : intx) -> tprop : intx
         tprop = ori;
     end
 end
-func ApplyFunc(tprop : intx, v : Vertex) -> newprop : intx
-    if ((tprop == 1) and (prop[v]==0))
+func ApplyFunc(tprop : intx, srcProp : intx) -> newprop : intx
+    if ((tprop == 1) and (srcProp == 0))
         newprop = tprop;
-        Active(v);
+        Active();
     else
-        newprop = prop[v];
-        InActive(v);
+        newprop = srcProp;
+        InActive();
     end
 end
 func main()
     vertices.init(reset);
-    prop[1]=1;
     for tail in 0:10
         startTimer();
         #s1# edges.gsActive(ScatterFunc, ActiveFunc, GatherFunc);

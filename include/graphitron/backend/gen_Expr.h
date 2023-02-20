@@ -14,10 +14,8 @@
 
 namespace graphitron {
     struct ExprGenerator : mir::MIRVisitor {
-        ExprGenerator(mir::Expr::Ptr expr, std::ostream& oss, MIRContext* mir_context) : expr_(expr), oss_(oss), mir_context_(mir_context) {}
-        void genExpr() {
-            expr_->accept(this);
-        }
+        ExprGenerator(MIRContext* mir_context, std::ostream& oss) 
+                : oss_(oss), mir_context_(mir_context) {}
     protected:  
         virtual void visit(mir::VarExpr::Ptr expr);
         virtual void visit(mir::FuncExpr::Ptr expr);
@@ -46,7 +44,6 @@ namespace graphitron {
         virtual void visit(mir::FloatLiteral::Ptr expr);
         virtual void visit(mir::IntLiteral::Ptr expr);
     private:  
-        mir::Expr::Ptr expr_;
         std::ostream &oss_;
         MIRContext* mir_context_;
     };

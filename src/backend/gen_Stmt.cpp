@@ -1,0 +1,122 @@
+//
+// Created by Zheng Feng on 02/20/23.
+//
+
+#include <graphitron/backend/gen_Stmt.h>
+
+namespace graphitron {
+    using namespace std;
+    void StmtGenerator::visit(mir::VarDecl::Ptr stmt) {
+        printIndent();
+        stmt->type->accept(type_visitor);
+        oss_ << stmt->name << " ";
+        if (stmt->initVal != nullptr) {
+            oss_ << "= ";
+            stmt->initVal->accept(expr_visitor);
+        }
+        oss_ << ";" << endl;
+    }
+
+    void StmtGenerator::visit(mir::ForStmt::Ptr stmt) {
+        printIndent();
+        auto for_domain = stmt->domain;
+        auto loop_var = stmt->loopVar;
+        oss_ << "for ( int" << loop_var << " = ";
+        for_domain->lower->accept(expr_visitor);
+        oss_ << "; " << loop_var << " < ";
+        for_domain->upper->accept(expr_visitor);
+        oss_ << "; " << loop_var << "++ )" << endl;
+        printBeginIndent();
+        indent();
+        stmt->body->accept(this);
+        dedent();
+        printEndIndent();
+        oss_ << endl;
+    }
+
+    void StmtGenerator::visit(mir::WhileStmt::Ptr stmt) {
+        printIndent();
+        oss_ << "while ( ";
+        stmt->cond->accept(expr_visitor);
+        oss_ << ")" << endl;
+        printBeginIndent();
+        indent();
+        stmt->body->accept(this);
+        dedent();
+        printEndIndent();
+        oss_ << endl;
+    }
+
+    void StmtGenerator::visit(mir::ExprStmt::Ptr stmt) {
+        printIndent();
+        stmt->expr->accept(expr_visitor);
+        oss_ << ";" << endl;
+    }
+
+    void StmtGenerator::visit(mir::AssignStmt::Ptr stmt) {
+        printIndent();
+        stmt->lhs->accept(expr_visitor);
+        oss_ << " = ";
+        stmt->expr->accept(expr_visitor);
+        oss_ << ";" << endl;
+    }
+
+    void StmtGenerator::visit(mir::ReduceStmt::Ptr stmt) {
+        switch(stmt->reduce_op_) {
+            case mir::ReduceStmt::ReductionOp::SUM:
+                printIndent();
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " += ";
+                stmt->expr->accept(expr_visitor);
+                oss_ << ";" << endl;
+                break;
+        }
+    }
+
+    void StmtGenerator::visit(mir::PrintStmt::Ptr stmt) {
+        printIndent();
+        oss_ << "DEBUG_PRINTF(\"";
+        if(stmt->format != ""){
+            oss_ << stmt->format;
+            if (stmt->printNewline) {
+                oss_ << "\\n";
+            }
+            oss_ << "\", ";
+            stmt->expr->accept(expr_visitor);
+        } else {
+            stmt->expr->accept(expr_visitor);
+            if (stmt->printNewline) {
+                oss_ << "\\n";
+            }
+            oss_ << "\"";
+        }
+        oss_ << ");" << endl;
+    }
+
+    void StmtGenerator::visit(mir::IfStmt::Ptr stmt) {
+        printIndent();
+        oss_ << "if (";
+        stmt->cond->accept(expr_visitor);
+        oss_ << ")" << endl;
+        printBeginIndent();
+        indent();
+        stmt->ifBody->accept(this);
+        dedent();
+        printEndIndent();
+        if (stmt->elseBody) {
+            printIndent();
+            oss_ << "else" <<endl;
+            printBeginIndent();
+            indent();
+            stmt->elseBody->accept(this);
+            dedent();
+            printEndIndent();
+            oss_ << endl;
+        }
+    }
+
+    void StmtGenerator::visit(mir::BreakStmt::Ptr stmt) {
+        printIndent();
+        oss_ << "break;" << endl;
+    }
+}
