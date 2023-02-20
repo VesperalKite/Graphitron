@@ -18,7 +18,7 @@ xrt.ini
 .run
 csr
 *.xclbin
-*.sh
+#*.sh
 #tmp_fpga_top
 #tmp_para
 code_gen
