@@ -13,7 +13,7 @@ precheck:
 ifndef app
 	$(error app is undefined)
 else
-APP = ./apps/$(app).ft
+APP = ./apps/$(app).gn
 
 include ${UTILS_PATH}/utils.mk
 

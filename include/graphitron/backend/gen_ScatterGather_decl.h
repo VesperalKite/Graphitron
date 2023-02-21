@@ -51,7 +51,8 @@ namespace graphitron {
         void printEndIndent() { oss_ << std::string(2 * indentLevel, ' ') << "}"; }
 
         void genActiveFuncDecl(mir::GsActiveExpr::Ptr gs_active);
-        void genScatterFuncDecl(mir::GsActiveExpr::Ptr gs_active);
+        void genScatterFuncDecl(mir::Expr::Ptr gs_expr);
+        void genGatherFuncDecl(mir::Expr::Ptr gs_expr);
     };
 }
 

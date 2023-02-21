@@ -104,15 +104,14 @@ namespace graphitron {
         dedent();
         printEndIndent();
         if (stmt->elseBody) {
-            printIndent();
-            oss_ << "else" <<endl;
+            oss_ << " else" <<endl;
             printBeginIndent();
             indent();
             stmt->elseBody->accept(this);
             dedent();
             printEndIndent();
-            oss_ << endl;
         }
+        oss_ << endl;
     }
 
     void StmtGenerator::visit(mir::BreakStmt::Ptr stmt) {

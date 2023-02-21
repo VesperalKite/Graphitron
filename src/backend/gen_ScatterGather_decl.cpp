@@ -8,13 +8,16 @@ namespace graphitron {
     using namespace std;
 
     void ScatterGatherFunctionDeclGenerator::visit(mir::GsExpr::Ptr gs){
-        oss_ << "GsExpr" << endl;
+        gs->scope_label_name = label_scope_.getCurrentScope();
+        genScatterFuncDecl(gs);
+        genGatherFuncDecl(gs);
     }
 
     void ScatterGatherFunctionDeclGenerator::visit(mir::GsActiveExpr::Ptr gs_active){
         gs_active->scope_label_name = label_scope_.getCurrentScope();
         genActiveFuncDecl(gs_active);
         genScatterFuncDecl(gs_active);
+        genGatherFuncDecl(gs_active);
     }
 
     void ScatterGatherFunctionDeclGenerator::genActiveFuncDecl(mir::GsActiveExpr::Ptr gs_active) {
@@ -39,10 +42,19 @@ namespace graphitron {
         }
     }
 
-    void ScatterGatherFunctionDeclGenerator::genScatterFuncDecl(mir::GsActiveExpr::Ptr gs_active) {
-        mir::FuncDecl::Ptr scatter_func = mir_context_->getFunction(gs_active->input_scatter_function->function_name->name);
-        auto it = mir_context_->schedule_->gs_schedules->find(gs_active->scope_label_name);
-        bool edge_prop = it->second.EdgeProp;
+    void ScatterGatherFunctionDeclGenerator::genScatterFuncDecl(mir::Expr::Ptr gs_expr) {
+        map<string, GatherScatterSchedule>::iterator gs_schedule;
+        mir::FuncDecl::Ptr scatter_func;
+        if (mir::isa<mir::GsActiveExpr>(gs_expr)) {
+            mir::GsActiveExpr::Ptr gs_active = mir::to<mir::GsActiveExpr>(gs_expr);
+            scatter_func = mir_context_->getFunction(gs_active->input_scatter_function->function_name->name);
+            gs_schedule = mir_context_->schedule_->gs_schedules->find(gs_active->scope_label_name);
+        } else if (mir::isa<mir::GsExpr>(gs_expr)) {
+            mir::GsExpr::Ptr gs = mir::to<mir::GsExpr>(gs_expr);
+            scatter_func = mir_context_->getFunction(gs->input_scatter_function->function_name->name);
+            gs_schedule = mir_context_->schedule_->gs_schedules->find(gs->scope_label_name);
+        }
+        bool edge_prop = gs_schedule->second.EdgeProp;
         if (!edge_prop) {
             assert(scatter_func->args.size() == 1);
             mir::Var srcProp = scatter_func->args.front();
@@ -64,9 +76,81 @@ namespace graphitron {
             oss_ << "return (" << result.getName() << ");" << endl;
             dedent();
             printEndIndent();
-        } else {
-            assert(scatter_func->args.size() == 2);
+
+            oss_ << endl;
+            oss_ << "/* Default Function */" << endl;
             oss_ << "/* source vertex property & edge property process */" << endl;
+            oss_ << "inline prop_t scatterFunc(prop_t srcProp, prop_t edgeProp)"<< endl;
+            oss_ << "{" << endl;
+            oss_ << "  return (srcProp);" << endl;
+            oss_ << "}" << endl;
+        } else {
+            oss_ << "/* Default Function */" << endl;
+            oss_ << "/* source vertex property process */" << endl;
+            oss_ << "inline prop_t preprocessProperty(prop_t srcProp)"<< endl;
+            oss_ << "{" << endl;
+            oss_ << "  return (srcProp);" << endl;
+            oss_ << "}" << endl;
+
+            assert(scatter_func->args.size() == 2);
+            mir::Var srcProp = scatter_func->args.front();
+            mir::Var edgeProp = scatter_func->args.back();
+            mir::Var result = scatter_func->result;
+            oss_ << "/* source vertex property & edge property process */" << endl;
+            oss_ << "inline ";
+            result.getType()->accept(type_visitor);
+            oss_ << "scatterFunc(";
+            srcProp.getType()->accept(type_visitor);
+            oss_ << srcProp.getName() << ", ";
+            edgeProp.getType()->accept(type_visitor);
+            oss_ << edgeProp.getName() << ")" << endl;
+            printBeginIndent();
+            indent();
+            printIndent();
+            result.getType()->accept(type_visitor);
+            oss_ << result.getName() << ";" << endl;
+            stmt_visitor->setIndent(this->getIndent());
+            scatter_func->body->accept(stmt_visitor);
+            printIndent();
+            oss_ << "return (" << result.getName() << ");" << endl;
+            dedent();
+            printEndIndent();
+            oss_ << endl;
         }
+    }
+
+    void ScatterGatherFunctionDeclGenerator::genGatherFuncDecl(mir::Expr::Ptr gs_expr) {
+        mir::FuncDecl::Ptr gather_func;
+        if (mir::isa<mir::GsActiveExpr>(gs_expr)) {
+            mir::GsActiveExpr::Ptr gs_active = mir::to<mir::GsActiveExpr>(gs_expr);
+            gather_func = mir_context_->getFunction(gs_active->input_gather_function->function_name->name);
+        } else if (mir::isa<mir::GsExpr>(gs_expr)) {
+            mir::GsExpr::Ptr gs = mir::to<mir::GsExpr>(gs_expr);
+            gather_func = mir_context_->getFunction(gs->input_gather_function->function_name->name);
+        }
+        assert(gather_func->args.size() == 2);
+        mir::Var ori = gather_func->args.front();
+        mir::Var update = gather_func->args.back();
+        mir::Var result = gather_func->result;
+        oss_ << "/* destination property update & dst buffer update */" << endl;
+        oss_ << "inline ";
+        result.getType()->accept(type_visitor);
+        oss_ << "gatherFunc(";
+        ori.getType()->accept(type_visitor);
+        oss_ << ori.getName() <<", ";
+        update.getType()->accept(type_visitor);
+        oss_ << update.getName() << ")" << endl;
+        printBeginIndent();
+        indent();
+        printIndent();
+        result.getType()->accept(type_visitor);
+        oss_ << result.getName() << ";" << endl;
+        stmt_visitor->setIndent(this->getIndent());
+        gather_func->body->accept(stmt_visitor);
+        printIndent();
+        oss_ << "return (" << result.getName() << ");" << endl;
+        dedent();
+        printEndIndent();
+        oss_ << endl;
     }
 }
