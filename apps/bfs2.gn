@@ -1,0 +1,46 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const prop : vector{Vertex}(intx);
+func reset(v : Vertex)
+    prop[v]=0;
+    prop[1]=1;
+end
+func ScatterFunc(src : Vertex) -> update : intx
+    update = prop[src];
+end
+func ActiveFunc(update : intx) -> flag : bool
+    flag = (update==1);
+end
+func GatherFunc(dst : Vertex, update : intx) -> tprop : intx
+    if (prop[dst] < update) and (update == 1)
+        tprop = update;
+    else 
+        tprop = prop[dst];
+    end
+end
+func ApplyFunc(tprop : intx, v : Vertex) -> newprop : intx
+    if ((tprop == 1) and (prop[v] == 0))
+        newprop = tprop;
+        Active(v);
+    else
+        newprop = prop[v];
+        InActive(v);
+    end
+end
+func main()
+    vertices.init(reset);
+    for tail in 0:10
+        startTimer();
+        #s1# edges.gsActive(ScatterFunc, ActiveFunc, GatherFunc);
+        vertices.apply(ApplyFunc);
+        var elapsed_time : float = stopTimer();
+        print "elapsed time: ";
+        println elapsed_time;
+        fpgaTimePrint();
+    end
+end
+
+schedule:
+    program->configUnsignedProp("s1", true)->configSubpartitionPlan("s1", "estimator");
