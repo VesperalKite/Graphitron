@@ -25,7 +25,10 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::TensorReadExpr::Ptr expr) {
-
+        oss_ << expr->getTargetNameStr();
+        oss_ << "[";
+        expr->index->accept(this);
+        oss_ << "]";
     }
 
     void ExprGenerator::visit(mir::Call::Ptr expr) {
@@ -48,15 +51,15 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::LoadExpr::Ptr expr) {
-
+        oss_ << "loadexpr";
     }
 
     void ExprGenerator::visit(mir::ConstantVectorExpr::Ptr expr) {
-
+        oss_ << "constantvectorexpr";
     }
 
     void ExprGenerator::visit(mir::EdgeSetLoadExpr::Ptr expr) {
-
+        oss_ << "edgesetloadexpr";
     }
 
     void ExprGenerator::visit(mir::ApplyExpr::Ptr expr) {
@@ -192,14 +195,14 @@ namespace graphitron {
         oss_ << "(";
         oss_ << "(float) ";
         oss_ << expr->val;
-        oss_ << ") ";
+        oss_ << ")";
     };
 
     void ExprGenerator::visit(mir::IntLiteral::Ptr expr) {
         oss_ << "(";
         //oss_ << "(int) ";
         oss_ << expr->val;
-        oss_ << ") ";
+        oss_ << ")";
     }
 
 }

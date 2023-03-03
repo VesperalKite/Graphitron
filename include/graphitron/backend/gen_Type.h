@@ -21,7 +21,7 @@ namespace graphitron {
         // virtual void visit(mir::ElementType::Ptr type);
         virtual void visit(mir::VectorType::Ptr type);
         // virtual void visit(mir::VertexSetType::Ptr type);
-        // virtual void visit(mir::EdgeSetType::Ptr type);
+        virtual void visit(mir::EdgeSetType::Ptr type);
     private:  
         MIRContext* mir_context_;
         std::ostream &oss_;

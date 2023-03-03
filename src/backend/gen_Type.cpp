@@ -50,7 +50,7 @@ namespace graphitron {
 
     // }
 
-    // void TypeGenerator::visit(mir::EdgeSetType::Ptr type) {
-
-    // }
+    void TypeGenerator::visit(mir::EdgeSetType::Ptr type) {
+        oss_ << "graphInfo ";
+    }
 }

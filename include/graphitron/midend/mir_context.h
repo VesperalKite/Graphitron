@@ -276,6 +276,7 @@ namespace graphitron {
                   return func_decl;
          }
          std::cout << "No main function declared" << std::endl;
+         exit(-1);
          return nullptr;
       }
 

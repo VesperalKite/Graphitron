@@ -6,7 +6,7 @@
 #define GRAPHITRON_BACKEND_H
 
 #include <graphitron/midend/mir_context.h>
-#include <graphitron/backend/gen_acc.h>
+#include <graphitron/backend/codegen_ecp.h>
 
 namespace graphitron {
     class Backend {

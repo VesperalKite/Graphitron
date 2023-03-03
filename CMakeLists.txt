@@ -42,7 +42,7 @@ add_custom_target(graphitron_apps_gen ALL
 	COMMENT "Generating apps dir..."
 )
 add_custom_target(graphitron_output_gen ALL
-	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/output
+	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/fpga_accelerator
 	COMMENT "Generating output dir..."
 )
 add_custom_target(graphitron_graphs_gen ALL

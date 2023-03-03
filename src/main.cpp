@@ -36,16 +36,9 @@ int main(int argc, char* argv[]) {
     file.close();
 
     std::string output_path = cli.output_path();
-    //set up the output file
-    std::ofstream fir_output_file(output_path+"fir.txt");
 
     //compile the input file
-    bool output = fe->parseStream(buffer, context, errors);
-    if (output == 0) {
-        fir_output_file << "fir :" << std::endl;
-        fir_output_file << *(context->getProgram());
-        fir_output_file << std::endl;
-    }
+    fe->parseStream(buffer, context, errors);
 
     mir::schedule::ProgramScheduleNode::Ptr program
         = std::make_shared<mir::schedule::ProgramScheduleNode>();
@@ -56,21 +49,9 @@ int main(int argc, char* argv[]) {
 
     Midend* me = new Midend(context, program->getSchedule());
     me->emitMIR(mir_context);
-    fir_output_file.close();
     Backend* be= new Backend(mir_context);
     be->emitACC(output_path);
 
-/*
-    if (python_module_name != "") {
-	if (python_module_path == "")
-		python_module_path = "/tmp";
-	std::ofstream python_output_file;
-	python_output_file.open(python_module_path + "/" + python_module_name + ".py");
-	be->emitPython(python_output_file, python_module_name, python_module_path) ;
-	python_output_file.close();
-	
-    }
-*/
-    return output;
+    return 0;
 }
 

@@ -3,9 +3,11 @@
 //
 
 #include <graphitron/midend/mir_lower.h>
+#include <graphitron/midend/edgeset_lower.h>
 
 namespace graphitron {
     void MIRLower::lower(MIRContext* mir_context, ScheduleSpace* schedule) {
         mir_context->schedule_ = schedule;
+        EdgeSetLower(mir_context).lower();
     }
 }

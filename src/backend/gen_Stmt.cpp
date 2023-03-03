@@ -55,10 +55,20 @@ namespace graphitron {
 
     void StmtGenerator::visit(mir::AssignStmt::Ptr stmt) {
         printIndent();
+        if(mir::isa<mir::EdgeSetLoadExpr>(stmt->expr)){
+            auto edgeset_load_expr = mir::to<mir::EdgeSetLoadExpr>(stmt->expr);
+            oss_ << "acceleratorDataLoad(";
+            //argv[1] -- TensorReadExpr
+            edgeset_load_expr->file_name->accept(expr_visitor);
+            oss_ << ", \"normal\", &";
+            stmt->lhs->accept(expr_visitor);
+            oss_ << ");" << endl; 
+        }else{
         stmt->lhs->accept(expr_visitor);
         oss_ << " = ";
         stmt->expr->accept(expr_visitor);
         oss_ << ";" << endl;
+        }
     }
 
     void StmtGenerator::visit(mir::ReduceStmt::Ptr stmt) {
