@@ -2,10 +2,13 @@
 
 #include "graph.h"
 
+#ifndef DEFAULT_DATASET_PATH
+#define DEFAULT_DATASET_PATH "/home/fengzheng/Graphset/"
+#endif
 Graph* createGraph(const std::string &gName, const std::string &mode) {
     Graph* gptr;
     std::string dir;
-    if (mode == "normal") dir = "/home/fengzheng/Graphset/";
+    if (mode == "normal") dir = DEFAULT_DATASET_PATH;
 
     else {
         std::cout << "unknown execution environment." << std::endl;

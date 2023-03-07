@@ -22,7 +22,7 @@ double getCurrentTimestamp(void);
 void reTransferProp(graphInfo *info);
 
 /* host api -- dataflow */
-int acceleratorInit(const char * name, char *file_name);
+int acceleratorInit(const char * name);
 int acceleratorDataLoad(const std::string &gName, const std::string &mode, graphInfo *info);
 int acceleratorDataPreprocess(graphInfo *info);
 int acceleratorSuperStep(int superStep, graphInfo *info);

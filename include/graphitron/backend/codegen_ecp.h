@@ -47,8 +47,9 @@ namespace graphitron {
     void printEndIndent() { oss << std::string(2 * indentLevel, ' ') << "}"; }
 
     void genIncludeStmts();
-    void genEdgeset();
+    void genEdgesetDecl();
     void genMainBody();
+    void genDataPre();
     };
 }
 

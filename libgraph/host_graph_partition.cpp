@@ -104,9 +104,15 @@ static void partitionTransfer(graphInfo *info)
     {
         int mem_id[2];
         mem_id[0] = getGatherScatter(i)->prop[0].id;
-        mem_id[1] = getGatherScatter(i)->tmpProp.id;
+        mem_id[1] = getGatherScatter(i)->prop[1].id;
+        //DEBUG_PRINTF("mem_id[0]=%d, mem_id[1]=%d\n", mem_id[0], mem_id[1]);
         transfer_data_to_pl(acc->context, acc->device, mem_id, ARRAY_SIZE(mem_id));
     }
+
+    DEBUG_PRINTF("%s", "transfer frontier\n");
+    int mem_id[1];
+    mem_id[0] = MEM_ID_FRONTIER;
+    transfer_data_to_pl(acc->context, acc->device, mem_id, 1);
 
     double end =  getCurrentTimestamp();
     DEBUG_PRINTF("data transfer %lf \n", (end - begin) * 1000);
@@ -203,8 +209,11 @@ void partitionFunction(graphInfo *info)
             int num = rpa[u + 1] - rpa[u];
             for (int j = 0; j < num; j++) {
                 //tmpVertexProp[cia[start + j]] += vertexPushinProp[u];//vertexProp[u] / (csr->rpao[u+1] - csr->rpao[u]);
-                int cia_idx = start + j; //printf("cia_idx %d\n",cia_idx );
-                int vertex_idx = vertexMap[cia[cia_idx]];
+                int cia_idx = start + j; //printf("cia_idx %d\n",cia_idx ); 
+                int vertex_idx = vertexMap[cia[cia_idx]];// vertex_idx: neighbor id
+                /* if dst is partitonsize*i ~ partitionsize*(i+1)-1, push the edge in i-th partition
+                    vertex_idx: maped dst id
+                    mapedSourceIndex: maped src id */
                 if ((vertex_idx >= i * MAX_VERTICES_IN_ONE_PARTITION) && (vertex_idx < (i + 1) * MAX_VERTICES_IN_ONE_PARTITION)) {
                     edgePartitionTailArray[cur_edge_num] = vertex_idx;
                     edgePartitionHeadArray[cur_edge_num] = mapedSourceIndex;
@@ -236,6 +245,7 @@ void partitionFunction(graphInfo *info)
 
         for (int subIndex = 0 ; subIndex < SUB_PARTITION_NUM ; subIndex ++ )
         {
+            /* for every subpartition(except the last partition), dst is from partitionsize*i to partitionsize*(i+1)-1 */
             partition->sub[subIndex]->compressRatio = (double (mapedSourceIndex)) / vertexNum;
             DEBUG_PRINTF("ratio %d / %d is %lf \n", mapedSourceIndex, vertexNum, partition->sub[subIndex]->compressRatio);
             partition->sub[subIndex]->dstVertexStart = MAX_VERTICES_IN_ONE_PARTITION * (i);
@@ -263,6 +273,7 @@ void partitionFunction(graphInfo *info)
 
             DEBUG_PRINTF("[SIZE] %d cur_edge_num sub %d\n", partition->totalEdge, partition->sub[subIndex]->listEnd);
             partition_mem_init(acc->context, partId, partition->sub[subIndex]->listEnd, subIndex); // subIndex --> cuIndex
+            //DEBUG_PRINTF("sub %d tmpProp.id=%d", subIndex, partition->sub[subIndex]->tmpProp.id);
             memcpy(partition->sub[subIndex]->edgeTail.data , &edgePartitionTailArray[subPartitionSize * reOrderIndex], 
                 partition->sub[subIndex]->listEnd * sizeof(int));
             memcpy(partition->sub[subIndex]->edgeHead.data , &edgePartitionHeadArray[subPartitionSize * reOrderIndex], 
@@ -280,31 +291,34 @@ void partitionFunction(graphInfo *info)
 
     for (int i = 0; i < info->blkNum; i++)
     {
-        subPartitionDescriptor * subPartition = getSubPartition(i);
-        int *edgePartitionHeadArray = (int*)subPartition->edgeHead.data;
-
         DEBUG_PRINTF("\n----------------------------------------------------------------------------------\n");
-        DEBUG_PRINTF("[PART] subPartitions %d info :\n", i);
-        DEBUG_PRINTF("[PART] \t edgelist from %d to %d\n"   , subPartition->listStart      , subPartition->listEnd     );
-        DEBUG_PRINTF("[PART] \t dst. vertex from %d to %d\n", subPartition->dstVertexStart , subPartition->dstVertexEnd);
-        DEBUG_PRINTF("[PART] \t src. vertex from %d to %d\n", subPartition->srcVertexStart , subPartition->srcVertexEnd);
-        DEBUG_PRINTF("[PART] \t dump: %d - %d\n", (edgePartitionHeadArray[subPartition->listStart]), (edgePartitionHeadArray[subPartition->listEnd - 1]));
-        DEBUG_PRINTF("[PART] scatter cache ratio %lf \n", subPartition->scatterCacheRatio);
-        DEBUG_PRINTF("[PART] v/e %lf \n", (subPartition->dstVertexEnd - subPartition->dstVertexStart)
-                     / ((float)(subPartition->listEnd - subPartition->listStart)));
+        DEBUG_PRINTF("[PART] Partition %d info :\n", i);
+        for (int k = 0; k < SUB_PARTITION_NUM; k++ )
+        {
+            subPartitionDescriptor * subPartition = getSubPartition(i * SUB_PARTITION_NUM + k);
+            int *edgePartitionHeadArray = (int*)subPartition->edgeHead.data;
 
-        DEBUG_PRINTF("[PART] v: %d e: %d \n", (subPartition->dstVertexEnd - subPartition->dstVertexStart),
-                     (subPartition->listEnd - subPartition->listStart));
+            DEBUG_PRINTF("[PART] subPartition %d info :\n", k);
+            DEBUG_PRINTF("[PART] \t edgelist from %d to %d\n"   , subPartition->listStart      , subPartition->listEnd     );
+            DEBUG_PRINTF("[PART] \t dst. vertex from %d to %d\n", subPartition->dstVertexStart , subPartition->dstVertexEnd);
+            DEBUG_PRINTF("[PART] \t src. vertex from %d to %d\n", subPartition->srcVertexStart , subPartition->srcVertexEnd);
+            DEBUG_PRINTF("[PART] \t dump: %d - %d\n", (edgePartitionHeadArray[subPartition->listStart]), (edgePartitionHeadArray[subPartition->listEnd - 1]));
+            DEBUG_PRINTF("[PART] scatter cache ratio %lf \n", subPartition->scatterCacheRatio);
+            DEBUG_PRINTF("[PART] v/e %lf \n", (subPartition->dstVertexEnd - subPartition->dstVertexStart)
+                        / ((float)(subPartition->listEnd - subPartition->listStart)));
 
-        DEBUG_PRINTF("[PART] est. efficient %lf\n", ((float)(subPartition->listEnd - subPartition->listStart)) / mapedSourceIndex);
+            DEBUG_PRINTF("[PART] v: %d e: %d \n", (subPartition->dstVertexEnd - subPartition->dstVertexStart),
+                        (subPartition->listEnd - subPartition->listStart));
 
-        DEBUG_PRINTF("[PART] compressRatio %lf \n\n", subPartition->compressRatio);
+            DEBUG_PRINTF("[PART] est. efficient %lf\n", ((float)(subPartition->listEnd - subPartition->listStart)) / mapedSourceIndex);
 
+            DEBUG_PRINTF("[PART] compressRatio %lf \n\n", subPartition->compressRatio);
 
-        /****************************************************************************************************************/
+            //DEBUG_PRINTF("[TEST] tmpProp.id = %d\n", subPartition->tmpProp.id);
+            /****************************************************************************************************************/
 
-        /****************************************************************************************************************/
-
+            /****************************************************************************************************************/
+        }
     }
 
 
@@ -319,6 +333,7 @@ void partitionFunction(graphInfo *info)
     {
         tmpVertexProp[i] = 0;
     }
+    //DEBUG_PRINTF("[TEST] tmpProp.id = %d\n", getSubPartition(0)->tmpProp.id);
     partitionTransfer(info);
 }
 

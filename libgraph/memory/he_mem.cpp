@@ -137,7 +137,7 @@ int he_mem_init(cl_context &dev_context, he_mem_t * item)
         item->ext_attr.param = 0;
 
         // hardcode the bank for the outdeg variable... 
-        if((strcmp (item->name, "outDeg") == 0) || (strcmp (item->name, "error") == 0)) item->ext_attr.flags = (5 | XCL_MEM_TOPOLOGY);
+        if((strcmp (item->name, "frontier") == 0) ||(strcmp (item->name, "outDeg") == 0) || (strcmp (item->name, "error") == 0)) item->ext_attr.flags = (5 | XCL_MEM_TOPOLOGY);
 
         std::cout << item->name << " is banked to " << std::hex << item->ext_attr.flags << std::endl; 
 
@@ -204,7 +204,7 @@ cl_mem* get_cl_mem_pointer(int id)
     DEBUG_PRINTF("cl mem %d do not found \n", id );
     return NULL;
 }
-
+/*migrate data to device*/
 int transfer_data_to_pl(cl_context &dev_context, cl_device_id device_id, int* id_array, int size)
 {
     cl_int status;
@@ -238,6 +238,7 @@ int transfer_data_to_pl(cl_context &dev_context, cl_device_id device_id, int* id
     clFinish(ops);
     return 0;
 }
+/*migrate data from device*/
 int transfer_data_from_pl(cl_context &dev_context, cl_device_id device_id, int mem_id)
 {
     cl_int status;

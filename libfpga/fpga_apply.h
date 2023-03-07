@@ -70,9 +70,14 @@ void   applyFunction(
     hls::stream<burst_raw>          &tmpVertexPropStream,
     unsigned int                    argReg,
     hls::stream<burst_raw>          &newVertexPropStream,
-    int                             *outReg
+    int                             *outReg,
+    int                             *frontier,
+    unsigned int  vertexNum,
+    unsigned int  addrOffset
 )
 {
+    DEBUG_PRINTF("apply function: v from %d to $%d", addrOffset, addrOffset+vertexNum-1);
+    unsigned int current_v_id = addrOffset;
     unsigned int infoArray[BURST_ALL_BITS / INT_WIDTH][APPLY_REF_ARRAY_SIZE];
 #pragma HLS ARRAY_PARTITION variable=infoArray dim=0 complete
     for (int i = 0; i < BURST_ALL_BITS / INT_WIDTH; i++)
@@ -86,7 +91,7 @@ void   applyFunction(
     {
 
 #pragma HLS PIPELINE II=1
-        burst_raw vertexProp;
+        burst_raw vertexProp;//burst_raw size: 512 = 32 x 16, 16 [int]
         burst_raw tmpVertexProp;
 
         read_from_stream(vertexPropStream, vertexProp);
@@ -101,6 +106,7 @@ void   applyFunction(
 
         for (int i = 0; i < BURST_ALL_BITS / INT_WIDTH; i++)
         {
+            DEBUG_PRINTF("current vid: %d", current_v_id);
 #pragma HLS UNROLL
             prop_t tProp     = tmpVertexProp.range((i + 1) * INT_WIDTH - 1, i * INT_WIDTH );
             prop_t uProp     = vertexProp.range(   (i + 1) * INT_WIDTH - 1, i * INT_WIDTH );
@@ -112,14 +118,15 @@ void   applyFunction(
             unsigned int tmpInfoArray[BURST_ALL_BITS / INT_WIDTH][APPLY_REF_ARRAY_SIZE];
 #pragma HLS ARRAY_PARTITION variable=tmpInfoArray dim=0 complete
 //#pragma HLS DEPENDENCE variable=tmpInfoArray inter false
-
-            prop_t  wProp    = applyFunc( tProp, uProp, out_deg, tmpInfoArray[i],  argReg);
+            unsigned int active;
+            prop_t  wProp    = applyFunc( tProp, uProp, out_deg, tmpInfoArray[i], active, argReg);
             for (int j = 0; j < APPLY_REF_ARRAY_SIZE; j++)
             {
                 infoArray[i][j] += tmpInfoArray[i][j];
             }
             newVertexProp.range((i + 1) * INT_WIDTH - 1, i * INT_WIDTH ) = wProp;
-
+            frontier[current_v_id] = active;
+            current_v_id++;
         }
         write_to_stream(newVertexPropStream, newVertexProp);
     }
@@ -127,10 +134,10 @@ void   applyFunction(
     for (int j = 0; j < APPLY_REF_ARRAY_SIZE; j++)
     {
         int infoAggregate = 0;
-
+        DEBUG_PRINTF("extra[%d]", j);
         for (int i = 0; i < BURST_ALL_BITS / INT_WIDTH; i ++)
         {
-            DEBUG_PRINTF("infoArray %d %d \n", i, infoArray[i]);
+            DEBUG_PRINTF("infoArray %d %d \n", i, infoArray[i][j]);
             infoAggregate += infoArray[i][j];
         }
         outReg[j] = infoAggregate;

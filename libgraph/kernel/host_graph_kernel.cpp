@@ -98,6 +98,7 @@ void setGsKernel(int partId, int superStep, graphInfo *info)
 
 void setApplyKernel(int partId, int superStep, graphInfo *info)
 {
+    //int total_num = info->vertexNum;
 #if HAVE_APPLY
     int currentPropId = superStep % 2;
     int updatePropId  = (superStep + 1) % 2;
@@ -135,6 +136,9 @@ void setApplyKernel(int partId, int superStep, graphInfo *info)
 #endif
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_RESULT_REG));
     he_set_dirty(MEM_ID_RESULT_REG);
+
+    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_FRONTIER));
+    he_set_dirty(MEM_ID_FRONTIER);
 
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &sink_end);
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &offset);

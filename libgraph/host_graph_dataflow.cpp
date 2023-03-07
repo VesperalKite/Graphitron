@@ -2,6 +2,9 @@
 #include "host_graph_sw.h"
 #include "host_graph_scheduler.h"
 
+#ifndef XCL_BIN
+#define XCL_BIN NULL
+#endif
 
 graphAccelerator thunderGraph;
 
@@ -21,8 +24,13 @@ partitionDescriptor * getPartition(int partID)
 }
 
 
-int acceleratorInit(const char * name, char *file_name)
+int acceleratorInit(const char * name)
 {
+    char * xcl_file = (char*) XCL_BIN;
+    if (xcl_file == NULL){
+        DEBUG_PRINTF("xcl_file is null, please check file exitst!\n");
+        exit(-1);
+    }
     cl_int  status;
     cl_uint numPlatforms;
     cl_uint numDevices;
@@ -40,7 +48,7 @@ int acceleratorInit(const char * name, char *file_name)
     checkStatus("Failed clCreateContext.");
 
     xcl_world world = xcl_world_single();
-    acc->program = xcl_import_binary(world, name, file_name);
+    acc->program = xcl_import_binary(world, name, xcl_file);
 
     kernelInit(acc);
 
@@ -76,7 +84,7 @@ int acceleratorSuperStep(int superStep, graphInfo *info)
         }
 #endif
     }
-
+//for fpagTime
     for (int i = 0; i < SUB_PARTITION_NUM; i++)
     {
         clFinish(acc->gsOps[i]);

@@ -14,7 +14,7 @@ namespace graphitron {
         oss.open(output_path_+"/main.cpp");
         reset();
         genIncludeStmts();
-        genEdgeset();
+        genEdgesetDecl();
         genMainBody();
         oss.close();
     }
@@ -26,7 +26,7 @@ namespace graphitron {
         oss << "#include \"host_graph_api.h\"" << endl;
         oss << "using namespace std;" << endl;
     }
-    void CodeGenEcp::genEdgeset() {
+    void CodeGenEcp::genEdgesetDecl() {
         for (auto edgeset : mir_context_->getEdgeSets()) {
             auto edge_set_type = mir::to<mir::EdgeSetType>(edgeset->type);
             edge_set_type->accept(type_visitor);
@@ -45,5 +45,10 @@ namespace graphitron {
         }
         oss << "return 0;" << endl;
         oss << "}" << endl;
+    }
+    void CodeGenEcp::genDataPre() {
+        for (auto edgeset : mir_context_->getEdgeSets()) {
+            oss << "acceleratorDataPreprocess(&)";
+        } 
     }
 }

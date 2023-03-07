@@ -169,6 +169,13 @@ he_mem_t local_mem[] =
         sizeof(prop_t),
         SIZE_IN_VERTEX,
     },
+    {
+        MEM_ID_FRONTIER,
+        "frontier",
+        ATTR_PL_DDR0,
+        sizeof(int),
+        SIZE_IN_VERTEX,
+    },
 };
 
 
