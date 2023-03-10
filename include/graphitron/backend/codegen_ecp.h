@@ -23,7 +23,9 @@ namespace graphitron {
             reset();
         }
         int genFPGA();
+
         int genMain();
+        int genMIRcontext();
     protected: 
 
     private:  

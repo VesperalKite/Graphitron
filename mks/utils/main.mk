@@ -20,6 +20,8 @@ APP_INPUT = ./apps/$(APP).gn
 
 include ${UTILS_PATH}/utils.mk
 
+include $(UTILS_PATH)/common.mk
+
 include ${UTILS_PATH}/compile.mk
 include ${UTILS_PATH}/clean.mk
 

@@ -1362,6 +1362,8 @@ namespace graphitron {
         return token;
     }
     void Parser::initIntrinsics() {
+        //intrinsics - builtin_func_name
+        //decls - func_name
         // set up method call intrinsics
 
         // //TODO: this one might need to be removed
@@ -1369,14 +1371,15 @@ namespace graphitron {
         // intrinsics_.push_back("max");
 
         // //library functions for edgeset
-        // intrinsics_.push_back("getVertices");
-        // intrinsics_.push_back("getOutDegrees");
+        intrinsics_.push_back("getVertices");
+        intrinsics_.push_back("getOutDegrees");
         // intrinsics_.push_back("getOutDegreesUint");
         // intrinsics_.push_back("getOutDegree");
         // intrinsics_.push_back("getNgh");
         // intrinsics_.push_back("relabel");
 
         // // library functions for vertexset
+        intrinsics_.push_back("getProperty");
         // intrinsics_.push_back("getVertexSetSize");
         // intrinsics_.push_back("addVertex");
 
@@ -1389,8 +1392,6 @@ namespace graphitron {
         //decls.insert("fabs", IdentType::FUNCTION);
         decls.insert("startTimer", IdentType::FUNCTION);
         decls.insert("stopTimer", IdentType::FUNCTION);
-        decls.insert("Active", IdentType::FUNCTION);
-        decls.insert("InActive", IdentType::FUNCTION);
         //decls.insert("atoi", IdentType::FUNCTION);
        // decls.insert("floor", IdentType::FUNCTION);
         // decls.insert("log", IdentType::FUNCTION);
@@ -1401,8 +1402,6 @@ namespace graphitron {
 	    // decls.insert("getRandomOutNgh", IdentType::FUNCTION);
         // decls.insert("getRandomInNgh", IdentType::FUNCTION);
         // decls.insert("serialMinimumSpanningTree", IdentType::FUNCTION);
-        decls.insert("fpgaTimePrint", IdentType::FUNCTION);
-        decls.insert("isactive", IdentType::FUNCTION);
     }
 
 }

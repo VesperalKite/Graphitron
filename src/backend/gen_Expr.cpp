@@ -47,7 +47,21 @@ namespace graphitron {
                 }
                 oss_ << ")";
             }
+        } else {
+            oss_ << "(";
+            bool printDelimiter = false;
+
+            for (int i = 1; i < expr->args.size(); i++){
+                auto arg = expr->args[i];
+                if (printDelimiter) {
+                    oss_ << ", ";
+                }
+                arg->accept(this);
+                printDelimiter = true;
+            }
+	        oss_ << ") ";
         }
+
     }
 
     void ExprGenerator::visit(mir::LoadExpr::Ptr expr) {

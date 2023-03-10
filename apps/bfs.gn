@@ -2,7 +2,7 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const prop : vector{Vertex}(intx);
+const prop : vector{Vertex}(intx) = vertices.getProperty();
 func reset(v : Vertex)
     prop[v]=0;
     prop[1]=1;
@@ -23,10 +23,8 @@ end
 func ApplyFunc(tprop : intx, srcProp : intx) -> newprop : intx
     if ((tprop == 1) and (srcProp == 0))
         newprop = tprop;
-        Active();
     else
         newprop = srcProp;
-        InActive();
     end
 end
 func main()
@@ -38,7 +36,6 @@ func main()
         var elapsed_time : float = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
-        fpgaTimePrint();
     end
 end
 
