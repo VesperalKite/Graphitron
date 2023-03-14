@@ -24,6 +24,7 @@ namespace graphitron {
             VAR,//var
             CONST,//const
             FUNC,//func
+            ITER,//iter
             GS,//gs
             GSACTIVE,//gsActive
             APPLY,//apply

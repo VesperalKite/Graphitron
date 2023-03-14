@@ -25,7 +25,7 @@ namespace graphitron {
                 indentLevel = 0;
                 expr_visitor = new ExprGenerator(mir_context, oss);
                 type_visitor = new TypeGenerator(mir_context, oss);
-                stmt_visitor = new StmtGenerator(mir_context, oss);
+                stmt_visitor = new StmtGenerator(mir_context, oss, &indentLevel);
             }
 
         void genScatterGatherFuncDecl(){

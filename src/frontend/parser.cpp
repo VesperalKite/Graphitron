@@ -566,9 +566,16 @@ namespace graphitron {
         //fir::Expr::Ptr expr = parseSetReadExpr();
         fir::Expr::Ptr expr = parseFactor();
 
+        fir::IterExpr::Ptr iter_expr;
+
         while (tryConsume(Token::Type::PERIOD)) {
 
-            if (tryConsume(Token::Type::GS)) {
+            if (tryConsume(Token::Type::ITER)) {
+                consume(Token::Type::LP);
+                iter_expr = std::make_shared<fir::IterExpr>();
+                iter_expr->args = parseExprParams();
+                consume(Token::Type::RP);
+            } else if (tryConsume(Token::Type::GS)) {
                 consume(Token::Type::LP);
                 auto gs_expr = std::make_shared<fir::GsExpr>();
                 gs_expr->target = expr;
@@ -576,8 +583,8 @@ namespace graphitron {
                 consume(Token::Type::COMMA);
                 gs_expr->input_gather_function = parseFunctorExpr();
                 consume(Token::Type::RP);
+                gs_expr->iter_expr = iter_expr;
                 expr = gs_expr;
-
             } else if (tryConsume(Token::Type::GSACTIVE)) {
                 consume(Token::Type::LP);
                 auto gsactive_expr = std::make_shared<fir::GsActiveExpr>();
@@ -588,6 +595,7 @@ namespace graphitron {
                 consume(Token::Type::COMMA);
                 gsactive_expr->input_gather_function = parseFunctorExpr();
                 consume(Token::Type::RP);
+                gsactive_expr->iter_expr = iter_expr;
                 expr = gsactive_expr;
             } else if (tryConsume(Token::Type::APPLY)) {
                 consume(Token::Type::LP);
@@ -1372,6 +1380,7 @@ namespace graphitron {
 
         // //library functions for edgeset
         intrinsics_.push_back("getVertices");
+        intrinsics_.push_back("partition");
         intrinsics_.push_back("getOutDegrees");
         // intrinsics_.push_back("getOutDegreesUint");
         // intrinsics_.push_back("getOutDegree");

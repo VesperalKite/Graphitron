@@ -21,7 +21,7 @@ namespace graphitron {
         printIndent();
         auto for_domain = stmt->domain;
         auto loop_var = stmt->loopVar;
-        oss_ << "for ( int" << loop_var << " = ";
+        oss_ << "for ( int " << loop_var << " = ";
         for_domain->lower->accept(expr_visitor);
         oss_ << "; " << loop_var << " < ";
         for_domain->upper->accept(expr_visitor);

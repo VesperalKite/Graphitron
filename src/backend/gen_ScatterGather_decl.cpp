@@ -70,7 +70,6 @@ namespace graphitron {
             printIndent();
             result.getType()->accept(type_visitor);
             oss_ << result.getName() << ";" << endl;
-            stmt_visitor->setIndent(this->getIndent());
             scatter_func->body->accept(stmt_visitor);
             printIndent();
             oss_ << "return (" << result.getName() << ");" << endl;
@@ -109,7 +108,6 @@ namespace graphitron {
             printIndent();
             result.getType()->accept(type_visitor);
             oss_ << result.getName() << ";" << endl;
-            stmt_visitor->setIndent(this->getIndent());
             scatter_func->body->accept(stmt_visitor);
             printIndent();
             oss_ << "return (" << result.getName() << ");" << endl;
@@ -145,7 +143,6 @@ namespace graphitron {
         printIndent();
         result.getType()->accept(type_visitor);
         oss_ << result.getName() << ";" << endl;
-        stmt_visitor->setIndent(this->getIndent());
         gather_func->body->accept(stmt_visitor);
         printIndent();
         oss_ << "return (" << result.getName() << ");" << endl;

@@ -47,6 +47,10 @@ namespace graphitron {
                 }
                 oss_ << ")";
             }
+        } else if (expr->name == "builtin_getVertices" || expr->name == "builtin_partition") {
+            oss_ << "(";
+            expr->args[0]->accept(this);
+            oss_ << ")";
         } else {
             oss_ << "(";
             bool printDelimiter = false;
@@ -77,11 +81,15 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::ApplyExpr::Ptr expr) {
-
+        oss_ << "//have apply func()";
     }
 
     void ExprGenerator::visit(mir::GsActiveExpr::Ptr expr) {
-
+        oss_ << "acceleratorSuperStep(";
+        expr->iter->accept(this);
+        oss_ <<", &";
+        expr->target->accept(this);
+        oss_<<")";
     }
 
     void ExprGenerator::visit(mir::GsExpr::Ptr expr) {
@@ -200,6 +208,7 @@ namespace graphitron {
     };
 
     void ExprGenerator::visit(mir::StringLiteral::Ptr expr) {
+       // oss_ << "find type: "; 
         oss_ << "\"";
         oss_ << expr->val;
         oss_ << "\"";

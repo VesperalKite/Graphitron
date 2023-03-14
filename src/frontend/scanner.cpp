@@ -18,6 +18,7 @@ namespace graphitron {
         if (token == "var") return Token::Type::VAR;
         if (token == "const") return Token::Type::CONST;
         if (token == "func") return Token::Type::FUNC;
+        if (token == "iter") return Token::Type::ITER;
         if (token == "gs") return Token::Type::GS;
         if (token == "gsActive") return Token::Type::GSACTIVE;
         if (token == "apply") return Token::Type::APPLY;

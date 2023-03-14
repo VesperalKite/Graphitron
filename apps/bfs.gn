@@ -29,11 +29,12 @@ func ApplyFunc(tprop : intx, srcProp : intx) -> newprop : intx
 end
 func main()
     vertices.init(reset);
+    edges.partition();
     for tail in 0:10
         startTimer();
-        #s1# edges.gsActive(ScatterFunc, ActiveFunc, GatherFunc);
+        #s1# edges.iter(tail).gsActive(ScatterFunc, ActiveFunc, GatherFunc);
         vertices.apply(ApplyFunc);
-        var elapsed_time : float = stopTimer();
+        var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
     end

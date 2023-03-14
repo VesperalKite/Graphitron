@@ -146,14 +146,10 @@ namespace graphitron {
         oss << "  graphAccelerator * acc = getAccelerator();" << endl;
         oss << "  acceleratorInit(\"graph_fpga\");" << endl;
         for (auto stmt : mir_context_->edgeset_alloc_stmts) {
-            printIndent();
             stmt->accept(stmt_visitor);
         }
-        oss << "  schedulerRegister();" << endl;
-
-        for (auto edgeset : mir_context_->getEdgeSets()) {
-            oss<< "  partitionFunction(&" << edgeset->name << ")" << endl;
-        }
+        auto body = main_func->body;
+        body->accept(stmt_visitor);
         oss << "  return 0;" << endl;
         oss << "}" << endl;
     }

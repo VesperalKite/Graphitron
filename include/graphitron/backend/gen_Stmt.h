@@ -16,14 +16,11 @@
 
 namespace graphitron {
     struct StmtGenerator : mir::MIRVisitor {
-        StmtGenerator(MIRContext* mir_context, std::ostream& oss)
-            : oss_(oss), mir_context_(mir_context) {
+        StmtGenerator(MIRContext* mir_context, std::ostream& oss, unsigned int *indentLevel_)
+            : oss_(oss), mir_context_(mir_context), indentLevel(indentLevel_) {
                 type_visitor = new TypeGenerator(mir_context, oss);
                 expr_visitor = new ExprGenerator(mir_context, oss);
-                indentLevel = 0;
             }
-        unsigned getIndent() {return indentLevel;}
-        void setIndent(unsigned indent) { indentLevel = indent;}
     protected:  
         virtual void visit(mir::VarDecl::Ptr stmt);
         virtual void visit(mir::ForStmt::Ptr stmt);
@@ -39,13 +36,13 @@ namespace graphitron {
         std::ostream& oss_;
         TypeGenerator* type_visitor;
         ExprGenerator* expr_visitor;
-        unsigned indentLevel;
+        unsigned *indentLevel;
 
-        void indent() { ++indentLevel; }
-        void dedent() { --indentLevel; }
-        void printIndent() { oss_ << std::string(2 * indentLevel, ' '); }
-        void printBeginIndent() { oss_ << std::string(2 * indentLevel, ' ') << "{" << std::endl; }
-        void printEndIndent() { oss_ << std::string(2 * indentLevel, ' ') << "}"; }
+        void indent() { ++(*indentLevel); }
+        void dedent() { --(*indentLevel); }
+        void printIndent() { oss_ << std::string(2 * (*indentLevel), ' '); }
+        void printBeginIndent() { oss_ << std::string(2 * (*indentLevel), ' ') << "{" << std::endl; }
+        void printEndIndent() { oss_ << std::string(2 * (*indentLevel), ' ') << "}"; }
     };
 }
 

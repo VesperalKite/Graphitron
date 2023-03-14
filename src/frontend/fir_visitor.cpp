@@ -248,6 +248,12 @@ namespace graphitron {
             }
         }
 
+        void FIRVisitor::visit(std::shared_ptr<IterExpr> expr) {
+            for (auto arg : expr->args) {
+                arg->accept(this);
+            }
+        }
+
         void FIRVisitor::visit(std::shared_ptr<GsExpr> expr) {
             expr->input_gather_function->accept(this);
             expr->input_scatter_function->accept(this);

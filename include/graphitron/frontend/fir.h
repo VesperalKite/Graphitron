@@ -715,8 +715,18 @@ namespace graphitron{
             virtual unsigned getColBegin() { return method_name->getColBegin(); }
         };
 
+        struct IterExpr : public Expr {
+            std::vector<Expr::Ptr> args;
+
+            typedef std::shared_ptr<IterExpr> Ptr;
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<IterExpr>());
+            }
+        };
+
         struct GsExpr : public Expr {
             Expr::Ptr target;
+            IterExpr::Ptr iter_expr;
             FuncExpr::Ptr input_gather_function;
             FuncExpr::Ptr input_scatter_function;
             typedef std::shared_ptr<GsExpr> Ptr;
@@ -727,6 +737,7 @@ namespace graphitron{
         };
         struct GsActiveExpr : public Expr {
             Expr::Ptr target;
+            IterExpr::Ptr iter_expr;
             FuncExpr::Ptr input_gather_function;
             FuncExpr::Ptr input_active_function;
             FuncExpr::Ptr input_scatter_function;

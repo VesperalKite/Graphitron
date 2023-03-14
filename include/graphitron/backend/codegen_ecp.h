@@ -41,7 +41,7 @@ namespace graphitron {
         indentLevel = 0;
         expr_visitor = new ExprGenerator(mir_context_, oss);
         type_visitor = new TypeGenerator(mir_context_, oss);
-        stmt_visitor = new StmtGenerator(mir_context_, oss);}
+        stmt_visitor = new StmtGenerator(mir_context_, oss, &indentLevel);}
     void indent() { ++indentLevel; }
     void dedent() { --indentLevel; }
     void printIndent() { oss << std::string(2 * indentLevel, ' '); }

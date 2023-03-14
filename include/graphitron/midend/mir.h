@@ -551,6 +551,7 @@ namespace graphitron {
             typedef std::shared_ptr<GsExpr> Ptr;
             bool is_weighted = false;
             std::string scope_label_name;
+            Expr::Ptr iter;
 
             virtual void accept(MIRVisitor *visitor) {
                 visitor->visit(self<GsExpr>());
@@ -580,6 +581,7 @@ namespace graphitron {
             typedef std::shared_ptr<GsActiveExpr> Ptr;
             bool is_weighted = false;
             std::string scope_label_name;
+            Expr::Ptr iter;
 
             virtual void accept(MIRVisitor *visitor) {
                 visitor->visit(self<GsActiveExpr>());

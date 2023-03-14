@@ -137,6 +137,7 @@ namespace graphitron {
                         mir_print_stmt->format = "%f";
                         break;
                     case mir::ScalarType::Type::INT:
+                    case mir::ScalarType::Type::INTX:
                         mir_print_stmt->format = "%d";
                         break;
                     case mir::ScalarType::Type::DOUBLE: 
@@ -145,8 +146,12 @@ namespace graphitron {
                     case mir::ScalarType::Type::STRING:
                         mir_print_stmt->format = "%s";
                         break;
+                    default:  
+                        break;
+                }
             }
-            }
+        } else if (mir::isa<mir::StringLiteral>(mir_print_stmt->expr)){
+            mir_print_stmt->format = "%s";
         } else {
             mir_print_stmt->format = "";
         }
@@ -338,6 +343,9 @@ namespace graphitron {
         if(mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
             auto mir_gs_expr = std::make_shared<mir::GsExpr>();
             mir_gs_expr->target = target_expr;
+            auto iter_expr = gs_expr->iter_expr;
+            assert(iter_expr->args.size() == 1);
+            mir_gs_expr->iter = emitExpr(iter_expr->args.front());
 
             auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_gather_function));
             auto scatter_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_scatter_function));
@@ -364,6 +372,9 @@ namespace graphitron {
         if(mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
             auto mir_gs_active_expr = std::make_shared<mir::GsActiveExpr>();
             mir_gs_active_expr->target = target_expr;
+            auto iter_expr = gs_active_expr->iter_expr;
+            assert(iter_expr->args.size() == 1);
+            mir_gs_active_expr->iter = emitExpr(iter_expr->args.front());
 
             auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_active_expr->input_gather_function));
             auto active_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_active_expr->input_active_function));
@@ -430,6 +441,10 @@ namespace graphitron {
             std::cout << "Init function must target vertex set" << std::endl;
             return;
         }
+    }
+
+    void MIREmitter::visit(fir::IterExpr::Ptr iter_expr) {
+
     }
 
     void MIREmitter::visit(fir::FuncExpr::Ptr func_expr) {

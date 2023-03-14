@@ -63,6 +63,7 @@ namespace graphitron {
         struct EdgeSetLoadExpr;
         struct FuncExpr;
         struct MethodCallExpr;
+        struct IterExpr;
         struct GsExpr;
         struct GsActiveExpr;
         struct ApplyExpr;
@@ -251,6 +252,7 @@ namespace graphitron {
 
             virtual void visit(std::shared_ptr<FuncExpr>);
             virtual void visit(std::shared_ptr<MethodCallExpr>);
+            virtual void visit(std::shared_ptr<IterExpr>);
             virtual void visit(std::shared_ptr<GsExpr>);
             virtual void visit(std::shared_ptr<GsActiveExpr>);
             virtual void visit(std::shared_ptr<ApplyExpr>);

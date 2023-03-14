@@ -36,6 +36,8 @@ namespace graphitron {
                 return "const";
             case Token::Type::FUNC:
                 return "func";
+            case Token::Type::ITER:  
+                return "iter";
             case Token::Type::GS:
                 return "gs";
             case Token::Type::GSACTIVE:
