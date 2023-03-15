@@ -122,6 +122,31 @@ namespace graphitron {
         for (auto it : mir_context_->field_vector_init_stmts) {
             it->accept(stmt_visitor);
         }
+        oss << "[INFO] Init Function: ";
+        if (mir_context_->InitFunc != nullptr) {
+            oss << mir_context_->InitFunc->name;
+        }
+        oss << endl;
+        oss << "[INFO] Scatter Function: ";
+        if (mir_context_->ScatterFunc != nullptr) {
+            oss << mir_context_->ScatterFunc->name;
+        }
+        oss << endl;
+        oss << "[INFO] Active Function: ";
+        if (mir_context_->ActiveFunc != nullptr) {
+            oss << mir_context_->ActiveFunc->name;
+        }
+        oss << endl;
+        oss << "[INFO] Gather Function: ";
+        if (mir_context_->GatherFunc != nullptr) {
+            oss << mir_context_->GatherFunc->name;
+        }
+        oss << endl;
+        oss << "[INFO] Apply Function: ";
+        if (mir_context_->ApplyFunc != nullptr) {
+            oss << mir_context_->ApplyFunc->name;
+        }
+        oss << endl;
         return 0;
     }
     void CodeGenEcp::genIncludeStmts() {

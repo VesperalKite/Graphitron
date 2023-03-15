@@ -348,14 +348,19 @@ namespace graphitron {
             mir_gs_expr->iter = emitExpr(iter_expr->args.front());
 
             auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_gather_function));
+            auto gather = ctx->getFunction(gather_funcExpr->function_name->name);
             auto scatter_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_scatter_function));
+            auto scatter = ctx->getFunction(scatter_funcExpr->function_name->name);
             if (gs_expr->input_active_function != nullptr) {
                 auto active_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_active_function));
+                auto active = ctx->getFunction(active_funcExpr->function_name->name);
                 mir_gs_expr->input_active_function = active_funcExpr;
                 mir_gs_expr->have_frontier = true;
+                ctx->set_gs_func(scatter, active, gather);
             }
             mir_gs_expr->input_gather_function = gather_funcExpr;
             mir_gs_expr->input_scatter_function = scatter_funcExpr;
+            ctx->set_gs_func(scatter, gather);
 
             retExpr = mir_gs_expr;
         } else {
@@ -381,7 +386,9 @@ namespace graphitron {
             mir_apply_expr->target = target_expr;
 
             auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(apply_expr->input_function));
+            auto apply = ctx->getFunction(funcExpr->function_name->name);
             mir_apply_expr->input_function = funcExpr;
+            ctx->set_apply_func(apply);
 
             retExpr = mir_apply_expr;
         } else {
@@ -407,7 +414,9 @@ namespace graphitron {
             mir_init_expr->target = target_expr;
 
             auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(init_expr->input_function));
+            auto init = ctx->getFunction(funcExpr->function_name->name);
             mir_init_expr->input_function = funcExpr;
+            ctx->set_init_func(init);
 
             retExpr = mir_init_expr;
         } else {

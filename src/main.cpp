@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     if (out != 0){
         std::cout << "error in parse" << std::endl;
     }
-    std::ofstream fir(output_path+"fir.txt");
+    std::ofstream fir(output_path+"/fir.txt");
     fir << *(context->getProgram());
     fir << std::endl;
 

@@ -90,6 +90,7 @@ namespace graphitron {
         oss_ << ", &";
         expr->target->accept(this);
         oss_<<")";
+        oss_ << expr->scope_label_name;
     }
 
     void ExprGenerator::visit(mir::InitExpr::Ptr expr) {

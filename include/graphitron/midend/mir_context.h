@@ -280,6 +280,27 @@ namespace graphitron {
          return nullptr;
       }
 
+      void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr gather){
+         scatter->isFunctor = false;
+         gather->isFunctor = false;
+         ScatterFunc = scatter;
+         GatherFunc = gather;
+      }
+      void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr active, mir::FuncDecl::Ptr gather){
+         scatter->isFunctor = false;
+         active->isFunctor = false;
+         gather->isFunctor = false;
+         ScatterFunc = scatter;
+         ActiveFunc = active;
+         GatherFunc = gather;  
+      }
+      void set_apply_func(mir::FuncDecl::Ptr apply){
+         apply->isFunctor = false;
+         ApplyFunc = apply;
+      }
+      void set_init_func(mir::FuncDecl::Ptr init){
+         InitFunc = init;
+      }
         //private:
 
       // maps element type to an input file that reads the set from
@@ -332,6 +353,8 @@ namespace graphitron {
       std::set<std::string> defined_types;
 
       std::vector<mir::Type::Ptr> types_requiring_typedef;
+
+      mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc, InitFunc;
 
       ScheduleSpace* schedule_; 
       
