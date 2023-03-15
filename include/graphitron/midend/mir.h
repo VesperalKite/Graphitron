@@ -52,7 +52,6 @@
 //EdgeSetLoadExpr
 
 //GsExpr
-//GsActiveExpr
 //ApplyExpr
 //InitExpr
 
@@ -429,7 +428,7 @@ namespace graphitron {
             std::string name;
             std::vector<mir::Var> args;
             mir::Var result;
-            bool isFunctor;
+            bool isFunctor = true;
 
             StmtBlock::Ptr body;
 
@@ -548,61 +547,16 @@ namespace graphitron {
             Expr::Ptr target;
             FuncExpr::Ptr input_gather_function = nullptr;
             FuncExpr::Ptr input_scatter_function = nullptr;
+            FuncExpr::Ptr input_active_function = nullptr;
             typedef std::shared_ptr<GsExpr> Ptr;
             bool is_weighted = false;
+            bool have_frontier = false;
             std::string scope_label_name;
             Expr::Ptr iter;
 
             virtual void accept(MIRVisitor *visitor) {
                 visitor->visit(self<GsExpr>());
             }
-
-            GsExpr() {}
-
-            GsExpr(std::string target_name,
-                    mir::Type::Ptr target_type,
-                    mir::FuncExpr::Ptr input_gather_func,
-                    mir::FuncExpr::Ptr input_scatter_func,
-                    bool is_weight) {
-                mir::VarExpr::Ptr target_expr = std::make_shared<mir::VarExpr>();
-                mir::Var target_var = mir::Var(target_name, target_type);
-                target_expr->var = target_var;
-                target = target_expr;
-                input_gather_function = input_gather_func;
-                input_scatter_function = input_scatter_func;
-                is_weighted = is_weight;}
-        };
-
-        struct GsActiveExpr : public Expr {
-            Expr::Ptr target;
-            FuncExpr::Ptr input_gather_function = nullptr;
-            FuncExpr::Ptr input_active_function = nullptr;
-            FuncExpr::Ptr input_scatter_function = nullptr;
-            typedef std::shared_ptr<GsActiveExpr> Ptr;
-            bool is_weighted = false;
-            std::string scope_label_name;
-            Expr::Ptr iter;
-
-            virtual void accept(MIRVisitor *visitor) {
-                visitor->visit(self<GsActiveExpr>());
-            }
-
-            GsActiveExpr() {}
-
-            GsActiveExpr(std::string target_name,
-                            mir::Type::Ptr target_type,
-                            mir::FuncExpr::Ptr input_gather_func,
-                            mir::FuncExpr::Ptr input_active_func,
-                            mir::FuncExpr::Ptr input_scatter_func,
-                            bool is_weight) {
-                        mir::VarExpr::Ptr target_expr = std::make_shared<mir::VarExpr>();
-                        mir::Var target_var = mir::Var(target_name, target_type);
-                        target_expr->var = target_var;
-                        target = target_expr;
-                        input_gather_function = input_gather_func;
-                        input_active_function = input_active_func;
-                        input_scatter_function = input_scatter_func;
-                        is_weighted = is_weight;}
         };
 
         struct ApplyExpr : public Expr {

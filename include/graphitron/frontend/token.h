@@ -26,7 +26,6 @@ namespace graphitron {
             FUNC,//func
             ITER,//iter
             GS,//gs
-            GSACTIVE,//gsActive
             APPLY,//apply
             INIT,//init
 

@@ -9,19 +9,13 @@ namespace graphitron {
 
     void ScatterGatherFunctionDeclGenerator::visit(mir::GsExpr::Ptr gs){
         gs->scope_label_name = label_scope_.getCurrentScope();
+        if(gs->have_frontier) genActiveFuncDecl(gs);
         genScatterFuncDecl(gs);
         genGatherFuncDecl(gs);
     }
 
-    void ScatterGatherFunctionDeclGenerator::visit(mir::GsActiveExpr::Ptr gs_active){
-        gs_active->scope_label_name = label_scope_.getCurrentScope();
-        genActiveFuncDecl(gs_active);
-        genScatterFuncDecl(gs_active);
-        genGatherFuncDecl(gs_active);
-    }
-
-    void ScatterGatherFunctionDeclGenerator::genActiveFuncDecl(mir::GsActiveExpr::Ptr gs_active) {
-        mir::FuncDecl::Ptr active_func = mir_context_->getFunction(gs_active->input_active_function->function_name->name);
+    void ScatterGatherFunctionDeclGenerator::genActiveFuncDecl(mir::GsExpr::Ptr gs) {
+        mir::FuncDecl::Ptr active_func = mir_context_->getFunction(gs->input_active_function->function_name->name);
         auto stmts = active_func->body->stmts;
         auto reslut = active_func->result;
         assert(active_func->args.size() == 1);
@@ -45,11 +39,7 @@ namespace graphitron {
     void ScatterGatherFunctionDeclGenerator::genScatterFuncDecl(mir::Expr::Ptr gs_expr) {
         map<string, GatherScatterSchedule>::iterator gs_schedule;
         mir::FuncDecl::Ptr scatter_func;
-        if (mir::isa<mir::GsActiveExpr>(gs_expr)) {
-            mir::GsActiveExpr::Ptr gs_active = mir::to<mir::GsActiveExpr>(gs_expr);
-            scatter_func = mir_context_->getFunction(gs_active->input_scatter_function->function_name->name);
-            gs_schedule = mir_context_->schedule_->gs_schedules->find(gs_active->scope_label_name);
-        } else if (mir::isa<mir::GsExpr>(gs_expr)) {
+        if (mir::isa<mir::GsExpr>(gs_expr)) {
             mir::GsExpr::Ptr gs = mir::to<mir::GsExpr>(gs_expr);
             scatter_func = mir_context_->getFunction(gs->input_scatter_function->function_name->name);
             gs_schedule = mir_context_->schedule_->gs_schedules->find(gs->scope_label_name);
@@ -119,10 +109,7 @@ namespace graphitron {
 
     void ScatterGatherFunctionDeclGenerator::genGatherFuncDecl(mir::Expr::Ptr gs_expr) {
         mir::FuncDecl::Ptr gather_func;
-        if (mir::isa<mir::GsActiveExpr>(gs_expr)) {
-            mir::GsActiveExpr::Ptr gs_active = mir::to<mir::GsActiveExpr>(gs_expr);
-            gather_func = mir_context_->getFunction(gs_active->input_gather_function->function_name->name);
-        } else if (mir::isa<mir::GsExpr>(gs_expr)) {
+        if (mir::isa<mir::GsExpr>(gs_expr)) {
             mir::GsExpr::Ptr gs = mir::to<mir::GsExpr>(gs_expr);
             gather_func = mir_context_->getFunction(gs->input_gather_function->function_name->name);
         }

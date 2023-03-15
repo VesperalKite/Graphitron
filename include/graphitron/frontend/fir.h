@@ -728,23 +728,12 @@ namespace graphitron{
             Expr::Ptr target;
             IterExpr::Ptr iter_expr;
             FuncExpr::Ptr input_gather_function;
+            FuncExpr::Ptr input_active_function;
             FuncExpr::Ptr input_scatter_function;
             typedef std::shared_ptr<GsExpr> Ptr;
 
             virtual void accept(FIRVisitor *visitor) {
                 visitor->visit(self<GsExpr>());
-            }
-        };
-        struct GsActiveExpr : public Expr {
-            Expr::Ptr target;
-            IterExpr::Ptr iter_expr;
-            FuncExpr::Ptr input_gather_function;
-            FuncExpr::Ptr input_active_function;
-            FuncExpr::Ptr input_scatter_function;
-            typedef std::shared_ptr<GsActiveExpr> Ptr;
-
-            virtual void accept(FIRVisitor *visitor) {
-                visitor->visit(self<GsActiveExpr>());
             }
         };
         struct ApplyExpr : public Expr {

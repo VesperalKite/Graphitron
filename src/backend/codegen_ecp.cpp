@@ -100,7 +100,7 @@ namespace graphitron {
         }
         oss << "[INFO] functions_list_:"<<endl;
         for (auto it : mir_context_->functions_list_) {
-            oss << it->name << " ";
+            oss << it->name << " - "<< ((it->isFunctor)?"functor":"not functor") << endl;
         }
         oss << endl;
         oss << "[INFO] symbol_table_:"<<endl;

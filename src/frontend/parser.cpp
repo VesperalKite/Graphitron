@@ -559,8 +559,7 @@ namespace graphitron {
         return expr;
     }
 
-// field_read_expr: set_read_expr '.' {ident '(' [ expr_params ] ')' | gs '(' ident, ident ')' | gsActive '(' ident, ident, ident ')'
-// | apply '(' ident ')'}
+// field_read_expr: set_read_expr '.' {ident '(' [ expr_params ] ')' | iter '('ident')' | gs '(' ident, ident, [ident]')' | apply '(' ident ')'}
     fir::Expr::Ptr Parser::parseFieldReadExpr() {
         // We don't need to supprot set read expressions, so we just work with factors directly
         //fir::Expr::Ptr expr = parseSetReadExpr();
@@ -579,24 +578,25 @@ namespace graphitron {
                 consume(Token::Type::LP);
                 auto gs_expr = std::make_shared<fir::GsExpr>();
                 gs_expr->target = expr;
-                gs_expr->input_scatter_function = parseFunctorExpr();
-                consume(Token::Type::COMMA);
-                gs_expr->input_gather_function = parseFunctorExpr();
+                std::vector<fir::FuncExpr::Ptr> input_funcs;
+                do {
+                    const fir::FuncExpr::Ptr input_function = parseFunctorExpr();
+                    input_funcs.push_back(input_function);
+                } while(tryConsume(Token::Type::COMMA));
                 consume(Token::Type::RP);
+                if (input_funcs.size() == 2) {
+                    gs_expr->input_scatter_function = input_funcs[0];
+                    gs_expr->input_gather_function = input_funcs[1];
+                    gs_expr->input_active_function = nullptr;
+                } else if (input_funcs.size() == 3) {
+                    gs_expr->input_scatter_function = input_funcs[0];
+                    gs_expr->input_active_function = input_funcs[1];
+                    gs_expr->input_gather_function = input_funcs[2];
+                } else {
+                    reportError(peek(), "gs function format error!");
+                }
                 gs_expr->iter_expr = iter_expr;
                 expr = gs_expr;
-            } else if (tryConsume(Token::Type::GSACTIVE)) {
-                consume(Token::Type::LP);
-                auto gsactive_expr = std::make_shared<fir::GsActiveExpr>();
-                gsactive_expr->target = expr;
-                gsactive_expr->input_scatter_function = parseFunctorExpr();
-                consume(Token::Type::COMMA);
-                gsactive_expr->input_active_function = parseFunctorExpr();
-                consume(Token::Type::COMMA);
-                gsactive_expr->input_gather_function = parseFunctorExpr();
-                consume(Token::Type::RP);
-                gsactive_expr->iter_expr = iter_expr;
-                expr = gsactive_expr;
             } else if (tryConsume(Token::Type::APPLY)) {
                 consume(Token::Type::LP);
                 auto apply_expr = std::make_shared<fir::ApplyExpr>();

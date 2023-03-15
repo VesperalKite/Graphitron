@@ -18,7 +18,6 @@
 namespace graphitron {
     struct ScatterGatherFunctionDeclGenerator : mir::MIRVisitor {
         virtual void visit(mir::GsExpr::Ptr gs);
-        virtual void visit(mir::GsActiveExpr::Ptr gs_active);
 
         ScatterGatherFunctionDeclGenerator(MIRContext* mir_context, std::ostream& oss)
             : mir_context_(mir_context), oss_(oss){
@@ -50,7 +49,7 @@ namespace graphitron {
         void printBeginIndent() { oss_ << std::string(2 * indentLevel, ' ') << "{" << std::endl; }
         void printEndIndent() { oss_ << std::string(2 * indentLevel, ' ') << "}"; }
 
-        void genActiveFuncDecl(mir::GsActiveExpr::Ptr gs_active);
+        void genActiveFuncDecl(mir::GsExpr::Ptr gs_active);
         void genScatterFuncDecl(mir::Expr::Ptr gs_expr);
         void genGatherFuncDecl(mir::Expr::Ptr gs_expr);
     };

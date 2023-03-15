@@ -257,13 +257,10 @@ namespace graphitron {
         void FIRVisitor::visit(std::shared_ptr<GsExpr> expr) {
             expr->input_gather_function->accept(this);
             expr->input_scatter_function->accept(this);
-            expr->target->accept(this);
-        }
-
-        void FIRVisitor::visit(std::shared_ptr<GsActiveExpr> expr) {
-            expr->input_gather_function->accept(this);
-            expr->input_active_function->accept(this);
-            expr->input_scatter_function->accept(this);
+            if (expr->input_active_function != nullptr) {
+                expr->input_active_function->accept(this);
+            }
+            expr->iter_expr->accept(this);
             expr->target->accept(this);
         }
 

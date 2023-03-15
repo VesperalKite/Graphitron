@@ -106,7 +106,6 @@ namespace graphitron {
             virtual void visit(FuncExpr::Ptr);
             virtual void visit(MethodCallExpr::Ptr);
             virtual void visit(GsExpr::Ptr);
-            virtual void visit(GsActiveExpr::Ptr);
             virtual void visit(ApplyExpr::Ptr);
             virtual void visit(InitExpr::Ptr);
             //virtual void visit(WhereExpr::Ptr);

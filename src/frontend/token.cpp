@@ -40,8 +40,6 @@ namespace graphitron {
                 return "iter";
             case Token::Type::GS:
                 return "gs";
-            case Token::Type::GSACTIVE:
-                return "gsActive";
             case Token::Type::APPLY:
                 return "apply";
             case Token::Type::INIT: 

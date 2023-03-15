@@ -103,10 +103,6 @@ namespace graphitron {
         expr->target->accept(this);
     }
 
-    void MIRVisitor::visit(GsActiveExpr::Ptr expr){
-        expr->target->accept(this);
-    }
-
     void MIRVisitor::visit(ApplyExpr::Ptr expr){
         expr->target->accept(this);
     }

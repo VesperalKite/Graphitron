@@ -349,44 +349,17 @@ namespace graphitron {
 
             auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_gather_function));
             auto scatter_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_scatter_function));
-
+            if (gs_expr->input_active_function != nullptr) {
+                auto active_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_active_function));
+                mir_gs_expr->input_active_function = active_funcExpr;
+                mir_gs_expr->have_frontier = true;
+            }
             mir_gs_expr->input_gather_function = gather_funcExpr;
             mir_gs_expr->input_scatter_function = scatter_funcExpr;
 
             retExpr = mir_gs_expr;
         } else {
             std::cout << "Gather-Scatter function must target edge set" << std::endl;
-            return;
-        }
-    }
-
-    void MIREmitter::visit(fir::GsActiveExpr::Ptr gs_active_expr) {
-        auto target_expr = emitExpr(gs_active_expr->target);
-
-        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
-        if (!mir_var) {
-            std::cout << "error in getting name of the vector in GsActiveExpr" << std::endl;
-            return;
-        }
-
-        if(mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
-            auto mir_gs_active_expr = std::make_shared<mir::GsActiveExpr>();
-            mir_gs_active_expr->target = target_expr;
-            auto iter_expr = gs_active_expr->iter_expr;
-            assert(iter_expr->args.size() == 1);
-            mir_gs_active_expr->iter = emitExpr(iter_expr->args.front());
-
-            auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_active_expr->input_gather_function));
-            auto active_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_active_expr->input_active_function));
-            auto scatter_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_active_expr->input_scatter_function));
-
-            mir_gs_active_expr->input_gather_function = gather_funcExpr;
-            mir_gs_active_expr->input_active_function = active_funcExpr;
-            mir_gs_active_expr->input_scatter_function = scatter_funcExpr;
-
-            retExpr = mir_gs_active_expr;
-        } else {
-            std::cout << "Gather-Scatter Active function must target edge set" << std::endl;
             return;
         }
     }

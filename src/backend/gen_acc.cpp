@@ -173,31 +173,6 @@ namespace graphitron {
             oss << std::endl;
             dedent();
             dedent();
-        } else if (mir::isa<mir::GsActiveExpr>(expr_stmt->expr)) {
-            auto gs_active = mir::to<mir::GsActiveExpr>(expr_stmt->expr);
-            indent();
-            printIndent();
-            oss << "* GsActive target \"" << std::dynamic_pointer_cast<mir::VarExpr>(gs_active->target)->var.getName() << "\"";
-            if (expr_stmt->stmt_label != "") {
-                oss << ", and it's label is #" << expr_stmt->stmt_label << "#." << std::endl;  
-            } else {
-                oss << std::endl;
-            }
-            indent();
-            printIndent();
-            oss << "* Gather Phase function: ";
-            mir_context_->getFunction(gs_active->input_gather_function->function_name->name)->accept(this);
-            oss << std::endl;
-            printIndent();
-            oss << "* Active Phase function: ";
-            mir_context_->getFunction(gs_active->input_active_function->function_name->name)->accept(this);
-            oss << std::endl;
-            printIndent();
-            oss << "* Scatter Phase function: ";
-            mir_context_->getFunction(gs_active->input_scatter_function->function_name->name)->accept(this);
-            oss << std::endl;
-            dedent();
-            dedent();
         } else if (mir::isa<mir::ApplyExpr>(expr_stmt->expr)) {
             auto apply = mir::to<mir::ApplyExpr>(expr_stmt->expr);
             indent();

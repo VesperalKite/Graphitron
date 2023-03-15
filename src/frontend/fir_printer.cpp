@@ -547,16 +547,6 @@ namespace graphitron {
             expr->input_scatter_function->accept(this);
             oss << ")";
         }
-        void FIRPrinter::visit(GsActiveExpr::Ptr expr){
-            expr->target->accept(this);
-            oss << ".GSACTIVE(";
-            expr->input_gather_function->accept(this);
-            oss << ",";
-            expr->input_active_function->accept(this);
-            oss << ",";
-            expr->input_scatter_function->accept(this);
-            oss << ")";
-        }
         void FIRPrinter::visit(ApplyExpr::Ptr expr) {
             expr->target->accept(this);
             oss << ".APPLY(";

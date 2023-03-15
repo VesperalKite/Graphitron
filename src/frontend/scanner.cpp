@@ -20,7 +20,6 @@ namespace graphitron {
         if (token == "func") return Token::Type::FUNC;
         if (token == "iter") return Token::Type::ITER;
         if (token == "gs") return Token::Type::GS;
-        if (token == "gsActive") return Token::Type::GSACTIVE;
         if (token == "apply") return Token::Type::APPLY;
         if (token == "init") return Token::Type::INIT;
         if (token == "if") return Token::Type::IF;

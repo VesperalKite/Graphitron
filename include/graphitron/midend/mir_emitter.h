@@ -76,8 +76,6 @@ namespace graphitron {
 
         virtual void visit(fir::GsExpr::Ptr);
 
-        virtual void visit(fir::GsActiveExpr::Ptr);
-
         virtual void visit(fir::ApplyExpr::Ptr);
 
         virtual void visit(fir::InitExpr::Ptr);

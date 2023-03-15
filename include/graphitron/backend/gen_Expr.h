@@ -26,7 +26,6 @@ namespace graphitron {
         virtual void visit(mir::EdgeSetLoadExpr::Ptr expr);
         virtual void visit(mir::ApplyExpr::Ptr expr);
         virtual void visit(mir::GsExpr::Ptr expr);
-        virtual void visit(mir::GsActiveExpr::Ptr expr);
         virtual void visit(mir::InitExpr::Ptr expr);
 
         virtual void visit(mir::EqExpr::Ptr expr);

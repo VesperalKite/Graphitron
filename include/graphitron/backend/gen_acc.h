@@ -47,7 +47,6 @@ namespace graphitron {
 
         // //functional operators
         // virtual void visit(mir::GsExpr::Ptr);
-        // virtual void visit(mir::GsActiveExpr::Ptr);
         // virtual void visit(mir::ApplyExpr::Ptr);
         // virtual void visit(mir::InitExpr::Ptr);
         // //virtual void visit(mir::EdgeSetWhereExpr::Ptr);

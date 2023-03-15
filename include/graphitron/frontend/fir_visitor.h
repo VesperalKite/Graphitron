@@ -254,7 +254,6 @@ namespace graphitron {
             virtual void visit(std::shared_ptr<MethodCallExpr>);
             virtual void visit(std::shared_ptr<IterExpr>);
             virtual void visit(std::shared_ptr<GsExpr>);
-            virtual void visit(std::shared_ptr<GsActiveExpr>);
             virtual void visit(std::shared_ptr<ApplyExpr>);
             virtual void visit(std::shared_ptr<InitExpr>);
             //virtual void visit(std::shared_ptr<WhereExpr>);

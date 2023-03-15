@@ -81,19 +81,15 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::ApplyExpr::Ptr expr) {
-        oss_ << "//have apply func()";
-    }
-
-    void ExprGenerator::visit(mir::GsActiveExpr::Ptr expr) {
-        oss_ << "acceleratorSuperStep(";
-        expr->iter->accept(this);
-        oss_ <<", &";
-        expr->target->accept(this);
-        oss_<<")";
+        oss_ << "//have apply stage";
     }
 
     void ExprGenerator::visit(mir::GsExpr::Ptr expr) {
-
+        oss_ << "acceleratorSuperStep(";
+        expr->iter->accept(this);
+        oss_ << ", &";
+        expr->target->accept(this);
+        oss_<<")";
     }
 
     void ExprGenerator::visit(mir::InitExpr::Ptr expr) {
