@@ -16,11 +16,22 @@ namespace graphitron {
 
         genIncludeStmts();
         genEdgesetDecl();
-        genMainBody();
 
+        for (auto constant : mir_context_->getLoweredConstants()) {
+            if (std::dynamic_pointer_cast<mir::VectorType>(constant->type) != nullptr) {
+                genPropertyArrayDecl(constant);
+            } else {
+                genScalarDecl(constant);
+            }
+        }
+        std::vector<mir::FuncDecl::Ptr> functions = mir_context_->getFunctionList();
+        for (auto func : (functions)) {
+            func->accept(this);
+        }
         oss.close();
         return 0;
     }
+
     int CodeGenEcp::genMIRcontext() {
         oss.open(output_path_+"/mir_context");
         reset();
@@ -86,12 +97,12 @@ namespace graphitron {
         oss << endl;
         oss << "[INFO] constants_:"<<endl;
         for (auto it : mir_context_->constants_) {
-            oss << it->name << "=" << it->initVal << " ";
+            oss << it->name << " ";
         }
         oss << endl;
         oss << "[INFO] lowered_constants_:"<<endl;
         for (auto it : mir_context_->lowered_constants_) {
-            oss << it->name << "=" << it->initVal << " ";
+            oss << it->name  << " - " << it->modifier << endl;
         }
         oss << endl;
         oss << "[INFO] functions_map_:"<<endl;
@@ -123,8 +134,8 @@ namespace graphitron {
             it->accept(stmt_visitor);
         }
         oss << "[INFO] Init Function: ";
-        if (mir_context_->InitFunc != nullptr) {
-            oss << mir_context_->InitFunc->name;
+        for (auto it : mir_context_->InitFuncs) {
+            oss << it->name << " ";
         }
         oss << endl;
         oss << "[INFO] Scatter Function: ";
@@ -149,6 +160,7 @@ namespace graphitron {
         oss << endl;
         return 0;
     }
+
     void CodeGenEcp::genIncludeStmts() {
         oss << "#include <stdio.h>" << endl;
         oss << "#include <string.h>" << endl;
@@ -157,6 +169,7 @@ namespace graphitron {
         oss << "#include \"intrinsics.h\"" << endl;
         oss << "using namespace std;" << endl;
     }
+
     void CodeGenEcp::genEdgesetDecl() {
         for (auto edgeset : mir_context_->getEdgeSets()) {
             auto edge_set_type = mir::to<mir::EdgeSetType>(edgeset->type);
@@ -164,6 +177,7 @@ namespace graphitron {
             oss << edgeset->name << ";" << std::endl;
         }
     }
+
     void CodeGenEcp::genMainBody() {
         auto main_func = mir_context_->getMainFuncDecl();
         oss << "int main(int argc, char **argv) {" << endl;
@@ -173,14 +187,155 @@ namespace graphitron {
         for (auto stmt : mir_context_->edgeset_alloc_stmts) {
             stmt->accept(stmt_visitor);
         }
+        for (auto constant : mir_context_->getLoweredConstants()) {
+            if (std::dynamic_pointer_cast<mir::VectorType>(constant->type) != nullptr) {
+                mir::VectorType::Ptr type = std::dynamic_pointer_cast<mir::VectorType>(constant->type);
+                if (type->element_type != nullptr) {
+                    genPropertyArrayAlloc(constant);
+                } else {
+                    genScalarVectorAlloc(constant, type);
+                }
+            } else {
+                if (constant->initVal != nullptr) {
+                    genScalarAlloc(constant);
+                }
+            }
+        }
         auto body = main_func->body;
         body->accept(stmt_visitor);
         oss << "  return 0;" << endl;
         oss << "}" << endl;
     }
+
     void CodeGenEcp::genDataPre() {
         for (auto edgeset : mir_context_->getEdgeSets()) {
             oss << "acceleratorDataPreprocess(&)";
         } 
     }
+
+    void CodeGenEcp::genPropertyArrayDecl(mir::VarDecl::Ptr var_decl) {
+        mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);
+        assert(vector_type != nullptr);
+        auto vector_element_type = vector_type->vector_element_type;
+        assert(vector_element_type != nullptr);
+
+        if (mir::isa<mir::VectorType>(vector_element_type)) {
+            std::cout << "unsupported type for property: " << var_decl->name << std::endl;
+            exit(0);
+        }
+
+        vector_element_type->accept(type_visitor);
+        oss <<"* "<<var_decl->name<<";"<<endl;
+    }
+
+    void CodeGenEcp::genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl) {
+        string mem_name;
+        if (var_decl->modifier != "") {
+            mem_name = var_decl->modifier;
+        } else {
+            mem_name = var_decl->name;
+        }
+        printIndent();
+        oss << var_decl->name;
+
+        mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);
+        const auto size_expr = mir_context_->getElementCount(vector_type->element_type);
+        auto vector_element_type = vector_type->vector_element_type;
+        assert(size_expr != nullptr);
+
+        oss << " = (";
+        vector_element_type->accept(type_visitor);
+        oss << "*) get_host_mem_pointer(MEM_ID_";
+        oss << expr_visitor->toUpper(mem_name) << ");" << endl;
+    }
+
+    void CodeGenEcp::genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr vector_type) {
+        printIndent();
+        oss << var_decl->name << " = new ";
+        if (mir::isa<mir::ConstantVectorExpr>(var_decl->initVal)) {
+            auto const_expr = mir::to<mir::ConstantVectorExpr>(var_decl->initVal);
+            vector_type->vector_element_type->accept(type_visitor);
+            oss << "[";
+            oss << const_expr->numElements;
+            oss << "]";
+            const_expr->accept(expr_visitor);
+            oss << ";" << endl;
+        } else {
+            vector_type->vector_element_type->accept(type_visitor);
+            oss << "();" << endl;
+        }
+    }
+
+    void CodeGenEcp::genScalarDecl(mir::VarDecl::Ptr var_decl) {
+        var_decl->type->accept(type_visitor);
+        oss << var_decl->name << ";"<<endl;
+    }
+
+    void CodeGenEcp::genScalarAlloc(mir::VarDecl::Ptr var_decl) {
+        printIndent();
+        oss << var_decl->name << " ";
+        if (var_decl->initVal != nullptr) {
+            oss << "= ";
+            var_decl->initVal->accept(expr_visitor);
+        }
+        oss << ";" << endl;
+    }
+
+    void CodeGenEcp::visit(mir::FuncDecl::Ptr func) {
+        if(func->isFunctor) {
+            if(func->name == "main") {
+                genMainBody();
+            } else {
+                oss << "struct " <<func->name << endl;
+                printBeginIndent();
+                indent();
+                printIndent();
+                if (func->result.isInitialized()) {
+                    func->result.getType()->accept(type_visitor);
+                    //add a return var
+                    const auto var_decl = std::make_shared<mir::VarDecl>();
+                    var_decl->name = func->result.getName();
+                    var_decl->type = func->result.getType();
+                    if (func->body->stmts == nullptr) {
+                        func->body->stmts = new std::vector<mir::Stmt::Ptr>();
+                    }
+                    auto it = func->body->stmts->begin();
+                    func->body->stmts->insert(it, var_decl);
+                } else {
+                    oss << "void ";
+                }
+
+                oss << "operator() (";
+
+                bool printDelimiter = false;
+
+                for (auto arg : func->args) {
+                    if (printDelimiter) {
+                        oss << ", ";
+                    }
+                    //arg.getType()->accept(type_visitor);
+                    oss << "int ";
+                    oss << arg.getName();
+                    printDelimiter = true;
+                }
+                oss << ") "<<endl;
+                printBeginIndent();
+                indent();
+                if (func->body && func->body->stmts) {
+                    func->body->accept(stmt_visitor);
+
+                    if (func->result.isInitialized()) {
+                        printIndent();
+                        oss << "return "<<func->result.getName() << ";" << endl;
+                    }
+                }
+                dedent();
+                printEndIndent();
+                oss << ";" << endl;
+                dedent();
+                printEndIndent();
+                oss << ";" << endl;
+            }
+        }
+    }   
 }

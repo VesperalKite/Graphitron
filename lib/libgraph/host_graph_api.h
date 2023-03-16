@@ -20,6 +20,7 @@ unsigned int dataPrepareGetArg(graphInfo *info);
 int dataPrepareProperty(graphInfo *info);
 double getCurrentTimestamp(void);
 void reTransferProp(graphInfo *info);
+void partitionFunction(graphInfo *info);
 
 /* host api -- dataflow */
 int acceleratorInit(const char * name);

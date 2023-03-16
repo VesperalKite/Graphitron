@@ -3,6 +3,7 @@
 //
 
 #include <graphitron/backend/gen_Expr.h>
+#include <string>
 
 namespace graphitron {
     using namespace std;
@@ -47,7 +48,10 @@ namespace graphitron {
                 }
                 oss_ << ")";
             }
-        } else if (expr->name == "builtin_getVertices" || expr->name == "builtin_partition") {
+        } else if (expr->name == "builtin_getVertices" || 
+                    expr->name == "builtin_partition" || 
+                    expr->name == "builtin_getEdges") 
+        {
             oss_ << "(";
             expr->args[0]->accept(this);
             oss_ << ")";
@@ -94,7 +98,23 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::InitExpr::Ptr expr) {
-
+        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
+        if (mir_context_->isConstVertexSet(mir_var->var.getName()) || mir_context_->isEdgeSet(mir_var->var.getName())) {
+            auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+            assert(associated_element_type);
+            auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+            assert(associated_element_type_size);
+            oss_ << "loop_for_lambda((int)0, (int)";
+            associated_element_type_size->accept(this);
+            oss_ << ", [&] (int init_iter) {"<< endl;
+            indent();
+            printIndent();
+            expr->input_function->accept(this);
+            oss_ << "(init_iter);" << endl;
+            dedent();
+            printIndent();
+            oss_ << "})";
+        }
     }
 
     void ExprGenerator::visit(mir::EqExpr::Ptr expr) {
@@ -225,4 +245,9 @@ namespace graphitron {
         oss_ << ")";
     }
 
+    std::string ExprGenerator::toUpper(std::string s) {
+        std::string r;
+        transform(s.begin(), s.end(), back_inserter(r), ::toupper);
+        return r;
+    }
 }

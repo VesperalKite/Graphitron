@@ -22,7 +22,7 @@ namespace graphitron {
         ScatterGatherFunctionDeclGenerator(MIRContext* mir_context, std::ostream& oss)
             : mir_context_(mir_context), oss_(oss){
                 indentLevel = 0;
-                expr_visitor = new ExprGenerator(mir_context, oss);
+                expr_visitor = new ExprGenerator(mir_context, oss, &indentLevel);
                 type_visitor = new TypeGenerator(mir_context, oss);
                 stmt_visitor = new StmtGenerator(mir_context, oss, &indentLevel);
             }

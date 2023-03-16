@@ -27,9 +27,9 @@ namespace graphitron {
             errStringStream << other.errStringStream.str();
         }
 
-        virtual const char* what() const throw() {
-            return (hasContext) ? errStringStream.str().c_str() : "";
-        }
+        // virtual const char* what() const throw() {
+        //     return (hasContext) ? errStringStream.str().c_str() : "";
+        // }
 
         // Resets context stream cutoff, and inserts string context description
         void addContext(std::string contextDesc) {

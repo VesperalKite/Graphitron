@@ -299,7 +299,7 @@ namespace graphitron {
          ApplyFunc = apply;
       }
       void set_init_func(mir::FuncDecl::Ptr init){
-         InitFunc = init;
+         InitFuncs.push_back(init);
       }
         //private:
 
@@ -354,8 +354,8 @@ namespace graphitron {
 
       std::vector<mir::Type::Ptr> types_requiring_typedef;
 
-      mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc, InitFunc;
-
+      mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
+      std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ScheduleSpace* schedule_; 
       
     };

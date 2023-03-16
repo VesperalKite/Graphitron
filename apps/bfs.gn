@@ -3,9 +3,15 @@ element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
 const prop : vector{Vertex}(intx) = vertices.getProperty();
+const eprop : vector{Edge}(intx) = edges.getProperty();
+const frontier : vector{Vertex}(int);
 func reset(v : Vertex)
     prop[v]=0;
     prop[1]=1;
+    frontier[v]=0;
+end
+func e_reset(e : Edge)
+    eprop[e]=0;
 end
 func ScatterFunc(srcProp : intx) -> update : intx
     update = srcProp;
@@ -28,15 +34,19 @@ func ApplyFunc(tprop : intx, srcProp : intx) -> newprop : intx
     end
 end
 func main()
-    #s2#vertices.init(reset);
+    vertices.init(reset);
+    edges.init(e_reset);
     edges.partition();
-    for tail in 0:10
+    var frontier_size : int = 1;
+    var iteration : int = 0;
+    while (frontier_size != 0)
         startTimer();
-        #s1# edges.iter(tail).gs(ScatterFunc, ActiveFunc, GatherFunc);
-        #s3# vertices.apply(ApplyFunc);
+        #s1# edges.iter(iteration).gs(ScatterFunc, ActiveFunc, GatherFunc);
+        vertices.apply(ApplyFunc);
         var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
+        iteration += 1;
     end
 end
 

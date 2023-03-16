@@ -27,7 +27,7 @@ namespace graphitron {
         int genMain();
         int genMIRcontext();
     protected: 
-
+        virtual void visit(mir::FuncDecl::Ptr);
     private:  
     std::string output_path_;
     MIRContext *mir_context_;
@@ -39,7 +39,7 @@ namespace graphitron {
     unsigned int indentLevel;
     void reset() {
         indentLevel = 0;
-        expr_visitor = new ExprGenerator(mir_context_, oss);
+        expr_visitor = new ExprGenerator(mir_context_, oss, &indentLevel);
         type_visitor = new TypeGenerator(mir_context_, oss);
         stmt_visitor = new StmtGenerator(mir_context_, oss, &indentLevel);}
     void indent() { ++indentLevel; }
@@ -52,6 +52,11 @@ namespace graphitron {
     void genEdgesetDecl();
     void genMainBody();
     void genDataPre();
+    void genPropertyArrayDecl(mir::VarDecl::Ptr var_decl);
+    void genScalarDecl(mir::VarDecl::Ptr var_decl);
+    void genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl);
+    void genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr type);
+    void genScalarAlloc(mir::VarDecl::Ptr var_decl);
     };
 }
 

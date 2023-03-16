@@ -293,9 +293,21 @@ namespace graphitron {
                 // get the expression directly from the data structures if it is looking for size
                 auto vertex_element_type = ctx->getElementTypeFromVectorOrSetName(target_expr->ident);
                 retExpr = ctx->getElementCount(vertex_element_type);
+            } else if (method_call_expr->method_name->ident == "builtin_getProperty") {
+                mir_call_expr->modifier = "pushin_prop";
+                retExpr = mir_call_expr;
             }
         } else {
             // If target is a vector or an edgeset (actual concrete object)
+            if (method_call_expr->method_name->ident == "builtin_getProperty") {
+                if (ctx->isEdgeSet(target_expr->ident)) {
+                    mir_call_expr->modifier = "edge_prop";
+                } else {
+                    std::cout << "[ERROR] getProperty targer must be a edgeset or vertexset" << std::endl;
+                    exit(0);
+                }
+            }
+
             mir_call_expr->name = method_call_expr->method_name->ident;
 
             std::vector<mir::Expr::Ptr> args;
@@ -408,7 +420,7 @@ namespace graphitron {
         }
 
         //if (ctx->isConstVertexSet(mir_var->var.getName())) {
-        if (mir::isa<mir::VertexSetType>(mir_var->var.getType())) {
+        if (mir::isa<mir::VertexSetType>(mir_var->var.getType()) || mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
             //dense vertexset apply
             auto mir_init_expr = std::make_shared<mir::InitExpr>();
             mir_init_expr->target = target_expr;
@@ -763,6 +775,8 @@ namespace graphitron {
                         const auto init_val = mir::to<mir::EdgeSetLoadExpr>(mir_var_decl->initVal);
                         mir_var_decl->initVal = init_val;
                         ctx->updateElementInputFilename(type->element, init_val->file_name);
+
+
                         // need to construct a MethodCallExpr to get the size of vertex type
                         // need to update the count with "updateElementCount() "
                         auto mirCallExpr = std::make_shared<mir::Call>();
@@ -773,6 +787,15 @@ namespace graphitron {
                         args.push_back(mirCallExprArg);
                         mirCallExpr->args = args;
                         ctx->updateElementCount(type->vertex_element_type_list->at(0), mirCallExpr);
+
+                        auto CallExpr = std::make_shared<mir::Call>();
+                        CallExpr->name = "builtin_getEdges";
+                        std::vector<mir::Expr::Ptr> edge_args;
+                        auto CallExprArg = std::make_shared<mir::VarExpr>();
+                        CallExprArg->var = ctx->getSymbol(mir_var_decl->name);
+                        edge_args.push_back(CallExprArg);
+                        CallExpr->args = edge_args;
+                        ctx->updateElementCount(type->element, CallExpr);
 
                     }
                 }

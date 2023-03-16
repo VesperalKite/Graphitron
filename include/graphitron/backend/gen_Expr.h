@@ -14,8 +14,9 @@
 
 namespace graphitron {
     struct ExprGenerator : mir::MIRVisitor {
-        ExprGenerator(MIRContext* mir_context, std::ostream& oss) 
-                : oss_(oss), mir_context_(mir_context) {}
+        ExprGenerator(MIRContext* mir_context, std::ostream& oss, unsigned int *indentLevel_) 
+                : oss_(oss), mir_context_(mir_context), indentLevel(indentLevel_) {}
+        std::string toUpper(std::string s);
     protected:  
         virtual void visit(mir::VarExpr::Ptr expr);
         virtual void visit(mir::FuncExpr::Ptr expr);
@@ -45,6 +46,13 @@ namespace graphitron {
     private:  
         std::ostream &oss_;
         MIRContext* mir_context_;
+        unsigned *indentLevel;
+
+        void indent() { ++(*indentLevel); }
+        void dedent() { --(*indentLevel); }
+        void printIndent() { oss_ << std::string(2 * (*indentLevel), ' '); }
+        void printBeginIndent() { oss_ << std::string(2 * (*indentLevel), ' ') << "{" << std::endl; }
+        void printEndIndent() { oss_ << std::string(2 * (*indentLevel), ' ') << "}"; }
     };
 }
 

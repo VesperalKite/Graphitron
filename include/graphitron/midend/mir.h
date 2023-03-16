@@ -504,6 +504,7 @@ namespace graphitron {
 
         /// Calls a function that may any number of arguments.
         struct Call : public Expr {
+            std::string modifier;
             std::string name;
             std::vector<Expr::Ptr> args;
             typedef std::shared_ptr<Call> Ptr;

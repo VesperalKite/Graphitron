@@ -19,7 +19,7 @@ namespace graphitron {
         StmtGenerator(MIRContext* mir_context, std::ostream& oss, unsigned int *indentLevel_)
             : oss_(oss), mir_context_(mir_context), indentLevel(indentLevel_) {
                 type_visitor = new TypeGenerator(mir_context, oss);
-                expr_visitor = new ExprGenerator(mir_context, oss);
+                expr_visitor = new ExprGenerator(mir_context, oss, indentLevel);
             }
     protected:  
         virtual void visit(mir::VarDecl::Ptr stmt);
