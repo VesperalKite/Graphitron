@@ -36,6 +36,9 @@ Graph* createGraph(const std::string &gName, const std::string &mode) {
     else if (gName == "rmat-12-8") {
         gptr = new Graph(dir + "rmat-12-8.txt");
     }
+    else if (gName == "rmat-12-32") {
+        gptr = new Graph(dir + "rmat-12-32.txt");
+    }
     else if (gName == "rmat-21-32") {
         gptr = new Graph(dir + "rmat-21-32.txt");
     }

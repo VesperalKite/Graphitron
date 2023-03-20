@@ -1389,6 +1389,7 @@ namespace graphitron {
 
         // // library functions for vertexset
         intrinsics_.push_back("getProperty");
+        intrinsics_.push_back("update");
         // intrinsics_.push_back("getVertexSetSize");
         // intrinsics_.push_back("addVertex");
 

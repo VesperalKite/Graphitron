@@ -294,14 +294,14 @@ namespace graphitron {
                 auto vertex_element_type = ctx->getElementTypeFromVectorOrSetName(target_expr->ident);
                 retExpr = ctx->getElementCount(vertex_element_type);
             } else if (method_call_expr->method_name->ident == "builtin_getProperty") {
-                mir_call_expr->modifier = "pushin_prop";
+                mir_call_expr->alias = "pushin_prop";
                 retExpr = mir_call_expr;
             }
         } else {
             // If target is a vector or an edgeset (actual concrete object)
             if (method_call_expr->method_name->ident == "builtin_getProperty") {
                 if (ctx->isEdgeSet(target_expr->ident)) {
-                    mir_call_expr->modifier = "edge_prop";
+                    mir_call_expr->alias = "edge_prop";
                 } else {
                     std::cout << "[ERROR] getProperty targer must be a edgeset or vertexset" << std::endl;
                     exit(0);
@@ -740,8 +740,15 @@ namespace graphitron {
         mir_var_decl->name = var_decl->name->ident;
         mir_var_decl->type = emitType(var_decl->type);
 
+        std::string alias=mir_var_decl->name;
+        if (mir::isa<mir::Call>(mir_var_decl->initVal)){
+            auto call_expr = mir::to<mir::Call>(mir_var_decl->initVal);
+            if (call_expr->alias != ""){
+                alias = call_expr->alias;
+            }
+        }
         //construct a var variable
-        const auto mir_var = mir::Var(mir_var_decl->name, mir_var_decl->type);
+        const auto mir_var = mir::Var(mir_var_decl->name, alias,  mir_var_decl->type);
         ctx->addSymbol(mir_var);
 
 

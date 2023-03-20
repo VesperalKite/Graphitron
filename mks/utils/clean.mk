@@ -1,5 +1,6 @@
 cleanexe:
-	-$(RMDIR) $(FPGA_PATH)/*
+	-$(RMDIR) $(EXECUTABLE)
 
 clean:
 	-$(RMDIR) $(FPGA_PATH)/*
+	-$(RMDIR $(EXECUTABLE))

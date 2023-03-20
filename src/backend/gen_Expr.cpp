@@ -33,10 +33,10 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::Call::Ptr expr) {
-        oss_ << expr->name;
         if(mir_context_->isFunction(expr->name)) {
             auto func_decl = mir_context_->getFunction(expr->name);
             if (func_decl->isFunctor) {
+                oss_ << expr->name << "()";
                 oss_ << "(";
                 bool printDelimiter = false;
                 for (auto arg : expr->args) {
@@ -52,10 +52,19 @@ namespace graphitron {
                     expr->name == "builtin_partition" || 
                     expr->name == "builtin_getEdges") 
         {
+            oss_ << expr->name;
             oss_ << "(";
             expr->args[0]->accept(this);
             oss_ << ")";
-        } else {
+        } else if (expr->name == "builtin_update"){
+            oss_ << "transfer_data_from_pl(acc->context, acc->device, MEM_ID_";
+            if (mir::isa<mir::VarExpr>(expr->args[0])) {
+                auto var_expr = mir::to<mir::VarExpr>(expr->args[0]);
+                oss_ << toUpper(var_expr->var.getAlias());
+                oss_ << ")";
+            }
+        }else {
+            oss_ << expr->name;
             oss_ << "(";
             bool printDelimiter = false;
 

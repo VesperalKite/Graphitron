@@ -102,7 +102,7 @@ namespace graphitron {
         oss << endl;
         oss << "[INFO] lowered_constants_:"<<endl;
         for (auto it : mir_context_->lowered_constants_) {
-            oss << it->name  << " - " << it->modifier << endl;
+            oss << it->name  << " - " << it->alias << endl;
         }
         oss << endl;
         oss << "[INFO] functions_map_:"<<endl;
@@ -118,7 +118,8 @@ namespace graphitron {
         for (auto it : mir_context_->symbol_table_) {
             for (auto inner_it : it) {
                 oss << inner_it.first << " - ";
-                oss << inner_it.second.getName() << endl;
+                oss << inner_it.second.getName() << " - ";
+                oss << inner_it.second.getAlias() << endl;
             }
         }
         oss << "[INFO] edgeset_alloc_stmts:"<<endl;
@@ -229,12 +230,8 @@ namespace graphitron {
     }
 
     void CodeGenEcp::genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl) {
-        string mem_name;
-        if (var_decl->modifier != "") {
-            mem_name = var_decl->modifier;
-        } else {
-            mem_name = var_decl->name;
-        }
+        auto var = mir_context_->getSymbol(var_decl->name);
+        string mem_name = var.getAlias();
         printIndent();
         oss << var_decl->name;
 

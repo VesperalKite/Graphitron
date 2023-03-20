@@ -11,7 +11,7 @@ namespace graphitron {
                 if (var_decl->initVal != nullptr) {
                     if (mir::isa<mir::Call>(var_decl->initVal)) {
                         auto call = mir::to<mir::Call>(var_decl->initVal);
-                        var_decl->modifier = call->modifier;
+                        var_decl->alias = call->alias;
                     }
                 }
                 mir_context_->addLoweredConstant(var_decl);

@@ -401,6 +401,7 @@ namespace graphitron {
 
 
         struct VarDecl : public Stmt {
+            std::string alias;
             std::string modifier;
             std::string name;
             Type::Ptr type;
@@ -504,7 +505,7 @@ namespace graphitron {
 
         /// Calls a function that may any number of arguments.
         struct Call : public Expr {
-            std::string modifier;
+            std::string alias;
             std::string name;
             std::vector<Expr::Ptr> args;
             typedef std::shared_ptr<Call> Ptr;

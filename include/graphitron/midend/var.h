@@ -16,6 +16,7 @@ namespace graphitron {
             std::shared_ptr<Type> type_;
             //Type::Ptr type_;
             std::string name_;
+            std::string alias_;
             bool is_initialized_;
 
         public:
@@ -23,6 +24,8 @@ namespace graphitron {
             Var() : is_initialized_(false) {};
             Var(std::string name, std::shared_ptr<Type> type)
                     : name_(name), type_(type), is_initialized_{true} {};
+            Var(std::string name, std::string alias, std::shared_ptr<Type> type)
+                    : name_(name), alias_(alias), type_(type), is_initialized_{true} {};
             //typedef std::shared_ptr<Var> Ptr;
             std::string getName(){
                 return name_;
@@ -30,6 +33,10 @@ namespace graphitron {
 
             std::shared_ptr<Type> getType(){
                 return type_;
+            }
+
+            std::string getAlias(){
+                return alias_;
             }
 
             bool isInitialized(){

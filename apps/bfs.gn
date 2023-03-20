@@ -7,11 +7,11 @@ const eprop : vector{Edge}(intx) = edges.getProperty();
 const frontier : vector{Vertex}(int);
 func reset(v : Vertex)
     prop[v]=0;
-    prop[1]=1;
+    prop[3251]=1;
     frontier[v]=0;
 end
 func e_reset(e : Edge)
-    eprop[e]=0;
+    eprop[e]=1;
 end
 func ScatterFunc(srcProp : intx) -> update : intx
     update = srcProp;
@@ -33,6 +33,16 @@ func ApplyFunc(tprop : intx, srcProp : intx) -> newprop : intx
         newprop = srcProp;
     end
 end
+func getSize() -> size : int
+    var num : int = 0;
+    for i in 0:edges.getVertices()
+        if (frontier[i]==1)
+           num += 1;
+        end
+    end
+    size = num;
+end
+
 func main()
     vertices.init(reset);
     edges.init(e_reset);
@@ -40,12 +50,18 @@ func main()
     var frontier_size : int = 1;
     var iteration : int = 0;
     while (frontier_size != 0)
+        print "[EPOCH] ";
+        println iteration;
         startTimer();
         #s1# edges.iter(iteration).gs(ScatterFunc, ActiveFunc, GatherFunc);
         vertices.apply(ApplyFunc);
         var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
+        frontier.update();
+        frontier_size = getSize();
+        print "frontier size: ";
+        println frontier_size;
         iteration += 1;
     end
 end

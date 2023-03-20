@@ -39,8 +39,6 @@
 
 #define MEM_ID_TEST   	            (26)
 
-#define MEM_ID_FRONTIER             (27)
-
 #define MEM_ID_PARTITION_BASE       (100)
 
 #define MEM_ID_PARTITION_OFFSET     (128)
@@ -56,7 +54,7 @@
 #define MEM_ID_USER_DEFINE_BASE     (16384 * 2)
 
 // User Define Part
-//#define SetUserMemId(i) (MEM_ID_USER_DEFINE_BASE+i)
-
+#define SetUserMemId(i) (MEM_ID_USER_DEFINE_BASE+i)
+#define MEM_ID_FRONTIER             SetUserMemId(1)
 
 #endif /* __HE_MEM_ID_H__ */
