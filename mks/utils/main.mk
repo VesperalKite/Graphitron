@@ -45,6 +45,6 @@ include $(UTILS_PATH)/common.mk
 include ${UTILS_PATH}/bitstream.mk
 include ${UTILS_PATH}/clean.mk 
 
-exe: $(EXECUTABLE)
+exe: check-vitis $(EXECUTABLE)
 
-all: $(BINARY_CONTAINERS) exe 
+all: check-vitis $(BINARY_CONTAINERS) exe 

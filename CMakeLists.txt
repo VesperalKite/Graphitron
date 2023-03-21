@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.3)
 project(graphitron)
 
 set(CMAKE_CXX_COMPILER "/usr/bin/c++")#remove to use default cxx compiler

@@ -8,8 +8,10 @@ HOST_ARCH := x86
 ##################################################
 
 #Check for g++
+IF_VER_GE = $(shell echo -e"$2\
+$1"|sort -ct. -k1,1n -k2,2n && echo YES)
 ifeq ($(HOST_ARCH), x86)
-ifneq ($(shell expr $(shell g++ -dumpversion) \>= 5), 1)
+ifneq "$(call IF_VER_GE, $(shell g++ -dumpversion), 5)" "YES"
 ifndef XILINX_VITIS
 $(error [ERROR]: g++ version older. Please use 5.0 or above.)
 else
@@ -47,7 +49,7 @@ HOST_SRCS += $(FPGA_PATH)/libgraph/misc/graph.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/misc/host_graph_mem.cpp
 # scheduler
 HOST_SRCS += $(FPGA_PATH)/libgraph/scheduler/host_graph_scheduler.cpp
-HOST_SRCS += $(FPGA_PATH)/libgraph/$(SCHEDULER)/scheduler.cpp
+HOST_SRCS += $(FPGA_PATH)/libgraph/scheduler/$(SCHEDULER)/scheduler.cpp
 # libgraph
 HOST_SRCS += $(FPGA_PATH)/libgraph/host_graph_dataflow.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/host_graph_partition.cpp
