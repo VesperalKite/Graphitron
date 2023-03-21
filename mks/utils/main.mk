@@ -32,8 +32,6 @@ include ${UTILS_PATH}/utils.mk
 
 include $(UTILS_PATH)/compile.mk
 
-build:compile
-
 -include $(FPGA_APP_PATH)/config.mk
 -include $(FPGA_APP_PATH)/build.mk
 
@@ -44,6 +42,8 @@ include $(UTILS_PATH)/common.mk
 
 include ${UTILS_PATH}/bitstream.mk
 include ${UTILS_PATH}/clean.mk 
+
+build:compile
 
 exe: check-vitis $(EXECUTABLE)
 
