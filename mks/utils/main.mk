@@ -13,36 +13,38 @@ FPGA_KERNEL_PATH = $(FPGA_PATH)/kernel
 
 include ${UTILS_PATH}/help.mk
 
-.PHONY: all clean build
+.PHONY: all clean build exe $(EXECUTABLE)
 
 all: precheck
+exe: precheck
 clean: precheck
 
 precheck:
 ifndef app
 	$(error app is undefined)
-else
+endif
+
 APP = $(app)
 APP_INPUT = ./apps/$(APP).gn
 FPGA_APP_PATH = $(FPGA_PATH)/$(APP)
 
 include ${UTILS_PATH}/utils.mk
 
-include $(FPGA_APP_PATH)/config.mk
-include $(FPGA_APP_PATH)/build.mk
+include $(UTILS_PATH)/compile.mk
+
+build:compile
+
+-include $(FPGA_APP_PATH)/config.mk
+-include $(FPGA_APP_PATH)/build.mk
 
 include $(UTILS_PATH)/common.mk
 
-include $(FPGA_KERNEL_PATH)/gs_kernel.mk
-include $(FPGA_KERNEL_PATH)/apply_kernel.mk
+-include $(FPGA_KERNEL_PATH)/gs_kernel.mk
+-include $(FPGA_KERNEL_PATH)/apply_kernel.mk
 
-include ${UTILS_PATH}/compile.mk
-include ${UTILS_PATH}/clean.mk
-
-compile: build $(BINARY_CONTAINERS)
+include ${UTILS_PATH}/bitstream.mk
+include ${UTILS_PATH}/clean.mk 
 
 exe: $(EXECUTABLE)
 
-all: compile exe
-
-endif
+all: $(BINARY_CONTAINERS) exe 

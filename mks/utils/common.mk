@@ -27,7 +27,7 @@ endif
 
 XOCC := v++
 
-include $(FPGA_PATH)/libgraph/xcl/xcl.mk
+-include $(FPGA_PATH)/libgraph/xcl/xcl.mk
 ##################################################
 #												 #
 #		        Host source files				 #
@@ -61,8 +61,6 @@ HOST_SRCS += $(xcl_SRCS)
 # auto gen
 AUTOGEN_CFLAG=-DSUB_PARTITION_NUM=$(SUB_PARTITION_NUM)
 AUTOGEN_CFLAG+=-DPARTITION_SIZE=$(PARTITION_SIZE)
-AUTOGEN_CFLAG+=-DDEFAULT_DATASET_PATH=\"$(DEFAULT_DATASET_PATH)\"
-AUTOGEN_CFLAG+=-DXCL_BIN=\"$(XCLBIN)/graphitron.$(TARGET).$(DEVICE).xclbin\"
 # define parameters
 CXXFLAGS := $(AUTOGEN_CFLAG)
 # opencl
@@ -70,16 +68,18 @@ include $(ABS_COMMON_REPO)/utils/opencl.mk
 CXXFLAGS += $(opencl_CXXFLAGS) -Wall
 # include
 CXXFLAGS += -I/$(XILINX_SDX)/Vivado_HLS/include/ -O3 -g -fmessage-length=0 -std=c++14 -Wno-deprecated-declarations
-CXXFLAGS += -I ./
-CXXFLAGS += -I ./libfpga
-CXXFLAGS += -I ./libgraph
-CXXFLAGS += -I ./kernel
+CXXFLAGS += -I $(FPGA_PATH)/
+CXXFLAGS += -I $(FPGA_PATH)/libfpga
+CXXFLAGS += -I $(FPGA_PATH)/libgraph
+CXXFLAGS += -I $(FPGA_PATH)/kernel
 CXXFLAGS += -I $(FPGA_APP_PATH)
-CXXFLAGS += -I ./libgraph/kernel
-CXXFLAGS += -I ./libgraph/memory
-CXXFLAGS += -I ./libgraph/misc
-CXXFLAGS += -I ./libgraph/scheduler
+CXXFLAGS += -I $(FPGA_PATH)/libgraph/kernel
+CXXFLAGS += -I $(FPGA_PATH)/libgraph/memory
+CXXFLAGS += -I $(FPGA_PATH)/libgraph/misc
+CXXFLAGS += -I $(FPGA_PATH)/libgraph/scheduler
 CXXFLAGS += $(xcl_CXXFLAGS)
+CXXFLAGS +=-DDEFAULT_DATASET_PATH=\"$(DEFAULT_DATASET_PATH)\"
+CXXFLAGS +=-DXCL_BIN=\"$(XCLBIN)/graphitron.$(TARGET).$(DEVICE).xclbin\"
 ##################################################
 #												 #
 #		         Host linker flags		         #
@@ -101,8 +101,8 @@ else
 CLFLAGS += -t $(TARGET)
 endif
 CLFLAGS += --platform $(DEVICE) --save-temps -O3
-CLFLAGS += -I ./
-CLFLAGS += -I ./libfpga
+CLFLAGS += -I $(FPGA_PATH)/
+CLFLAGS += -I $(FPGA_PATH)/libfpga
 CLFLAGS += -I $(FPGA_APP_PATH)
 CLFLAGS += --xp prop:solution.kernel_compiler_margin=10%
 ##################################################

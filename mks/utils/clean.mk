@@ -3,4 +3,4 @@ cleanexe:
 
 clean:
 	-$(RMDIR) $(FPGA_PATH)/*
-	-$(RMDIR $(EXECUTABLE))
+	-$(RMDIR) $(EXECUTABLE)
