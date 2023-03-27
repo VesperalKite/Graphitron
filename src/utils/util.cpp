@@ -135,5 +135,23 @@ namespace graphitron {
             std::cout << message << std::endl;
         }
 
+        int replaceLine(std::string &str, const std::string &from, const std::string &to) {
+            int num = 0;
+            int pos = 0;
+            while((pos = str.find(from, pos))!=std::string::npos) {
+                num++;
+                str.replace(pos, from.length(), to);
+            }
+            return num;
+        }
+        void replaceFile(std::istream &in, std::ostream &out, const std::string &from, const std::string &to) {
+            std::string str;
+            while (std::getline(in, str))
+            {
+                auto num = replaceLine(str, from, to);
+                out << str << "\n";
+            }
+        }
+
     }
 }

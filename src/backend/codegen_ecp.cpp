@@ -8,7 +8,7 @@
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
-        return genMain() | genMIRcontext();
+        return genMain() | genMIRcontext() | genReplace();
     }
     int CodeGenEcp::genMain() {
         oss.open(output_path_+"/main.cpp");
@@ -159,6 +159,16 @@ namespace graphitron {
             oss << mir_context_->ApplyFunc->name;
         }
         oss << endl;
+        oss.close();
+        return 0;
+    }
+
+    int CodeGenEcp::genReplace(){
+        std::ifstream input(output_path_+"/replace.cpp");
+        oss.open(output_path_+"/../kernel/result.cpp");
+        util::replaceFile(input, oss, "NUM", "10");
+        input.close();
+        oss.close();
         return 0;
     }
 
@@ -335,4 +345,5 @@ namespace graphitron {
             }
         }
     }   
+
 }

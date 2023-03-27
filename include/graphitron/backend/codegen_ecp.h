@@ -11,6 +11,7 @@
 #include <graphitron/backend/gen_Expr.h>
 #include <graphitron/backend/gen_Type.h>
 #include <graphitron/backend/gen_Stmt.h>
+#include <graphitron/utils/util.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -26,6 +27,7 @@ namespace graphitron {
 
         int genMain();
         int genMIRcontext();
+        int genReplace();
     protected: 
         virtual void visit(mir::FuncDecl::Ptr);
     private:  
@@ -57,6 +59,7 @@ namespace graphitron {
     void genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl);
     void genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr type);
     void genScalarAlloc(mir::VarDecl::Ptr var_decl);
+
     };
 }
 

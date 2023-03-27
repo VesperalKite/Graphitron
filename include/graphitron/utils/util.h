@@ -92,5 +92,7 @@ namespace graphitron {
                           std::function<void()> inner);
 
         void printDebugInfo(const std::string &message);
+        int replaceLine(std::string &str, const std::string &from, const std::string &to);
+        void replaceFile(std::istream &in, std::ostream &out, const std::string &from, const std::string &to);
     }}
 #endif //GRAPHITRON_UTIL_H
