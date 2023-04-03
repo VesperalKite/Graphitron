@@ -13,10 +13,11 @@ extern "C" {
         uint16        *tmpVertexProp0,
         uint16        *newVertexProp0,
         uint16        *outDegree,
-        unsigned int  vertexNum,
-        unsigned int  addrOffset,
 
-        int           *frontier,
+        int           *frontier
+
+        unsigned int  vertexNum,
+        unsigned int  addrOffset
     )
     {
 
@@ -94,7 +95,7 @@ extern "C" {
                 burst_raw tmpVertexProp;
 
                 read_from_stream(vertexPropStream, vertexProp);
-                read_from_stream(tmpVertexPropStream, tmpVertexProp);
+                read_from_stream(tmpVertexPropStream[SUB_PARTITION_NUM], tmpVertexProp);
 
                 burst_raw outDeg;
                 read_from_stream(outDegreeStream, outDeg);
