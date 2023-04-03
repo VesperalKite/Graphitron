@@ -13,11 +13,12 @@ FPGA_KERNEL_PATH = $(FPGA_PATH)/kernel
 
 include ${UTILS_PATH}/help.mk
 
-.PHONY: all clean build exe $(EXECUTABLE)
+.PHONY: all clean build exe $(EXECUTABLE) cleanbuild
 
 all: precheck
 exe: precheck
 clean: precheck
+cleanbuild: precheck
 
 precheck:
 ifndef app

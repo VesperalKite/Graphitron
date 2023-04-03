@@ -1,4 +1,4 @@
-compile: clean
+compile: cleanbuild
 	$(MK) $(FPGA_APP_PATH)
 	$(CP) $(ABS_ROOT_REPO)/lib/template/app/* $(FPGA_APP_PATH)
 	$(CP) $(ABS_ROOT_REPO)/lib/template/kernel $(FPGA_PATH)

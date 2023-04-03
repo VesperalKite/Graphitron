@@ -14,7 +14,7 @@ extern "C" {
         uint16        *newVertexProp0,
         uint16        *outDegree,
 
-        int           *frontier
+        int           *frontier,
 
         unsigned int  vertexNum,
         unsigned int  addrOffset
