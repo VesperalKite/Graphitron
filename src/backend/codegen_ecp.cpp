@@ -4,7 +4,7 @@
 
 #include <graphitron/backend/codegen_ecp.h>
 #include <graphitron/midend/mir.h>
-
+#define INSERT_SYMBOL "// Insert"
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
@@ -164,11 +164,12 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genReplace(){
-        std::ifstream input(output_path_+"/replace.cpp");
-        oss.open(output_path_+"/../kernel/result.cpp");
-        util::replaceFile(input, oss, "NUM", "10");
-        input.close();
-        oss.close();
+        // util::replaceFile(output_path_+"/replace.cpp", output_path_+"/../kernel/result.cpp", "NUM", "10");
+        // std::stringstream wbf;
+        // wbf << "    {" << endl;
+        // wbf << "        MEM_ID_SCORE," << endl;
+        // wbf << "        \"score\"," << endl;
+        // wbf << "        ATTR_PL_DDR0" << endl;
         return 0;
     }
 

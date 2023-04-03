@@ -12,14 +12,11 @@ extern "C" {
         uint16        *vertexProp,
         uint16        *tmpVertexProp0,
         uint16        *newVertexProp0,
-#if HAVE_APPLY_OUTDEG
         uint16        *outDegree,
-#endif
-        int           *outReg,
-        int           *frontier,
         unsigned int  vertexNum,
         unsigned int  addrOffset,
-        unsigned int  argReg
+
+        int           *frontier,
     )
     {
 
@@ -33,9 +30,6 @@ extern "C" {
 #pragma HLS INTERFACE s_axilite port=newVertexProp0 bundle=control
 
 
-#pragma HLS INTERFACE m_axi port=outReg offset=slave bundle=gmem5
-#pragma HLS INTERFACE s_axilite port=outReg bundle=control
-
 #pragma HLS INTERFACE m_axi port=frontier offset=slave bundle=gmem8
 #pragma HLS INTERFACE s_axilite port=frontier bundle=control
 
@@ -43,7 +37,6 @@ extern "C" {
 #pragma HLS INTERFACE m_axi port=vertexProp offset=slave bundle=gmem6 max_read_burst_length=64
 #pragma HLS INTERFACE s_axilite port=vertexProp bundle=control
 
-#if HAVE_APPLY_OUTDEG
 
 #pragma HLS INTERFACE m_axi port=outDegree offset=slave bundle=gmem7 max_read_burst_length=64
 #pragma HLS INTERFACE s_axilite port=outDegree bundle=control
@@ -52,10 +45,8 @@ extern "C" {
 #pragma HLS stream variable=outDegreeStream depth=256
         burstReadLite(addrOffset, vertexNum, outDegree, outDegreeStream);
 
-#endif
 
 #pragma HLS INTERFACE s_axilite port=vertexNum      bundle=control
-#pragma HLS INTERFACE s_axilite port=argReg         bundle=control
 #pragma HLS INTERFACE s_axilite port=addrOffset     bundle=control
 #pragma HLS INTERFACE s_axilite port=return         bundle=control
 
@@ -93,21 +84,48 @@ extern "C" {
 #pragma HLS UNROLL
             cuMerge(loopNum, tmpVertexPropArray[i], tmpVertexPropStream[i], tmpVertexPropStream[i + 1]);
         }
+        //DEBUG_PRINTF("apply function: v from %d to $%d", addrOffset, addrOffset+vertexNum-1);
+        unsigned int current_v_id = addrOffset;
+    for (int loopCount = 0; loopCount < loopNum; loopCount ++)
+    {
 
-        applyFunction(
-            loopNum,
-#if HAVE_APPLY_OUTDEG
-            outDegreeStream,
-#endif
-            vertexPropStream,
-            tmpVertexPropStream[SUB_PARTITION_NUM],
-            argReg,
-            newVertexPropStream,
-            outReg,
-            frontier,
-            vertexNum,
-            addrOffset
-        );
+        #pragma HLS PIPELINE II=1
+                burst_raw vertexProp;//burst_raw size: 512 = 32 x 16, 16 [int]
+                burst_raw tmpVertexProp;
+
+                read_from_stream(vertexPropStream, vertexProp);
+                read_from_stream(tmpVertexPropStream, tmpVertexProp);
+
+                burst_raw outDeg;
+                read_from_stream(outDegreeStream, outDeg);
+
+                burst_raw newVertexProp;
+
+        for (int i = 0; i < BURST_ALL_BITS / INT_WIDTH; i++)
+        {
+            //DEBUG_PRINTF("current vid: %d", current_v_id);
+#pragma HLS UNROLL
+            prop_t tprop     = tmpVertexProp.range((i + 1) * INT_WIDTH - 1, i * INT_WIDTH );
+            prop_t srcprop     = vertexProp.range(   (i + 1) * INT_WIDTH - 1, i * INT_WIDTH );
+            prop_t out_deg   = outDeg.range(       (i + 1) * INT_WIDTH - 1, i * INT_WIDTH );
+            unsigned int active;
+
+            prop_t newprop;
+            if ((tprop == 1) && (srcprop ==0))
+            {
+                frontier[current_v_id] = 1;
+                newprop = tprop;
+            }
+            else
+            {
+                frontier[current_v_id] = 0;
+                newprop = srcprop;
+            }
+            newVertexProp.range((i + 1) * INT_WIDTH - 1, i * INT_WIDTH ) = newprop;
+            current_v_id++;
+        }
+        write_to_stream(newVertexPropStream, newVertexProp);
+    }
 
         cuDuplicate(loopNum , newVertexPropStream,
                     newVertexPropArray);

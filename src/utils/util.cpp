@@ -152,6 +152,31 @@ namespace graphitron {
                 out << str << "\n";
             }
         }
+        void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::string &to) {
+            std::ifstream input(in);
+            std::ofstream output(out);
+            std::string str;
+            while (std::getline(input, str))
+            {
+                auto num = replaceLine(str, from, to);
+                output << str << std::endl;
+            }
+            input.close();
+            output.close();
+        }
+        void insertFile(const std::string &in, const std::string &out, const std::string &key, const std::stringstream &wbf) {
+            std::ifstream input(in);
+            std::ofstream output(out);
+            std::string line;
+            while (std::getline(input, line)) {
+                if (line.find(key) != std::string::npos) {
+                    output << wbf.str();
+                }
+                output << line << std::endl;
+            }
+            input.close();
+            output.close();
+        }
 
     }
 }

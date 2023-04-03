@@ -27,6 +27,13 @@ void base_mem_init(cl_context &context)
     }
 }
 
+void user_mem_init(cl_context &context) {
+    for (unsigned int i=0; i<ARRAY_SIZE(user_mem); i++) {
+        user_mem[i].ext_attr.flags = bank[GetUserBankId(user_mem[i].id)];
+        he_mem_init(context, &user_mem[i]);
+    }
+}
+
 static void gs_mem_init(cl_context &context, gatherScatterDescriptor *gsItem, int cuIndex, void *data)
 {
     gsItem->prop[0].id =  MEM_ID_GS_BASE + cuIndex * MEM_ID_GS_OFFSET;

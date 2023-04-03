@@ -8,11 +8,8 @@ BINARY_LINK_OBJS    += --nk  apply_kernel:1
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.vertexProp:HBM[2]
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.newVertexProp0:HBM[2]
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.tmpVertexProp0:HBM[3]
-
-ifeq ($(strip $(HAVE_APPLY_OUTDEG)), $(strip $(VAR_TRUE)))
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.outDegree:HBM[5]
-endif
-BINARY_LINK_OBJS    += --sp  apply_kernel_1.outReg:HBM[5]
-BINARY_LINK_OBJS    += --sp  apply_kernel_1.frontier:HBM[5]
+
+BINARY_LINK_OBJS    += --sp  apply_kernel_1.frontier:HBM[9]
 BINARY_LINK_OBJS    += --slr apply_kernel_1:SLR0
 endif

@@ -131,18 +131,12 @@ void setApplyKernel(int partId, int superStep, graphInfo *info)
         he_set_dirty(getGatherScatter(i)->prop[updatePropId].id);
     }
 
-#if HAVE_APPLY_OUTDEG
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));
-#endif
-    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_RESULT_REG));
-    he_set_dirty(MEM_ID_RESULT_REG);
+    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &sink_end);
+    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &offset);
 
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_FRONTIER));
     he_set_dirty(MEM_ID_FRONTIER);
-
-    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &sink_end);
-    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &offset);
-    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &argReg);
 #endif
 }
 

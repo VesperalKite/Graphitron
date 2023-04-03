@@ -28,6 +28,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     register_size_attribute(SIZE_USER_DEFINE , 1                 );
 
     base_mem_init(acc->context);
+    user_mem_init(acc->context);
 
     int *rpa        = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia        = (int*)get_host_mem_pointer(MEM_ID_CIA);

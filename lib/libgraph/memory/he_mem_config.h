@@ -99,13 +99,13 @@ he_mem_t local_mem[] =
         sizeof(int),
         SIZE_IN_VERTEX,
     },
-    {
-        MEM_ID_RESULT_REG,
-        "error",
-        ATTR_PL_DDR0,
-        sizeof(int) * 64,
-        SIZE_USER_DEFINE,
-    },
+    // {
+    //     MEM_ID_RESULT_REG,
+    //     "error",
+    //     ATTR_PL_DDR0,
+    //     sizeof(int) * 64,
+    //     SIZE_USER_DEFINE,
+    // },
     {
         MEM_ID_RPA,
         "rpa",
@@ -169,6 +169,9 @@ he_mem_t local_mem[] =
         sizeof(prop_t),
         SIZE_IN_VERTEX,
     },
+};
+
+he_mem_t user_mem[] = {
     {
         MEM_ID_FRONTIER,
         "frontier",
@@ -176,6 +179,7 @@ he_mem_t local_mem[] =
         sizeof(int),
         SIZE_IN_VERTEX,
     },
+
 };
 
 
