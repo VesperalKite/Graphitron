@@ -81,13 +81,12 @@ static void partitionTransfer(graphInfo *info)
 {
     graphAccelerator * acc = getAccelerator();
 
-    DEBUG_PRINTF("%s", "transfer base mem start\n");
+    DEBUG_PRINTF("%s", "transfer mem start\n");
     double  begin = getCurrentTimestamp();
 
     int base_mem_id[]  = {
         MEM_ID_PUSHIN_PROP_MAPPED,
-        MEM_ID_OUT_DEG,
-        MEM_ID_RESULT_REG
+        MEM_ID_OUT_DEG
     };
     DEBUG_PRINTF("%s", "transfer base mem\n");
     transfer_data_to_pl(acc->context, acc->device, base_mem_id, ARRAY_SIZE(base_mem_id));
@@ -110,10 +109,12 @@ static void partitionTransfer(graphInfo *info)
         transfer_data_to_pl(acc->context, acc->device, mem_id, ARRAY_SIZE(mem_id));
     }
 
-    DEBUG_PRINTF("%s", "transfer frontier\n");
-    int mem_id[1];
-    mem_id[0] = MEM_ID_FRONTIER;
-    transfer_data_to_pl(acc->context, acc->device, mem_id, 1);
+    DEBUG_PRINTF("%s", "transfer user mem\n");
+    int user_mem_id[] = {
+        MEM_ID_FRONTIER,
+    };
+    
+    transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));
 
     double end =  getCurrentTimestamp();
     DEBUG_PRINTF("data transfer %lf \n", (end - begin) * 1000);

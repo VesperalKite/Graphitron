@@ -105,7 +105,6 @@ void setApplyKernel(int partId, int superStep, graphInfo *info)
 
     applyDescriptor * applyHandler = getApply();
     int argvi = 0;
-    unsigned int argReg = dataPrepareGetArg(info);
     subPartitionDescriptor *p_partition = getSubPartition(partId * SUB_PARTITION_NUM);
 
     volatile unsigned int partitionVertexNum = ((p_partition->dstVertexEnd - p_partition->dstVertexStart)
