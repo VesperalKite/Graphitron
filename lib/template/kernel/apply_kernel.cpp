@@ -14,7 +14,7 @@ extern "C" {
         uint16        *newVertexProp0,
         uint16        *outDegree,
 
-        int           *frontier,
+        // insert1
 
         unsigned int  vertexNum,
         unsigned int  addrOffset
@@ -30,9 +30,8 @@ extern "C" {
 
 #pragma HLS INTERFACE s_axilite port=newVertexProp0 bundle=control
 
+// insert2
 
-#pragma HLS INTERFACE m_axi port=frontier offset=slave bundle=gmem8
-#pragma HLS INTERFACE s_axilite port=frontier bundle=control
 
 
 #pragma HLS INTERFACE m_axi port=vertexProp offset=slave bundle=gmem6 max_read_burst_length=64

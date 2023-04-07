@@ -172,13 +172,7 @@ he_mem_t local_mem[] =
 };
 
 he_mem_t user_mem[] = {
-    {
-        MEM_ID_FRONTIER,
-        "frontier",
-        ATTR_PL_DDR0,
-        sizeof(int),
-        SIZE_IN_VERTEX,
-    },
+    // insert
 
 };
 

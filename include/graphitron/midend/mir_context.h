@@ -108,6 +108,8 @@ namespace graphitron {
 
       void addEdgeSet(mir::VarDecl::Ptr edgeset) {
          const_edge_sets_.push_back(edgeset);
+         mir::EdgeSetType::Ptr edge_set_type = mir::to<mir::EdgeSetType>(edgeset->type);
+         addEdgeElementType(edge_set_type->element->ident);
       }
 
       std::vector<mir::VarDecl::Ptr> getEdgeSets() {
@@ -247,11 +249,22 @@ namespace graphitron {
          vertex_element_type_list_.push_back(element_type);
       }
 
+      void addEdgeElementType(std::string element_type) {
+         edge_element_type_list_.push_back(element_type);
+      }
+
       // Check if an element type is a vertex element type
       // Useful for generating system vector lower operations
       bool isVertexElementType(std::string element_type) {
          for (auto vertex_element_type : vertex_element_type_list_) {
                if (vertex_element_type == element_type) return true;
+         }
+         return false;
+      }
+
+      bool isEdgeElementType(std::string element_type) {
+         for (auto edge_element_type : edge_element_type_list_) {
+            if (edge_element_type == element_type) return true;
          }
          return false;
       }

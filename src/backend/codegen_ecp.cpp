@@ -8,7 +8,7 @@
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
-        return genMain() | genMIRcontext() | genReplace();
+        return genMain() | genMIRcontext() | genNewfiles();
     }
     int CodeGenEcp::genMain() {
         oss.open(output_path_+"/main.cpp");
@@ -163,16 +163,6 @@ namespace graphitron {
         return 0;
     }
 
-    int CodeGenEcp::genReplace(){
-        // util::replaceFile(output_path_+"/replace.cpp", output_path_+"/../kernel/result.cpp", "NUM", "10");
-        // std::stringstream wbf;
-        // wbf << "    {" << endl;
-        // wbf << "        MEM_ID_SCORE," << endl;
-        // wbf << "        \"score\"," << endl;
-        // wbf << "        ATTR_PL_DDR0" << endl;
-        return 0;
-    }
-
     void CodeGenEcp::genIncludeStmts() {
         oss << "#include <stdio.h>" << endl;
         oss << "#include <string.h>" << endl;
@@ -250,6 +240,8 @@ namespace graphitron {
         const auto size_expr = mir_context_->getElementCount(vector_type->element_type);
         auto vector_element_type = vector_type->vector_element_type;
         assert(size_expr != nullptr);
+        
+        AddUserMem(var_decl);
 
         oss << " = (";
         vector_element_type->accept(type_visitor);
@@ -346,5 +338,111 @@ namespace graphitron {
             }
         }
     }   
+
+    void CodeGenEcp::AddUserMem(mir::VarDecl::Ptr var_decl){
+        auto var = mir_context_->getSymbol(var_decl->name);
+        string mem_name = var.getAlias();
+        if (mem_name == "edge_prop" || mem_name == "pushin_prop") {
+            return;
+        }
+        user_mem_count++;
+        gen_he_mem_config_h(var_decl);
+        gen_he_mem_id_h(var_decl);
+        gen_apply_kernel_cpp(var_decl);
+        gen_apply_kernel_mk(var_decl);
+        gen_host_graph_kernel_cpp(var_decl);
+    }
+
+    void CodeGenEcp::gen_he_mem_config_h(mir::VarDecl::Ptr var_decl){
+        auto var = mir_context_->getSymbol(var_decl->name);
+        string mem_name = var.getAlias();
+        mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);
+        auto vector_element_type = vector_type->vector_element_type;
+        auto element_type = vector_type->element_type->ident;
+        TypeGenerator* type_printer = new TypeGenerator(mir_context_, he_mem_config_h_buffer);
+
+        he_mem_config_h_buffer << "    {" << endl;
+        he_mem_config_h_buffer << "        MEM_ID_" << expr_visitor->toUpper(mem_name) << "," << endl;
+        he_mem_config_h_buffer << "        \"" << var_decl->name << "\"," << endl;
+        he_mem_config_h_buffer << "        ATTR_PL_DDR0," << endl;
+        he_mem_config_h_buffer << "        sizeof(";
+        vector_element_type->accept(type_printer);
+        he_mem_config_h_buffer << ")," << endl;
+        if (mir_context_->isVertexElementType(element_type)) {
+            he_mem_config_h_buffer << "        SIZE_IN_VERTEX," << endl;
+        } else if (mir_context_->isEdgeElementType(element_type)) {
+            he_mem_config_h_buffer << "        SIZE_IN_EDGE," << endl;
+        } else {
+            he_mem_config_h_buffer << "        SIZE_USER_DEFINE," << endl;
+        }
+        he_mem_config_h_buffer << "    }," << endl;
+
+        delete type_printer;
+    };
+
+    void CodeGenEcp::gen_he_mem_id_h(mir::VarDecl::Ptr var_decl) {
+        auto var = mir_context_->getSymbol(var_decl->name);
+        string mem_name = var.getAlias();
+        he_mem_id_h_buffer << "#define MEM_ID_" << expr_visitor->toUpper(mem_name);
+        he_mem_id_h_buffer << "     SetUserMemId(" << user_mem_count << ")" << endl;
+    }
+
+    void CodeGenEcp::gen_apply_kernel_cpp(mir::VarDecl::Ptr var_decl) {
+        TypeGenerator* type_printer = new TypeGenerator(mir_context_, apply_kernel_cpp_buffer1);
+        mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);
+        auto vector_element_type = vector_type->vector_element_type;
+        apply_kernel_cpp_buffer1 << "        ";
+        vector_type->accept(type_printer);
+        apply_kernel_cpp_buffer1 << "       *";
+        apply_kernel_cpp_buffer1 << var_decl->name << "," << endl;
+        apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE m_axi port=";
+        apply_kernel_cpp_buffer2 << var_decl->name;
+        apply_kernel_cpp_buffer2 << " offset=slave bundle=gmem" << user_mem_count+7 << endl;
+        apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE s_axilite port=";
+                apply_kernel_cpp_buffer2 << var_decl->name;
+        apply_kernel_cpp_buffer2 << " bundle=control" << endl;
+        delete type_printer;
+    }
+
+    void CodeGenEcp::gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl) {
+        apply_kernel_mk_buffer << "BINARY_LINK_OBJS    += --sp  apply_kernel_1.";
+        apply_kernel_mk_buffer << var_decl->name << ":HBM[" << user_mem_count+8 << "]" << endl;
+    }
+
+    void CodeGenEcp::gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl) {
+    auto var = mir_context_->getSymbol(var_decl->name);
+    string mem_name = var.getAlias();
+    host_graph_kernel_cpp_buffer << "    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_" << expr_visitor->toUpper(mem_name) << "));" << endl;
+    host_graph_kernel_cpp_buffer << "    he_set_dirty(MEM_ID_" << expr_visitor->toUpper(mem_name) << ");" << endl;
+    }
+
+    int CodeGenEcp::genNewfiles() {
+        util::insertFile(root_path+"/lib/libgraph/memory/he_mem_config.h", 
+                        output_path_+"/../libgraph/memory/he_mem_config.h", 
+                        "// insert",
+                        he_mem_config_h_buffer);
+        util::insertFile(root_path+"/lib/libgraph/memory/he_mem_id.h",
+                        output_path_+"/../libgraph/memory/he_mem_id.h",
+                        "// insert",
+                        he_mem_id_h_buffer);
+        util::insertFile(root_path+"/lib/template/kernel/apply_kernel.cpp",
+                        output_path_+"/../tmp/apply_kernel.cpp_1",
+                        "// insert1",
+                        apply_kernel_cpp_buffer1);
+        util::insertFile(output_path_+"/../tmp/apply_kernel.cpp_1",
+                        output_path_+"/../kernel/apply_kernel.cpp",
+                        "// insert2",
+                        apply_kernel_cpp_buffer2);
+        util::insertFile(root_path+"/lib/template/kernel/apply_kernel.mk",
+                        output_path_+"/../kernel/apply_kernel.mk",
+                        "# insert",
+                        apply_kernel_mk_buffer);
+        util::insertFile(root_path+"/lib/libgraph/kernel/host_graph_kernel.cpp",
+                        output_path_+"/../libgraph/kernel/host_graph_kernel.cpp",
+                        "// insert",
+                        host_graph_kernel_cpp_buffer);
+        return 0;
+    }
+
 
 }

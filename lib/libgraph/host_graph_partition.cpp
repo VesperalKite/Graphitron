@@ -112,8 +112,9 @@ static void partitionTransfer(graphInfo *info)
     DEBUG_PRINTF("%s", "transfer user mem\n");
     int user_mem_id[] = {
         MEM_ID_FRONTIER,
+        //in
     };
-    
+
     transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));
 
     double end =  getCurrentTimestamp();

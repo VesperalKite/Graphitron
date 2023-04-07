@@ -10,6 +10,7 @@ BINARY_LINK_OBJS    += --sp  apply_kernel_1.newVertexProp0:HBM[2]
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.tmpVertexProp0:HBM[3]
 BINARY_LINK_OBJS    += --sp  apply_kernel_1.outDegree:HBM[5]
 
-BINARY_LINK_OBJS    += --sp  apply_kernel_1.frontier:HBM[9]
+# insert
+
 BINARY_LINK_OBJS    += --slr apply_kernel_1:SLR0
 endif

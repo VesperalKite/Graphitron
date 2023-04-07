@@ -22,21 +22,34 @@ namespace graphitron {
         CodeGenEcp(std::string output_path, MIRContext *mir_context) : 
         output_path_(output_path) , mir_context_(mir_context) {
             reset();
+            user_mem_count = 0;
+            root_path = output_path_+"/../../../..";
         }
         int genFPGA();
 
         int genMain();
         int genMIRcontext();
-        int genReplace();
+        int genNewfiles();
     protected: 
         virtual void visit(mir::FuncDecl::Ptr);
     private:  
     std::string output_path_;
+    std::string root_path;
     MIRContext *mir_context_;
     std::ofstream oss;
     ExprGenerator* expr_visitor;
     TypeGenerator* type_visitor;
     StmtGenerator* stmt_visitor;
+
+    unsigned int user_mem_count;
+    std::stringstream he_mem_config_h_buffer;
+    std::stringstream he_mem_id_h_buffer;
+    std::stringstream apply_kernel_mk_buffer;
+    std::stringstream apply_kernel_cpp_buffer1;
+    std::stringstream apply_kernel_cpp_buffer2;
+    std::stringstream host_graph_kernel_cpp_buffer;
+
+
 
     unsigned int indentLevel;
     void reset() {
@@ -59,6 +72,13 @@ namespace graphitron {
     void genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl);
     void genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr type);
     void genScalarAlloc(mir::VarDecl::Ptr var_decl);
+
+    void AddUserMem(mir::VarDecl::Ptr var_decl);
+    void gen_he_mem_config_h(mir::VarDecl::Ptr var_decl);
+    void gen_he_mem_id_h(mir::VarDecl::Ptr var_decl);
+    void gen_apply_kernel_cpp(mir::VarDecl::Ptr var_decl);
+    void gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl);
+    void gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl);
 
     };
 }

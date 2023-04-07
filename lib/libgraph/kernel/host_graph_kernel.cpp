@@ -132,8 +132,7 @@ void setApplyKernel(int partId, int superStep, graphInfo *info)
 
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));
 
-    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_FRONTIER));
-    he_set_dirty(MEM_ID_FRONTIER);
+    // insert
 
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &sink_end);
     clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int),    &offset);

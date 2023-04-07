@@ -37,8 +37,6 @@
 #define MEM_ID_HOST_PROP_PONG		(24)
 #define MEM_ID_PARTITON_EDGE_PROP   (25)
 
-#define MEM_ID_TEST   	            (26)
-
 #define MEM_ID_PARTITION_BASE       (100)
 
 #define MEM_ID_PARTITION_OFFSET     (128)
@@ -57,6 +55,5 @@
 // User Define Part
 #define SetUserMemId(i) (MEM_ID_USER_DEFINE_BASE+i)
 #define GetUserBankId(mem_id) (mem_id-MEM_ID_USER_DEFINE_BASE+BANK_ID_USER_DEFINE_BASE)
-#define MEM_ID_FRONTIER             SetUserMemId(1)
 
 #endif /* __HE_MEM_ID_H__ */
