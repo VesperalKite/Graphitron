@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <graphitron/backend/gen_ScatterGather_decl.h>
 
 namespace graphitron {
     class CodeGenEcp : mir::MIRVisitor{
@@ -27,9 +28,11 @@ namespace graphitron {
         }
         int genFPGA();
 
+
         int genMain();
         int genMIRcontext();
         int genNewfiles();
+        int genGAS();
     protected: 
         virtual void visit(mir::FuncDecl::Ptr);
     private:  
@@ -48,6 +51,7 @@ namespace graphitron {
     std::stringstream apply_kernel_cpp_buffer1;
     std::stringstream apply_kernel_cpp_buffer2;
     std::stringstream host_graph_kernel_cpp_buffer;
+    std::stringstream fpga_application_h_buffer;
 
 
 
@@ -79,6 +83,9 @@ namespace graphitron {
     void gen_apply_kernel_cpp(mir::VarDecl::Ptr var_decl);
     void gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl);
     void gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl);
+    
+    void gen_ScatterGather();
+    void gen_Apply();
 
     };
 }

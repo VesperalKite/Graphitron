@@ -15,7 +15,7 @@ namespace graphitron {
     }
 
     void ScatterGatherFunctionDeclGenerator::genActiveFuncDecl(mir::GsExpr::Ptr gs) {
-        mir::FuncDecl::Ptr active_func = mir_context_->getFunction(gs->input_active_function->function_name->name);
+        mir::FuncDecl::Ptr active_func = mir_context_->ActiveFunc;
         auto stmts = active_func->body->stmts;
         auto reslut = active_func->result;
         assert(active_func->args.size() == 1);

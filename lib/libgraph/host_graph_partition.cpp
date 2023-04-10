@@ -123,7 +123,6 @@ static void partitionTransfer(graphInfo *info)
 
 void reTransferProp(graphInfo *info)
 {
-    dataPrepareProperty(info);
     graphAccelerator * acc = getAccelerator();
 
     int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
@@ -343,7 +342,6 @@ void partitionFunction(graphInfo *info)
 int acceleratorDataPreprocess(graphInfo *info)
 {
     schedulerRegister();
-    dataPrepareProperty(info);
     partitionFunction(info);
     return 0;
 }

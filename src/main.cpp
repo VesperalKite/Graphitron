@@ -38,13 +38,13 @@ int main(int argc, char* argv[]) {
     std::string output_path = cli.output_path();
 
     //compile the input file
-    bool out = fe->parseStream(buffer, context, errors);
-    if (out != 0){
-        std::cout << "error in parse" << std::endl;
-    }
-    std::ofstream fir(output_path+"/fir.txt");
-    fir << *(context->getProgram());
-    fir << std::endl;
+    fe->parseStream(buffer, context, errors);
+    // if (out != 0){
+    //     std::cout << "error in parse" << std::endl;
+    // }
+    // std::ofstream fir(output_path+"/fir.txt");
+    // fir << *(context->getProgram());
+    // fir << std::endl;
 
     mir::schedule::ProgramScheduleNode::Ptr program
         = std::make_shared<mir::schedule::ProgramScheduleNode>();

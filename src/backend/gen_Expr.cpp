@@ -98,12 +98,13 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::GsExpr::Ptr expr) {
+        expr->scope_label_name = label_scope_.getCurrentScope();
+        
         oss_ << "acceleratorSuperStep(";
         expr->iter->accept(this);
         oss_ << ", &";
         expr->target->accept(this);
         oss_<<")";
-        oss_ << expr->scope_label_name;
     }
 
     void ExprGenerator::visit(mir::InitExpr::Ptr expr) {

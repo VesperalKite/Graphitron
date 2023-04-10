@@ -12,13 +12,6 @@ he_mem_t local_mem[] =
         sizeof(prop_t),
         SIZE_IN_VERTEX,
     },
-    {
-        MEM_ID_TEST,
-        "test",
-        ATTR_HOST_ONLY,
-        sizeof(prop_t),
-        SIZE_IN_VERTEX,
-    },
 
     // tmp property
     {

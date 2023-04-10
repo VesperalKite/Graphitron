@@ -37,7 +37,6 @@ XOCC := v++
 ##################################################
 # app 
 HOST_SRCS = $(FPGA_APP_PATH)/main.cpp
-HOST_SRCS += $(FPGA_APP_PATH)/dataPrepare.cpp
 # kernel 
 HOST_SRCS += $(FPGA_PATH)/libgraph/kernel/host_graph_kernel.cpp
 # memory

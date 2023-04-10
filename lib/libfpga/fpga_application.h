@@ -2,8 +2,7 @@
 #define __FPGA_APPLICATION_H__
 
 
-
-#include "l2.h"
+// insert
 
 
 #ifndef IS_ACTIVE_VERTEX

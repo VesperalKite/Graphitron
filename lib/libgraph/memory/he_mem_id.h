@@ -56,4 +56,6 @@
 #define SetUserMemId(i) (MEM_ID_USER_DEFINE_BASE+i)
 #define GetUserBankId(mem_id) (mem_id-MEM_ID_USER_DEFINE_BASE+BANK_ID_USER_DEFINE_BASE)
 
+// insert
+
 #endif /* __HE_MEM_ID_H__ */

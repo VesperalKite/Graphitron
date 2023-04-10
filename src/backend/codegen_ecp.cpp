@@ -8,7 +8,8 @@
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
-        return genMain() | genMIRcontext() | genNewfiles();
+        return genMain() | genGAS() | genNewfiles();
+        //| genMIRcontext()
     }
     int CodeGenEcp::genMain() {
         oss.open(output_path_+"/main.cpp");
@@ -162,6 +163,13 @@ namespace graphitron {
         oss.close();
         return 0;
     }
+
+    int CodeGenEcp::genGAS() {
+        gen_ScatterGather();
+        gen_Apply();
+        return 0;
+    }
+
 
     void CodeGenEcp::genIncludeStmts() {
         oss << "#include <stdio.h>" << endl;
@@ -393,7 +401,7 @@ namespace graphitron {
         auto vector_element_type = vector_type->vector_element_type;
         apply_kernel_cpp_buffer1 << "        ";
         vector_type->accept(type_printer);
-        apply_kernel_cpp_buffer1 << "       *";
+        apply_kernel_cpp_buffer1 << "        ";
         apply_kernel_cpp_buffer1 << var_decl->name << "," << endl;
         apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE m_axi port=";
         apply_kernel_cpp_buffer2 << var_decl->name;
@@ -441,8 +449,20 @@ namespace graphitron {
                         output_path_+"/../libgraph/kernel/host_graph_kernel.cpp",
                         "// insert",
                         host_graph_kernel_cpp_buffer);
+        util::insertFile(root_path+"/lib/libfpga/fpga_application.h",
+                        output_path_+"/../libfpga/fpga_application.h",
+                        "// insert",
+                        fpga_application_h_buffer);
         return 0;
     }
 
+    void CodeGenEcp::gen_ScatterGather() {
+        auto gs_visitor = ScatterGatherFunctionDeclGenerator(mir_context_, fpga_application_h_buffer);
+        gs_visitor.genScatterGatherFuncDecl();
+    }
+
+    void CodeGenEcp::gen_Apply() {
+
+    }
 
 }

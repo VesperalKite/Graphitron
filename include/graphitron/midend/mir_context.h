@@ -296,6 +296,7 @@ namespace graphitron {
       void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr gather){
          scatter->isFunctor = false;
          gather->isFunctor = false;
+         have_frontier = false;
          ScatterFunc = scatter;
          GatherFunc = gather;
       }
@@ -303,6 +304,7 @@ namespace graphitron {
          scatter->isFunctor = false;
          active->isFunctor = false;
          gather->isFunctor = false;
+         have_frontier = true;
          ScatterFunc = scatter;
          ActiveFunc = active;
          GatherFunc = gather;  
@@ -366,6 +368,8 @@ namespace graphitron {
       std::set<std::string> defined_types;
 
       std::vector<mir::Type::Ptr> types_requiring_typedef;
+
+      bool have_frontier;
 
       mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
