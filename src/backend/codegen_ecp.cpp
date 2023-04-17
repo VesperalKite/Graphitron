@@ -5,6 +5,8 @@
 #include <graphitron/backend/codegen_ecp.h>
 #include <graphitron/midend/mir.h>
 #define INSERT_SYMBOL "// Insert"
+#define BANK_ID_USER_DEFINE_BASE    (5)
+#define GMEM_ID_USER_DEFINE_BASE    (7)
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
@@ -405,7 +407,7 @@ namespace graphitron {
         apply_kernel_cpp_buffer1 << var_decl->name << "," << endl;
         apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE m_axi port=";
         apply_kernel_cpp_buffer2 << var_decl->name;
-        apply_kernel_cpp_buffer2 << " offset=slave bundle=gmem" << user_mem_count+7 << endl;
+        apply_kernel_cpp_buffer2 << " offset=slave bundle=gmem" << user_mem_count+GMEM_ID_USER_DEFINE_BASE << endl;
         apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE s_axilite port=";
                 apply_kernel_cpp_buffer2 << var_decl->name;
         apply_kernel_cpp_buffer2 << " bundle=control" << endl;
@@ -414,7 +416,7 @@ namespace graphitron {
 
     void CodeGenEcp::gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl) {
         apply_kernel_mk_buffer << "BINARY_LINK_OBJS    += --sp  apply_kernel_1.";
-        apply_kernel_mk_buffer << var_decl->name << ":HBM[" << user_mem_count+8 << "]" << endl;
+        apply_kernel_mk_buffer << var_decl->name << ":HBM[" << user_mem_count+BANK_ID_USER_DEFINE_BASE << "]" << endl;
     }
 
     void CodeGenEcp::gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl) {
