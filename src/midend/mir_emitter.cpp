@@ -296,6 +296,9 @@ namespace graphitron {
             } else if (method_call_expr->method_name->ident == "builtin_getProperty") {
                 mir_call_expr->alias = "pushin_prop";
                 retExpr = mir_call_expr;
+            } else if (method_call_expr->method_name->ident == "builtin_getOutDegrees") {
+                mir_call_expr->alias = "out_deg";
+                retExpr = mir_call_expr;
             }
         } else {
             // If target is a vector or an edgeset (actual concrete object)

@@ -152,12 +152,13 @@ namespace graphitron {
                 out << str << "\n";
             }
         }
-        void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::string &to) {
+        void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::stringstream &wbf) {
             std::ifstream input(in);
             std::ofstream output(out);
             std::string str;
             while (std::getline(input, str))
             {
+                auto to = wbf.str();
                 auto num = replaceLine(str, from, to);
                 output << str << std::endl;
             }

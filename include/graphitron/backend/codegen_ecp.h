@@ -16,6 +16,7 @@
 #include <sstream>
 #include <fstream>
 #include <graphitron/backend/gen_ScatterGather_decl.h>
+#include <graphitron/backend/gen_Apply_decl.h>
 
 namespace graphitron {
     class CodeGenEcp : mir::MIRVisitor{
@@ -44,12 +45,15 @@ namespace graphitron {
     TypeGenerator* type_visitor;
     StmtGenerator* stmt_visitor;
 
+    std::string outdegkey = "//out_deg_key";
+    std::stringstream new_outdeg_buffer;
     unsigned int user_mem_count;
     std::stringstream he_mem_config_h_buffer;
     std::stringstream he_mem_id_h_buffer;
     std::stringstream apply_kernel_mk_buffer;
     std::stringstream apply_kernel_cpp_buffer1;
     std::stringstream apply_kernel_cpp_buffer2;
+    std::stringstream apply_kernel_cpp_buffer3;
     std::stringstream host_graph_kernel_cpp_buffer;
     std::stringstream fpga_application_h_buffer;
 

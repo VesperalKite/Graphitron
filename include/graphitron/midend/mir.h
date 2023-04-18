@@ -566,6 +566,7 @@ namespace graphitron {
             FuncExpr::Ptr input_function = nullptr;
             //std::string tracking_field = "";
             typedef std::shared_ptr<ApplyExpr> Ptr;
+            std::string scope_label_name;
 
             virtual void accept(MIRVisitor *visitor) {
                 visitor->visit(self<ApplyExpr>());

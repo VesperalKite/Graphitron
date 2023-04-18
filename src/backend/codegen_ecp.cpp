@@ -352,7 +352,10 @@ namespace graphitron {
     void CodeGenEcp::AddUserMem(mir::VarDecl::Ptr var_decl){
         auto var = mir_context_->getSymbol(var_decl->name);
         string mem_name = var.getAlias();
-        if (mem_name == "edge_prop" || mem_name == "pushin_prop") {
+        if (mem_name == "out_deg") {
+            new_outdeg_buffer << "prop_t " << var.getName() << " = outDeg_unique.range((i + 1) * INT_WIDTH - 1, i * INT_WIDTH );" << endl;
+        }
+        if (mem_name == "edge_prop" || mem_name == "pushin_prop" || mem_name == "out_deg") {
             return;
         }
         user_mem_count++;
@@ -440,9 +443,17 @@ namespace graphitron {
                         "// insert1",
                         apply_kernel_cpp_buffer1);
         util::insertFile(output_path_+"/../tmp/apply_kernel.cpp_1",
-                        output_path_+"/../kernel/apply_kernel.cpp",
+                        output_path_+"/../tmp/apply_kernel.cpp_2",
                         "// insert2",
                         apply_kernel_cpp_buffer2);
+        util::insertFile(output_path_+"/../tmp/apply_kernel.cpp_2",
+                        output_path_+"/../tmp/apply_kernel.cpp_3",
+                        "// insert3",
+                        apply_kernel_cpp_buffer3);
+        util::replaceFile(output_path_+"/../tmp/apply_kernel.cpp_3",
+                        output_path_+"/../kernel/apply_kernel.cpp",
+                        outdegkey,
+                        new_outdeg_buffer);
         util::insertFile(root_path+"/lib/template/kernel/apply_kernel.mk",
                         output_path_+"/../kernel/apply_kernel.mk",
                         "# insert",
@@ -464,7 +475,8 @@ namespace graphitron {
     }
 
     void CodeGenEcp::gen_Apply() {
-
+        auto apply_visitor = ApplyFunctionDeclGenerator(mir_context_, apply_kernel_cpp_buffer3);
+        apply_visitor.genApplyFuncDecl();
     }
 
 }
