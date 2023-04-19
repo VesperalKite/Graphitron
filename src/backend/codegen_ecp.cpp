@@ -388,13 +388,7 @@ namespace graphitron {
         } else if (mir_context_->isEdgeElementType(element_type)) {
             he_mem_config_h_buffer << "        SIZE_IN_EDGE," << endl;
         } else {
-            if (mir::isa<mir::ConstantVectorExpr>(var_decl->initVal)) {
-            auto const_expr = mir::to<mir::ConstantVectorExpr>(var_decl->initVal);
-            oss << const_expr->numElements;
-            he_mem_config_h_buffer << "        " << const_expr->numElements << "," << endl;
-            } else {
-                he_mem_config_h_buffer << "        SIZE_USER_DEFINE," << endl;
-            }
+            he_mem_config_h_buffer << "        SIZE_USER_DEFINE," << endl;
         }
         he_mem_config_h_buffer << "    }," << endl;
 
