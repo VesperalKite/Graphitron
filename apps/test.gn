@@ -9,7 +9,7 @@ const frontier : vector{Vertex}(int);
 const reslut : vector{Vertex}(double);
 const rank_t : vector(int) = {1, 0, 2};
 const vertexnum : int = vertices.size();
-const beta_score : double = 1 / vertices.size();
+const beta_score : double = 1.0 / vertices.size();
 func reset(v : Vertex)
     prop[v]=0;
     prop[3251]=1;
