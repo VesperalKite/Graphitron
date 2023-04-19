@@ -86,7 +86,16 @@ namespace graphitron {
     }
 
     void ExprGenerator::visit(mir::ConstantVectorExpr::Ptr expr) {
-        oss_ << "constantvectorexpr";
+        oss_ << "{";
+        bool printDelimiter = false;
+
+        for (auto el: expr->vectorElements) {
+            if (printDelimiter) oss_ << ",";
+            el->accept(this);
+            printDelimiter = true;
+        }
+
+        oss_ << "}";
     }
 
     void ExprGenerator::visit(mir::EdgeSetLoadExpr::Ptr expr) {

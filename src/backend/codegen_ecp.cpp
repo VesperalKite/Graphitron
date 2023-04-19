@@ -261,6 +261,7 @@ namespace graphitron {
 
     void CodeGenEcp::genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr vector_type) {
         printIndent();
+        //AddUserMem(var_decl);
         oss << var_decl->name << " = new ";
         if (mir::isa<mir::ConstantVectorExpr>(var_decl->initVal)) {
             auto const_expr = mir::to<mir::ConstantVectorExpr>(var_decl->initVal);
@@ -279,6 +280,7 @@ namespace graphitron {
     void CodeGenEcp::genScalarDecl(mir::VarDecl::Ptr var_decl) {
         var_decl->type->accept(type_visitor);
         oss << var_decl->name << ";"<<endl;
+        AddScalarArg(var_decl);
     }
 
     void CodeGenEcp::genScalarAlloc(mir::VarDecl::Ptr var_decl) {
@@ -386,7 +388,13 @@ namespace graphitron {
         } else if (mir_context_->isEdgeElementType(element_type)) {
             he_mem_config_h_buffer << "        SIZE_IN_EDGE," << endl;
         } else {
-            he_mem_config_h_buffer << "        SIZE_USER_DEFINE," << endl;
+            if (mir::isa<mir::ConstantVectorExpr>(var_decl->initVal)) {
+            auto const_expr = mir::to<mir::ConstantVectorExpr>(var_decl->initVal);
+            oss << const_expr->numElements;
+            he_mem_config_h_buffer << "        " << const_expr->numElements << "," << endl;
+            } else {
+                he_mem_config_h_buffer << "        SIZE_USER_DEFINE," << endl;
+            }
         }
         he_mem_config_h_buffer << "    }," << endl;
 
@@ -403,7 +411,6 @@ namespace graphitron {
     void CodeGenEcp::gen_apply_kernel_cpp(mir::VarDecl::Ptr var_decl) {
         TypeGenerator* type_printer = new TypeGenerator(mir_context_, apply_kernel_cpp_buffer1);
         mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);
-        auto vector_element_type = vector_type->vector_element_type;
         apply_kernel_cpp_buffer1 << "        ";
         vector_type->accept(type_printer);
         apply_kernel_cpp_buffer1 << "        ";
@@ -412,7 +419,7 @@ namespace graphitron {
         apply_kernel_cpp_buffer2 << var_decl->name;
         apply_kernel_cpp_buffer2 << " offset=slave bundle=gmem" << user_mem_count+GMEM_ID_USER_DEFINE_BASE << endl;
         apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE s_axilite port=";
-                apply_kernel_cpp_buffer2 << var_decl->name;
+        apply_kernel_cpp_buffer2 << var_decl->name;
         apply_kernel_cpp_buffer2 << " bundle=control" << endl;
         delete type_printer;
     }
@@ -467,6 +474,26 @@ namespace graphitron {
                         "// insert",
                         fpga_application_h_buffer);
         return 0;
+    }
+
+    void CodeGenEcp::AddScalarArg(mir::VarDecl::Ptr var_decl) {
+        TypeGenerator* type_printer = new TypeGenerator(mir_context_, apply_kernel_cpp_buffer1);
+        apply_kernel_cpp_buffer1 << "        ";
+        var_decl->type->accept(type_printer);
+        apply_kernel_cpp_buffer1 << "        ";
+        apply_kernel_cpp_buffer1 << var_decl->name << "," << endl;
+        apply_kernel_cpp_buffer2 << "#pragma HLS INTERFACE s_axilite port=";
+        apply_kernel_cpp_buffer2 << var_decl->name;
+        apply_kernel_cpp_buffer2 << " bundle=control" << endl;
+        
+        type_printer = new TypeGenerator(mir_context_, host_graph_kernel_cpp_buffer);
+        host_graph_kernel_cpp_buffer << "    extern ";
+        var_decl->type->accept(type_printer);
+        host_graph_kernel_cpp_buffer << var_decl->name << ";" << endl;
+        host_graph_kernel_cpp_buffer << "    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(";
+        var_decl->type->accept(type_printer);
+        host_graph_kernel_cpp_buffer << "), &" << var_decl->name << ");" << endl;
+        delete type_printer;
     }
 
     void CodeGenEcp::gen_ScatterGather() {

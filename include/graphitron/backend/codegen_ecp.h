@@ -88,6 +88,8 @@ namespace graphitron {
     void gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl);
     void gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl);
     
+    void AddScalarArg(mir::VarDecl::Ptr var_decl);
+
     void gen_ScatterGather();
     void gen_Apply();
 

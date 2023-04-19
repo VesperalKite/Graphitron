@@ -6,13 +6,15 @@ const prop : vector{Vertex}(intx) = vertices.getProperty();
 const eprop : vector{Edge}(intx) = edges.getProperty();
 const outDeg : vector{Vertex}(intx) = vertices.getOutDegrees();
 const frontier : vector{Vertex}(int);
-const test : vector{Vertex}(int);
+const reslut : vector{Vertex}(double);
+const rank_t : vector(int) = {1, 0, 2};
+const vertexnum : int = vertices.size();
 const beta_score : double = 1 / vertices.size();
 func reset(v : Vertex)
     prop[v]=0;
     prop[3251]=1;
     frontier[v]=0;
-    test[v] = 1;
+    reslut[v] = 0;
 end
 func e_reset(e : Edge)
     eprop[e]=1;
@@ -38,6 +40,8 @@ func ApplyFunc(tprop : intx, srcProp : intx, v : Vertex) -> newprop : intx
         frontier[v] = 0;
         newprop = srcProp;
     end
+    reslut[0] = vertexnum;
+    reslut[1] = beta_score;
 end
 func getSize() -> size : int
     var num : int = 0;
@@ -65,12 +69,14 @@ func main()
         print "elapsed time: ";
         println elapsed_time;
         frontier.update();
-        test.update();
+        reslut.update();
         frontier_size = getSize();
         print "frontier size: ";
         println frontier_size;
-        var res : int = test[1];
-        println res;
+        var vertexnum : int = reslut[0];
+        var beta : double = reslut[1];
+        println vertexnum;
+        println beta;
         iteration += 1;
     end
 end
