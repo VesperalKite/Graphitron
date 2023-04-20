@@ -8,6 +8,7 @@ namespace graphitron {
     void PropArrayLower::lower() {
         for (auto const &element_type : mir_context_->properties_map_) {
             for (auto const &var_decl : *element_type.second) {
+                var_decl->alias = var_decl->name;
                 if (var_decl->initVal != nullptr) {
                     if (mir::isa<mir::Call>(var_decl->initVal)) {
                         auto call = mir::to<mir::Call>(var_decl->initVal);

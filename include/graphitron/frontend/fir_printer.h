@@ -65,6 +65,8 @@ namespace graphitron {
             virtual void visit(XorExpr::Ptr);
             virtual void visit(EqExpr::Ptr);
             virtual void visit(NotExpr::Ptr);
+            virtual void visit(RshiftExpr::Ptr);
+            virtual void visit(LshiftExpr::Ptr);
             virtual void visit(AddExpr::Ptr);
             virtual void visit(SubExpr::Ptr);
             virtual void visit(MulExpr::Ptr);

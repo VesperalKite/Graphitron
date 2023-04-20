@@ -177,6 +177,14 @@ namespace graphitron {
             visitUnaryExpr(expr);
         }
 
+        void FIRVisitor::visit(RshiftExpr::Ptr expr) {
+            visitBinaryExpr(expr);
+        }
+
+        void FIRVisitor::visit(LshiftExpr::Ptr expr) {
+            visitBinaryExpr(expr);
+        }
+
         void FIRVisitor::visit(AddExpr::Ptr expr) {
             visitBinaryExpr(expr);
         }

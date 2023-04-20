@@ -65,6 +65,8 @@ namespace graphitron {
             RC,//}
             LA,//<
             RA,//>
+            LS,//<<
+            RS,//>>
             EQ,//==
             NE,//!=
             LE,//<=

@@ -222,6 +222,22 @@ namespace graphitron {
         oss_ << ')';
     }
 
+    void ExprGenerator::visit(mir::RshiftExpr::Ptr expr) {
+        oss_ << '(';
+        expr->lhs->accept(this);
+        oss_ << " >> ";
+        expr->rhs->accept(this);
+        oss_ << ')';
+    };
+
+    void ExprGenerator::visit(mir::LshiftExpr::Ptr expr) {
+        oss_ << '(';
+        expr->lhs->accept(this);
+        oss_ << " << ";
+        expr->rhs->accept(this);
+        oss_ << ')';
+    };
+
     void ExprGenerator::visit(mir::AddExpr::Ptr expr) {
         oss_ << '(';
         expr->lhs->accept(this);

@@ -15,6 +15,8 @@ namespace graphitron {
             MIRPrinter(std::ostream &oss) : oss(oss), indentLevel(0) {}
         protected:  
             virtual void visit(Expr::Ptr);
+            virtual void visit(RshiftExpr::Ptr);
+            virtual void visit(LshiftExpr::Ptr);
             virtual void visit(AddExpr::Ptr);
             virtual void visit(SubExpr::Ptr);
             virtual void visit(IntLiteral::Ptr);

@@ -58,6 +58,8 @@ namespace graphitron {
 
         struct VarExpr;
 
+        struct RshiftExpr;
+        struct LshiftExpr;
         struct MulExpr;
         struct DivExpr;
         struct AddExpr;
@@ -145,6 +147,10 @@ namespace graphitron {
             virtual void visit(std::shared_ptr<EqExpr>);
 
             virtual void visit(std::shared_ptr<AddExpr>);
+
+            virtual void visit(std::shared_ptr<RshiftExpr>);
+
+            virtual void visit(std::shared_ptr<LshiftExpr>);
 
             virtual void visit(std::shared_ptr<SubExpr>);
 

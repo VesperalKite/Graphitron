@@ -491,6 +491,20 @@ namespace graphitron{
 
             virtual unsigned getColEnd() { return operand->getColEnd(); }
         };
+        struct RshiftExpr : public BinaryExpr {
+            typedef std::shared_ptr<RshiftExpr> Ptr;
+
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<RshiftExpr>());
+            }
+        };
+        struct LshiftExpr : public BinaryExpr {
+            typedef std::shared_ptr<LshiftExpr> Ptr;
+
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<LshiftExpr>());
+            }
+        };
         struct AddExpr : public BinaryExpr {
             typedef std::shared_ptr<AddExpr> Ptr;
 

@@ -99,6 +99,10 @@ namespace graphitron {
 
         virtual void visit(fir::DivExpr::Ptr);
 
+        virtual void visit(fir::RshiftExpr::Ptr);
+
+        virtual void visit(fir::LshiftExpr::Ptr);
+
         virtual void visit(fir::AddExpr::Ptr);
 
         virtual void visit(fir::SubExpr::Ptr);

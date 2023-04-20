@@ -150,6 +150,14 @@ namespace graphitron {
         visitNaryExpr(expr);
     }
 
+    void MIRVisitor::visit(RshiftExpr::Ptr expr) {
+        visitBinaryExpr(expr);
+    }
+
+    void MIRVisitor::visit(LshiftExpr::Ptr expr) {
+        visitBinaryExpr(expr);
+    }
+
     void MIRVisitor::visit(AddExpr::Ptr expr) {
         visitBinaryExpr(expr);
     }

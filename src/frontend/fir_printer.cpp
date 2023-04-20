@@ -378,6 +378,14 @@ namespace graphitron {
             printUnaryExpr(expr, "not");
         }
 
+        void FIRPrinter::visit(RshiftExpr::Ptr expr) {
+            printBinaryExpr(expr, ">>");
+        }
+
+        void FIRPrinter::visit(LshiftExpr::Ptr expr) {
+            printBinaryExpr(expr, "<<");
+        }
+
         void FIRPrinter::visit(AddExpr::Ptr expr) {
             printBinaryExpr(expr, "+");
         }

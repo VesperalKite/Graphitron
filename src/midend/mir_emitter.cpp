@@ -361,6 +361,8 @@ namespace graphitron {
             auto iter_expr = gs_expr->iter_expr;
             assert(iter_expr->args.size() == 1);
             mir_gs_expr->iter = emitExpr(iter_expr->args.front());
+            ctx->set_iter_func(mir_gs_expr->iter);
+
 
             auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_gather_function));
             auto gather = ctx->getFunction(gather_funcExpr->function_name->name);
@@ -544,6 +546,20 @@ namespace graphitron {
         mir_expr->rhs = emitExpr(fir_expr->rhs);
         retExpr = mir_expr;
     };
+
+    void MIREmitter::visit(fir::RshiftExpr::Ptr fir_expr) {
+        auto mir_expr = std::make_shared<mir::RshiftExpr>();
+        mir_expr->lhs = emitExpr(fir_expr->lhs);
+        mir_expr->rhs = emitExpr(fir_expr->rhs);
+        retExpr = mir_expr;
+    }
+
+    void MIREmitter::visit(fir::LshiftExpr::Ptr fir_expr) {
+        auto mir_expr = std::make_shared<mir::LshiftExpr>();
+        mir_expr->lhs = emitExpr(fir_expr->lhs);
+        mir_expr->rhs = emitExpr(fir_expr->rhs);
+        retExpr = mir_expr;
+    }
 
     void MIREmitter::visit(fir::AddExpr::Ptr fir_expr) {
         auto mir_expr = std::make_shared<mir::AddExpr>();

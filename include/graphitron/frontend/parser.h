@@ -116,6 +116,8 @@ namespace graphitron{
 
         fir::Expr::Ptr parseTerm();
 
+        fir::Expr::Ptr parseShiftExpr();
+
         fir::Expr::Ptr parseAddExpr();
 
         fir::Expr::Ptr parseMulExpr();

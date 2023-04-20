@@ -113,6 +113,10 @@ namespace graphitron {
                 return "'<'";
             case Token::Type::RA:
                 return "'>'";
+            case Token::Type::LS:  
+                return "'<<'";
+            case Token::Type::RS:  
+                return "'>>";
             case Token::Type::EQ:
                 return "'=='";
             case Token::Type::NE:

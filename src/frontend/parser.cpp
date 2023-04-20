@@ -457,7 +457,33 @@ namespace graphitron {
             return notExpr;
         }
 
-        return parseAddExpr();
+        return parseShiftExpr();
+    }
+
+//shift_expr : add_expr {('>>' | '<<') add_expr}
+    fir::Expr::Ptr Parser::parseShiftExpr() {
+        fir::Expr::Ptr expr = parseAddExpr();
+
+        while (true) {
+            fir::BinaryExpr::Ptr shiftExpr;
+            switch (peek().type) {
+                case Token::Type::RS:  
+                    consume(Token::Type::RS);
+                    shiftExpr = std::make_shared<fir::RshiftExpr>();
+                    break;
+                case Token::Type::LS:  
+                    consume(Token::Type::LS);
+                    shiftExpr = std::make_shared<fir::LshiftExpr>();
+                    break;
+                default: 
+                    return expr;
+            }
+
+            shiftExpr->lhs = expr;
+            shiftExpr->rhs = parseAddExpr();
+
+            expr = shiftExpr;
+        } 
     }
 
 // add_expr : mul_expr {('+' | '-') mul_expr}
@@ -1402,6 +1428,8 @@ namespace graphitron {
         //decls.insert("fabs", IdentType::FUNCTION);
         decls.insert("startTimer", IdentType::FUNCTION);
         decls.insert("stopTimer", IdentType::FUNCTION);
+        decls.insert("fabs", IdentType::FUNCTION);
+        decls.insert("pow", IdentType::FUNCTION);
         //decls.insert("atoi", IdentType::FUNCTION);
        // decls.insert("floor", IdentType::FUNCTION);
         // decls.insert("log", IdentType::FUNCTION);

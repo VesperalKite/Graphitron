@@ -37,6 +37,8 @@ namespace graphitron {
         virtual void visit(mir::NotExpr::Ptr expr);
         virtual void visit(mir::MulExpr::Ptr expr);
         virtual void visit(mir::DivExpr::Ptr expr);
+        virtual void visit(mir::RshiftExpr::Ptr expr);
+        virtual void visit(mir::LshiftExpr::Ptr expr);
         virtual void visit(mir::AddExpr::Ptr expr);
         virtual void visit(mir::SubExpr::Ptr expr);
         virtual void visit(mir::BoolLiteral::Ptr expr);

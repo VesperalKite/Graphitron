@@ -10,10 +10,10 @@
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
-        return genMain() | genGAS() | genNewfiles();
-        //| genMIRcontext()
+        return genMIRcontext() | genMain() | genGAS() | genNewfiles();
     }
     int CodeGenEcp::genMain() {
+        //cout << "=== gen Main ===" << endl;
         oss.open(output_path_+"/main.cpp");
         reset();
 
@@ -36,6 +36,7 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genMIRcontext() {
+        //cout << "=== gen MIR ===" << endl;
         oss.open(output_path_+"/mir_context");
         reset();
         oss << "[INFO] input_filename_map_:"<<endl;
@@ -137,6 +138,11 @@ namespace graphitron {
         for (auto it : mir_context_->field_vector_init_stmts) {
             it->accept(stmt_visitor);
         }
+        oss << "[INFO] Iteration: ";
+        if (mir_context_->Iteration != nullptr) {
+            oss << mir_context_->Iteration->name;
+        }
+        oss << endl;
         oss << "[INFO] Init Function: ";
         for (auto it : mir_context_->InitFuncs) {
             oss << it->name << " ";
@@ -167,6 +173,7 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genGAS() {
+        //cout << "=== gen GAS ===" << endl;
         gen_ScatterGather();
         gen_Apply();
         return 0;
@@ -213,6 +220,7 @@ namespace graphitron {
                 }
             }
         }
+        //AddScalarArg(mir_context_->Iteration);
         auto body = main_func->body;
         body->accept(stmt_visitor);
         oss << "  return 0;" << endl;
@@ -325,8 +333,8 @@ namespace graphitron {
                     if (printDelimiter) {
                         oss << ", ";
                     }
-                    //arg.getType()->accept(type_visitor);
-                    oss << "int ";
+                    arg.getType()->accept(type_visitor);
+                    // oss << "int ";
                     oss << arg.getName();
                     printDelimiter = true;
                 }
@@ -431,6 +439,7 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genNewfiles() {
+        //cout << "=== gen files ===" << endl;
         util::insertFile(root_path+"/lib/libgraph/memory/he_mem_config.h", 
                         output_path_+"/../libgraph/memory/he_mem_config.h", 
                         "// insert",
@@ -480,22 +489,31 @@ namespace graphitron {
         apply_kernel_cpp_buffer2 << var_decl->name;
         apply_kernel_cpp_buffer2 << " bundle=control" << endl;
         
-        type_printer = new TypeGenerator(mir_context_, host_graph_kernel_cpp_buffer);
-        host_graph_kernel_cpp_buffer << "    extern ";
-        var_decl->type->accept(type_printer);
-        host_graph_kernel_cpp_buffer << var_decl->name << ";" << endl;
-        host_graph_kernel_cpp_buffer << "    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(";
-        var_decl->type->accept(type_printer);
-        host_graph_kernel_cpp_buffer << "), &" << var_decl->name << ");" << endl;
+        if (var_decl->alias == "iteration_arg") {
+            host_graph_kernel_cpp_buffer << "    int ";
+            host_graph_kernel_cpp_buffer << var_decl->name << " = superStep;" << endl;
+            host_graph_kernel_cpp_buffer << "    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(int";
+            host_graph_kernel_cpp_buffer << "), &" << var_decl->name << ");" << endl;
+        } else {
+            type_printer = new TypeGenerator(mir_context_, host_graph_kernel_cpp_buffer);
+            host_graph_kernel_cpp_buffer << "    extern ";
+            var_decl->type->accept(type_printer);
+            host_graph_kernel_cpp_buffer << var_decl->name << ";" << endl;
+            host_graph_kernel_cpp_buffer << "    clSetKernelArg(applyHandler->kernel, argvi++, sizeof(";
+            var_decl->type->accept(type_printer);
+            host_graph_kernel_cpp_buffer << "), &" << var_decl->name << ");" << endl;
+        }
         delete type_printer;
     }
 
     void CodeGenEcp::gen_ScatterGather() {
+        //cout << "=== gen gs ===" << endl;
         auto gs_visitor = ScatterGatherFunctionDeclGenerator(mir_context_, fpga_application_h_buffer);
         gs_visitor.genScatterGatherFuncDecl();
     }
 
     void CodeGenEcp::gen_Apply() {
+        //cout << "=== gen apply ===" << endl;
         auto apply_visitor = ApplyFunctionDeclGenerator(mir_context_, apply_kernel_cpp_buffer3);
         apply_visitor.genApplyFuncDecl();
     }

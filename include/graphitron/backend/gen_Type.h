@@ -18,7 +18,7 @@ namespace graphitron {
             : mir_context_(mir_context), oss_(oss) {}
     protected:  
         virtual void visit(mir::ScalarType::Ptr type);
-        // virtual void visit(mir::ElementType::Ptr type);
+        virtual void visit(mir::ElementType::Ptr type);
         virtual void visit(mir::VectorType::Ptr type);
         // virtual void visit(mir::VertexSetType::Ptr type);
         virtual void visit(mir::EdgeSetType::Ptr type);

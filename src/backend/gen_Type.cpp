@@ -32,9 +32,9 @@ namespace graphitron {
         }
     }
 
-    // void TypeGenerator::visit(mir::ElementType::Ptr type) {
-    //     oss_ << "element ";
-    // }
+    void TypeGenerator::visit(mir::ElementType::Ptr type) {
+        oss_ << "int ";
+    }
 
     void TypeGenerator::visit(mir::VectorType::Ptr type) {
         if (mir::isa<mir::ScalarType>(type->vector_element_type)){

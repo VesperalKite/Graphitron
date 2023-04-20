@@ -292,7 +292,17 @@ namespace graphitron {
          exit(-1);
          return nullptr;
       }
-
+      void set_iter_func(mir::Expr::Ptr iter) {
+         if (mir::isa<mir::VarExpr>(iter)) {
+            auto iter_var_expr = mir::to<mir::VarExpr>(iter);
+            auto iter_var = iter_var_expr->var;
+            mir::VarDecl::Ptr iter_val_decl = std::make_shared<mir::VarDecl>();
+            iter_val_decl->name = iter_var.getName();
+            iter_val_decl->type = iter_var.getType();
+            iter_val_decl->alias = "iteration_arg";
+            Iteration = iter_val_decl;
+         }
+      }
       void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr gather){
          scatter->isFunctor = false;
          gather->isFunctor = false;
@@ -371,6 +381,7 @@ namespace graphitron {
 
       bool have_frontier;
 
+      mir::VarDecl::Ptr Iteration;
       mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ScheduleSpace* schedule_; 

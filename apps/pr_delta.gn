@@ -1,0 +1,57 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const cur_rank : vector{Vertex}(double);
+const delta : vector{Vertex}(intx) = vertices.getProperty();
+const out_degree : vector{Vertex}(int) = vertices.getOutDegrees();
+const damp : double = 0.85;
+const beta_score : double = (1.0 - damp) / vertices.size();
+const x_score : double = 1.0 / vertices.size();
+const epsilon : double = 0.1;
+const round : int;
+
+func float2int (x : double) -> y : int
+    y = x * pow(2, 30);
+end
+
+func reset(v : Vertex) 
+    cur_rank[v] = 0.0;
+    delta[v] = float2int(1.0 / vertices.size());
+end
+
+func scatter(srcProp : intx)->update : intx
+    update = srcProp;
+end
+
+func gather(ori : intx, update : intx)->ngh_sum : intx
+    ngh_sum = ori + update;
+end
+
+func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
+    var tProp : intx;
+    if (round == 1)
+        tProp = damp*ngh_sum + beta_score;
+        cur_rank[v] += tProp;
+        newProp = tProp - x_score;
+    else
+        tProp = damp*ngh_sum;
+        cur_rank[v] += tProp;
+        newProp = tProp;
+        tProp = tProp >> 1;
+    end
+end
+
+func main()
+    vertices.init(reset);
+    edges.partition();
+    for it in 1:11
+        round = it;
+        startTimer();
+        edges.iter(round).gs(scatter, gather);
+        vertices.apply(v_update);
+        var exetime : double = stopTimer();
+        print "elapsed time: ";
+        println exetime;
+    end
+end

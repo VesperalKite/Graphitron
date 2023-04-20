@@ -14,6 +14,14 @@ namespace graphitron {
             oss << lit->val;
         }
 
+        void MIRPrinter::visit(RshiftExpr::Ptr expr) {
+            printBinaryExpr(expr, ">>");
+        }
+
+        void MIRPrinter::visit(LshiftExpr::Ptr expr) {
+            printBinaryExpr(expr, ">>");
+        }
+
         void MIRPrinter::visit(AddExpr::Ptr expr) {
             printBinaryExpr(expr, "+");
         }

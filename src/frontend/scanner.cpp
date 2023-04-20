@@ -112,6 +112,10 @@ namespace graphitron {
                             programStream.get();
                             tokens.addToken(Token::Type::LE, line, col, 2);
                             col += 2;
+                        } else if (programStream.peek() == '<') {
+                            programStream.get();
+                            tokens.addToken(Token::Type::LS, line, col, 2);
+                            col += 2;
                         } else {
                             tokens.addToken(Token::Type::LA, line, col++);
                         }
@@ -121,6 +125,10 @@ namespace graphitron {
                         if (programStream.peek() == '=') {
                             programStream.get();
                             tokens.addToken(Token::Type::RE, line, col, 2);
+                            col += 2;
+                        } else if (programStream.peek() == '>') {
+                            programStream.get();
+                            tokens.addToken(Token::Type::RS, line, col, 2);
                             col += 2;
                         } else {
                             tokens.addToken(Token::Type::RA, line, col++);
