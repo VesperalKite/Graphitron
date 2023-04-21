@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
     std::string output_path = cli.output_path();
 
     //compile the input file
+    std::cout << "INFO: Parse Input File.." << std::endl;
     fe->parseStream(buffer, context, errors);
     // if (out != 0){
     //     std::cout << "error in parse" << std::endl;
@@ -50,12 +51,14 @@ int main(int argc, char* argv[]) {
         = std::make_shared<mir::schedule::ProgramScheduleNode>();
 
     #ifndef USE_DEFAULT_SCHEDULE
+        std::cout << "INFO: Get User Defined Schedule.." << std::endl;
         user_defined_schedule(program);
     #endif
-
     Midend* me = new Midend(context, program->getSchedule());
+    std::cout << "INFO: Generate MIR.." << std::endl;
     me->emitMIR(mir_context);
     Backend* be= new Backend(mir_context);
+    std::cout << "INFO: Generate Synthesizable Code.." << std::endl;
     be->emitACC(output_path);
 
     return 0;

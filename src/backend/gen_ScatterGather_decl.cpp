@@ -45,7 +45,7 @@ namespace graphitron {
             //cout << "=== here ===" << endl;
             if (gs->scope_label_name != "") {
                 //cout << "=== y ===" << endl;
-                *gs_schedule = mir_context_->schedule_->gs_schedules->find(gs->scope_label_name)->second;
+                gs_schedule = &(mir_context_->schedule_->gs_schedules->find(gs->scope_label_name)->second);
             } else {
                 //cout << "=== n ===" << endl;
 

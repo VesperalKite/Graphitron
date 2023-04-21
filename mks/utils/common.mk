@@ -68,7 +68,7 @@ CXXFLAGS := $(AUTOGEN_CFLAG)
 include $(ABS_COMMON_REPO)/utils/opencl.mk
 CXXFLAGS += $(opencl_CXXFLAGS) -Wall
 # include
-CXXFLAGS += -I/$(XILINX_SDX)/Vivado_HLS/include/ -O3 -g -fmessage-length=0 -std=c++14 -Wno-deprecated-declarations
+CXXFLAGS += -I/$(XILINX_SDX)/Vivado_HLS/include/ -O3 -g -fmessage-length=0 -std=c++14 -Wno-deprecated-declarations -Wno-unused-variable -Wno-unused-function
 CXXFLAGS += -I $(FPGA_PATH)/
 CXXFLAGS += -I $(FPGA_PATH)/libfpga
 CXXFLAGS += -I $(FPGA_PATH)/libgraph

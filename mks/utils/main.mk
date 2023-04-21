@@ -13,8 +13,9 @@ FPGA_KERNEL_PATH = $(FPGA_PATH)/kernel
 
 include ${UTILS_PATH}/help.mk
 
-.PHONY: all clean build exe $(EXECUTABLE) cleanbuild
+.PHONY: all clean build exe $(EXECUTABLE) cleanbuild deploy
 
+deploy: precheck
 all: precheck
 exe: precheck
 clean: precheck
@@ -46,6 +47,8 @@ include ${UTILS_PATH}/clean.mk
 
 build:compile
 
+deploy: check-vitis $(BINARY_CONTAINERS)
+
 exe: check-vitis $(EXECUTABLE)
 
-all: check-vitis $(BINARY_CONTAINERS) exe 
+all: build deploy exe 

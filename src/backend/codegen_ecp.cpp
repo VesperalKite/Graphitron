@@ -13,7 +13,7 @@ namespace graphitron {
         return genMIRcontext() | genMain() | genGAS() | genNewfiles();
     }
     int CodeGenEcp::genMain() {
-        //cout << "=== gen Main ===" << endl;
+        cout << "Create Host Main File." << endl;
         oss.open(output_path_+"/main.cpp");
         reset();
 
@@ -36,6 +36,7 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genMIRcontext() {
+        cout << "Create MIRcontext File." << endl;
         //cout << "=== gen MIR ===" << endl;
         oss.open(output_path_+"/mir_context");
         reset();
@@ -173,6 +174,7 @@ namespace graphitron {
     }
 
     int CodeGenEcp::genGAS() {
+        cout << "Create GAS-Model Kernel Files." << endl;
         //cout << "=== gen GAS ===" << endl;
         gen_ScatterGather();
         gen_Apply();
@@ -374,6 +376,7 @@ namespace graphitron {
         gen_apply_kernel_cpp(var_decl);
         gen_apply_kernel_mk(var_decl);
         gen_host_graph_kernel_cpp(var_decl);
+        gen_host_graph_partition_cpp(var_decl);
     }
 
     void CodeGenEcp::gen_he_mem_config_h(mir::VarDecl::Ptr var_decl){
@@ -438,6 +441,12 @@ namespace graphitron {
     host_graph_kernel_cpp_buffer << "    he_set_dirty(MEM_ID_" << expr_visitor->toUpper(mem_name) << ");" << endl;
     }
 
+    void CodeGenEcp::gen_host_graph_partition_cpp(mir::VarDecl::Ptr var_decl) {
+    auto var = mir_context_->getSymbol(var_decl->name);
+    string mem_name = var.getAlias();
+    host_graph_partition_cpp_buffer << "        MEM_ID_" << expr_visitor->toUpper(mem_name) << "," << endl;
+    }
+
     int CodeGenEcp::genNewfiles() {
         //cout << "=== gen files ===" << endl;
         util::insertFile(root_path+"/lib/libgraph/memory/he_mem_config.h", 
@@ -472,6 +481,10 @@ namespace graphitron {
                         output_path_+"/../libgraph/kernel/host_graph_kernel.cpp",
                         "// insert",
                         host_graph_kernel_cpp_buffer);
+        util::insertFile(root_path+"/lib/libgraph/host_graph_partition.cpp",
+                        output_path_+"/../libgraph/host_graph_partition.cpp",
+                        "// insert",
+                        host_graph_partition_cpp_buffer);
         util::insertFile(root_path+"/lib/libfpga/fpga_application.h",
                         output_path_+"/../libfpga/fpga_application.h",
                         "// insert",

@@ -55,6 +55,7 @@ namespace graphitron {
     std::stringstream apply_kernel_cpp_buffer2;
     std::stringstream apply_kernel_cpp_buffer3;
     std::stringstream host_graph_kernel_cpp_buffer;
+    std::stringstream host_graph_partition_cpp_buffer;
     std::stringstream fpga_application_h_buffer;
 
 
@@ -87,6 +88,7 @@ namespace graphitron {
     void gen_apply_kernel_cpp(mir::VarDecl::Ptr var_decl);
     void gen_apply_kernel_mk(mir::VarDecl::Ptr var_decl);
     void gen_host_graph_kernel_cpp(mir::VarDecl::Ptr var_decl);
+    void gen_host_graph_partition_cpp(mir::VarDecl::Ptr var_decl);
     
     void AddScalarArg(mir::VarDecl::Ptr var_decl);
 

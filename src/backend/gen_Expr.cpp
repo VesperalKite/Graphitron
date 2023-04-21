@@ -68,7 +68,7 @@ namespace graphitron {
             oss_ << "(";
             bool printDelimiter = false;
 
-            for (int i = 1; i < expr->args.size(); i++){
+            for (int i = 0; i < expr->args.size(); i++){
                 auto arg = expr->args[i];
                 if (printDelimiter) {
                     oss_ << ", ";
