@@ -11,11 +11,14 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <graphitron/backend/gen_Type.h>
 
 namespace graphitron {
     struct ExprGenerator : mir::MIRVisitor {
         ExprGenerator(MIRContext* mir_context, std::ostream& oss, unsigned int *indentLevel_) 
-                : oss_(oss), mir_context_(mir_context), indentLevel(indentLevel_) {}
+                : oss_(oss), mir_context_(mir_context), indentLevel(indentLevel_) {
+                    type_visitor = new TypeGenerator(mir_context, oss);
+                }
         std::string toUpper(std::string s);
     protected:  
         virtual void visit(mir::VarExpr::Ptr expr);
@@ -48,6 +51,7 @@ namespace graphitron {
     private:  
         std::ostream &oss_;
         MIRContext* mir_context_;
+        TypeGenerator* type_visitor;
         unsigned *indentLevel;
 
         void indent() { ++(*indentLevel); }

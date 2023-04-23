@@ -34,6 +34,7 @@ namespace graphitron {
         int genMIRcontext();
         int genNewfiles();
         int genGAS();
+        int genConfig();
     protected: 
         virtual void visit(mir::FuncDecl::Ptr);
     private:  

@@ -49,19 +49,35 @@ func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
     end
 end
 
+func getBig() -> v : int
+    var max : int = -2147483647;
+    for i in 0:vertices.size()
+        if (delta[i] > max)
+            v = i;
+            max = delta[i];
+        end
+    end
+end
+
 func main()
-    var ab : int = fabs(-1);
     vertices.init(reset);
     beta_score = float2int((1.0 - damp) / vertices.size());
     x_score = float2int(1.0 / vertices.size());
     edges.partition();
+    var Bigv : int = 0;
     for it in 1:11
         round_id = it;
         startTimer();
-        edges.iter(round_id).gs(scatter, filter, gather);
+        #s1# edges.iter(round_id).gs(scatter, filter, gather);
         vertices.apply(v_update);
         var exetime : double = stopTimer();
+        delta.update();
+        Bigv = getBig();
+        print "The most important vertex is: ";
+        println Bigv;
         print "elapsed time: ";
         println exetime;
     end
 end
+schedule:
+    program->configSubpartitionPlan("s1", "estimator");

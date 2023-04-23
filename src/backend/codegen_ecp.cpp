@@ -10,7 +10,7 @@
 using namespace std;
 namespace graphitron {
     int CodeGenEcp::genFPGA() {
-        return genMIRcontext() | genMain() | genGAS() | genNewfiles();
+        return genMIRcontext() | genMain() | genGAS() | genConfig() | genNewfiles();
     }
     int CodeGenEcp::genMain() {
         cout << "Create Host Main File." << endl;
@@ -181,6 +181,22 @@ namespace graphitron {
         return 0;
     }
 
+    int CodeGenEcp::genConfig() {
+        cout << "Create Configuration Files." << endl;
+        oss.open(output_path_+"/build.mk");
+        reset();
+        oss << "#scatter-gather kernel" << endl;
+        oss << "HAVE_EDGE_PROP=" << mir_context_->have_edge_prop << endl;
+        oss << "HAVE_UNSIGNED_PROP=" << mir_context_->have_unsigned_prop << endl;
+        oss << "#apply kernel" << endl;
+        oss << "HAVE_APPLY=" << mir_context_->have_apply << endl;
+        oss << "CUSTOMIZE_APPLY=" << mir_context_->customize_apply << endl;
+        oss << "HAVE_APPLY_OUTDEG=true" << endl;
+        oss << "#subpartition plan" << endl;
+        oss << "SCHEDULER=" << mir_context_->subpartitionplan << endl;  
+        oss.close();
+        return 0;   
+    }
 
     void CodeGenEcp::genIncludeStmts() {
         oss << "#include <stdio.h>" << endl;

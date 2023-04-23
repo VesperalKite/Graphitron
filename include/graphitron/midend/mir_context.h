@@ -385,6 +385,24 @@ namespace graphitron {
       mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ScheduleSpace* schedule_; 
+      // scatter-gather 
+      std::string have_edge_prop = "ture";
+      std::string have_unsigned_prop = "false";
+      int queue_size_filter = 16; 
+      int queue_size_memory = 512;
+      int read_burst_size = 6;
+      int log_scatter_cache_burst_size = 6;
+      int TargetPartitionSize = 0;
+      bool TargetPartitionFlag = false;
+      int TargetBandWidth = 77;
+      float UramUpbound = 0.9;
+      std::string subpartitionplan = "secondOrderEstimator";
+      // apply
+      std::string have_apply = "false";
+      std::string customize_apply = "false";
+      // config
+      int freq = 280;
+   
       
     };
  }
