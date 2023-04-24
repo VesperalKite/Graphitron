@@ -50,6 +50,7 @@ func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
 end
 
 func getBig() -> v : int
+    v = 0;
     var max : int = -2147483647;
     for i in 0:vertices.size()
         if (delta[i] > max)
