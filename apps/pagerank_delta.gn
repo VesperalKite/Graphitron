@@ -48,13 +48,13 @@ func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
     end
     if (tProp < epsilon*cur_rank[v]) and (tProp > -epsilon*cur_rank[v]) 
         delta[v] = -2147483647;
-        if (out_degree[v] != 0) 
+        if (out_degree != 0) 
             newProp = -2147483647;
         end
     else
         delta[v] = tProp;
-        if (out_degree[v] != 0)
-            newProp = tProp/out_degree[v];
+        if (out_degree != 0)
+            newProp = tProp/out_degree;
         end
     end
 end

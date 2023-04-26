@@ -386,7 +386,7 @@ namespace graphitron {
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ScheduleSpace* schedule_; 
       // scatter-gather 
-      std::string have_edge_prop = "ture";
+      std::string have_edge_prop = "true";
       std::string have_unsigned_prop = "false";
       int queue_size_filter = 16; 
       int queue_size_memory = 512;
