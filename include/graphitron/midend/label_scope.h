@@ -36,7 +36,7 @@ namespace graphitron {
 
         }
 
-        // get the current scope string, which is used to find relevant schedule
+        // get the current scope string, which is used to find relevant parameter
         std::string getCurrentScope(){
             std::string concat_of_current_scope;
             bool first = true;

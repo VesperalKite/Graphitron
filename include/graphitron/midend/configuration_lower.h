@@ -6,19 +6,19 @@
 #define GRAPHITRON_CONFIGURATION_LOWER_H
 
 #include <graphitron/midend/mir_context.h>
-#include <graphitron/midend/schedule_space.h>
+#include <graphitron/midend/parameter_space.h>
 #include <graphitron/midend/mir_rewriter.h>
 
 namespace graphitron {
     class ConfigurationLower {
     public:  
-        ConfigurationLower(MIRContext *mir_context, ScheduleSpace *schedule) 
-                : schedule_(schedule), mir_context_(mir_context) {};
+        ConfigurationLower(MIRContext *mir_context, ParameterSpace *parameter) 
+                : parameter_(parameter), mir_context_(mir_context) {};
         void lower();
 
         struct LowerGASExpr : public mir::MIRVisitor {
-            LowerGASExpr(ScheduleSpace* schedule, MIRContext* mir_context)
-                    : schedule_(schedule), mir_context_(mir_context) {
+            LowerGASExpr(ParameterSpace* parameter, MIRContext* mir_context)
+                    : parameter_(parameter), mir_context_(mir_context) {
 
             };
             virtual void visit(mir::GsExpr::Ptr gs);
@@ -31,11 +31,11 @@ namespace graphitron {
                 }
             }
 
-            ScheduleSpace* schedule_;
+            ParameterSpace* parameter_;
             MIRContext* mir_context_;
         }; 
     private:  
-        ScheduleSpace* schedule_ = nullptr;
+        ParameterSpace* parameter_ = nullptr;
         MIRContext* mir_context_ = nullptr;
     };
 }

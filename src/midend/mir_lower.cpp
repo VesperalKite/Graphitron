@@ -8,10 +8,10 @@
 #include <graphitron/midend/configuration_lower.h>
 
 namespace graphitron {
-    void MIRLower::lower(MIRContext* mir_context, ScheduleSpace* schedule) {
-        mir_context->schedule_ = schedule;
+    void MIRLower::lower(MIRContext* mir_context, ParameterSpace* parameter) {
+        mir_context->parameter_ = parameter;
         EdgeSetLower(mir_context).lower();
         PropArrayLower(mir_context).lower();
-        ConfigurationLower(mir_context, schedule).lower();
+        ConfigurationLower(mir_context, parameter).lower();
     }
 }

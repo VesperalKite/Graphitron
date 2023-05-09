@@ -27,15 +27,15 @@ if __name__ == '__main__':
     runtime_include_path = args['runtime_include_path']
     graphitronlib_path = args['graphitronlib_path']
 
-    #check if user supplied a separate algorithm file from the schedule file
+    #check if user supplied a separate algorithm file from the parameter file
     supplied_separate_algo_file = False
 
     if (args['input_algo_file_name']):
-        # use the separate algorithm file if supplied, and use the input_file only for the schedule
+        # use the separate algorithm file if supplied, and use the input_file only for the parameter
         supplied_separate_algo_file = True
         algo_file_name = args['input_algo_file_name']
     else:
-        # use the input_file for both the algorithm and schedule
+        # use the input_file for both the algorithm and parameter
         algo_file_name = 'algo.gt'
 
     compile_file_name = 'compile.cpp'
@@ -46,36 +46,36 @@ if __name__ == '__main__':
         content = f.readlines()
 
     if not supplied_separate_algo_file:
-        # copy lines up to the point of 'schedule:' to 'algo.gt' file
+        # copy lines up to the point of 'parameter:' to 'algo.gt' file
         algo_file = open(algo_file_name, 'w')
-    schedule_cmd_list = []
-    is_processing_schedule = False
+    parameter_cmd_list = []
+    is_processing_parameter = False
 
     for line in content:
-        if line.startswith("schedule:"):
-            is_processing_schedule = True
-        elif is_processing_schedule:
-            schedule_cmd_list.append(line)
+        if line.startswith("parameter:"):
+            is_processing_parameter = True
+        elif is_processing_parameter:
+            parameter_cmd_list.append(line)
         else:
             if not supplied_separate_algo_file:
                 algo_file.write(line)
 
     if not supplied_separate_algo_file:
-        algo_file.close();
+        algo_file.close()
 
 
     COMPILER_BINARY = ""
-    if len(schedule_cmd_list) == 0:
+    if len(parameter_cmd_list) == 0:
         COMPILER_BINARY=GRAPHITRON_BUILD_DIRECTORY+"/bin/graphitron_compiler/graphitronc"
     else:
-        # generate the schedule file schedule.cpp
+        # generate the parameter file parameter.cpp
         compile_file = open(compile_file_name, 'w')
 
-        compile_file.write("#include <graphitron/midend/schedule.h>\n")
+        compile_file.write("#include <graphitron/midend/parameter.h>\n")
         compile_file.write("namespace graphitron {\n")
-        compile_file.write("void user_defined_schedule (graphitron::mir::schedule::ProgramScheduleNode::Ptr program) {\n")
-        for schedule_cmd in schedule_cmd_list:
-            compile_file.write(schedule_cmd)
+        compile_file.write("void user_defined_parameter (graphitron::mir::parameter::ProgramParameterNode::Ptr program) {\n")
+        for parameter_cmd in parameter_cmd_list:
+            compile_file.write(parameter_cmd)
         compile_file.write("}\n")
         compile_file.write("}")
 

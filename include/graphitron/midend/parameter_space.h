@@ -2,8 +2,8 @@
 // Created by Zheng Feng on 01/07/23.
 //
 
-#ifndef GRAPHITRON_SCHEDULE_SPACE_H
-#define GRAPHITRON_SCHEDULE_SPACE_H
+#ifndef GRAPHITRON_PARAMETER_SPACE_H
+#define GRAPHITRON_PARAMETER_SPACE_H
 
 #include <string>
 #include <map>
@@ -12,11 +12,11 @@
 #define DEFAULT_FRE 280
 
 namespace graphitron {
-    struct FpgaSchedule {
+    struct FpgaParameter {
         int Frequency = DEFAULT_FRE;
     };
 
-    struct GatherScatterSchedule {
+    struct GatherScatterParameter {
         enum class SubpartitionPlan {
             normal, secondOrderEstimator
         };
@@ -34,30 +34,30 @@ namespace graphitron {
         SubpartitionPlan subpartitionplan=SubpartitionPlan::normal;
     };
     
-    struct ApplySchedule {
+    struct ApplyParameter {
         std::string scope_label_name;
         bool ApplyOutDeg = false;
         bool ApplyNumSize = false;
     };
 
-    class ScheduleSpace {
+    class ParameterSpace {
     public:  
-        ScheduleSpace() {
-            fpga_schedules = new FpgaSchedule();
-            gs_schedules = new std::map<std::string, GatherScatterSchedule>();
-            apply_schedules = new std::map<std::string, ApplySchedule>();
+        ParameterSpace() {
+            fpga_parameters = new FpgaParameter();
+            gs_parameters = new std::map<std::string, GatherScatterParameter>();
+            apply_parameters = new std::map<std::string, ApplyParameter>();
         }
-        ~ScheduleSpace() {
-            delete fpga_schedules;
-            delete gs_schedules;
-            delete apply_schedules;
+        ~ParameterSpace() {
+            delete fpga_parameters;
+            delete gs_parameters;
+            delete apply_parameters;
         }
-        friend std::ostream &operator<<(std::ostream &, ScheduleSpace &);
-        FpgaSchedule *fpga_schedules;
-        std::map<std::string, GatherScatterSchedule> *gs_schedules;
-        std::map<std::string, ApplySchedule> *apply_schedules;
+        friend std::ostream &operator<<(std::ostream &, ParameterSpace &);
+        FpgaParameter *fpga_parameters;
+        std::map<std::string, GatherScatterParameter> *gs_parameters;
+        std::map<std::string, ApplyParameter> *apply_parameters;
     };
 
 }
 
-#endif //GRAPHITRON_SCHEDULE_SPACE_H
+#endif //GRAPHITRON_PARAMETER_SPACE_H

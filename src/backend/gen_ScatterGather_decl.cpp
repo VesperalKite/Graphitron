@@ -37,7 +37,7 @@ namespace graphitron {
     }
 
     void ScatterGatherFunctionDeclGenerator::genScatterFuncDecl(mir::Expr::Ptr gs_expr) {
-        GatherScatterSchedule* gs_schedule;
+        GatherScatterParameter* gs_parameter;
         mir::FuncDecl::Ptr scatter_func;
         if (mir::isa<mir::GsExpr>(gs_expr)) {
             mir::GsExpr::Ptr gs = mir::to<mir::GsExpr>(gs_expr);
@@ -45,15 +45,15 @@ namespace graphitron {
             //cout << "=== here ===" << endl;
             if (gs->scope_label_name != "") {
                 //cout << "=== y ===" << endl;
-                gs_schedule = &(mir_context_->schedule_->gs_schedules->find(gs->scope_label_name)->second);
+                gs_parameter = &(mir_context_->parameter_->gs_parameters->find(gs->scope_label_name)->second);
             } else {
                 //cout << "=== n ===" << endl;
 
-                gs_schedule = new GatherScatterSchedule();            
+                gs_parameter = new GatherScatterParameter();            
             }
             //cout << "=== here ===" << endl;
         }
-        bool edge_prop = gs_schedule->EdgeProp;
+        bool edge_prop = gs_parameter->EdgeProp;
         if (!edge_prop) {
             assert(scatter_func->args.size() == 1);
             mir::Var srcProp = scatter_func->args.front();

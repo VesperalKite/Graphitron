@@ -3,21 +3,21 @@
 //
 
 #include <ostream>
-#include <graphitron/midend/schedule_space.h>
+#include <graphitron/midend/parameter_space.h>
 
 namespace graphitron {
-    std::ostream &operator<<(std::ostream &oss, ScheduleSpace &schedule) {
-        oss << "### Schedule Space ###" << std::endl;
-        oss << "## FPGA Schedule ##" << std::endl;
+    std::ostream &operator<<(std::ostream &oss, ParameterSpace &parameter) {
+        oss << "### Parameter Space ###" << std::endl;
+        oss << "## FPGA Parameter ##" << std::endl;
         oss << "* ";
-        if (schedule.fpga_schedules->Frequency == DEFAULT_FRE) {
+        if (parameter.fpga_parameters->Frequency == DEFAULT_FRE) {
             oss << "Default ";
         }
-        oss << "Frequency: " << schedule.fpga_schedules->Frequency << std::endl;
+        oss << "Frequency: " << parameter.fpga_parameters->Frequency << std::endl;
         oss << std::endl;
-        oss << "## Gather-Scatter Phase Schedule ##" << std::endl;
-        if (schedule.gs_schedules->size() > 0) {
-            for (auto it=schedule.gs_schedules->begin(); it != schedule.gs_schedules->end(); it++){
+        oss << "## Gather-Scatter Phase Parameter ##" << std::endl;
+        if (parameter.gs_parameters->size() > 0) {
+            for (auto it=parameter.gs_parameters->begin(); it != parameter.gs_parameters->end(); it++){
                 oss << "# gs label: " << it->first << " #" << std::endl;
                 oss << "* EdgeProp: " << (it->second.EdgeProp?"true":"false")<< std::endl;
                 oss << "* UnsignedProp: " << (it->second.UnsignedProp?"true":"false") << std::endl;
@@ -31,25 +31,25 @@ namespace graphitron {
                 oss << "* TargetBandWidth: " << it->second.TargetBandWidth << std::endl;
                 oss << "* UramUpbound: " << it->second.UramUpbound << std::endl;
                 oss << "* SubpartitionPlan: ";
-                if (it->second.subpartitionplan == GatherScatterSchedule::SubpartitionPlan::normal) {
+                if (it->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::normal) {
                     oss << "normal Plan" << std::endl;
-                } else if (it->second.subpartitionplan == GatherScatterSchedule::SubpartitionPlan::secondOrderEstimator) {
+                } else if (it->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::secondOrderEstimator) {
                     oss << "estimator Plan" << std::endl;
                 }
             }
         } else {
-            oss << "no gs function has such a schedule" << std::endl;
+            oss << "no gs function has such a parameter" << std::endl;
         }
         oss << std::endl;
-        oss << "## Apply Phase Schedule ##" << std::endl;
-        if (schedule.apply_schedules->size() > 0) {
-            for (auto it=schedule.apply_schedules->begin(); it != schedule.apply_schedules->end(); it++) {
+        oss << "## Apply Phase Parameter ##" << std::endl;
+        if (parameter.apply_parameters->size() > 0) {
+            for (auto it=parameter.apply_parameters->begin(); it != parameter.apply_parameters->end(); it++) {
                 oss << "# apply label: " << it->first << " #" << std::endl;
                 oss << "* ApplyOutDeg: " << (it->second.ApplyOutDeg?"true":"false") << std::endl;
                 oss << "* ApplyNumSize: " << (it->second.ApplyNumSize?"true":"false") << std::endl;
             }
         } else {
-            oss << "no apply function has such a schedule" << std::endl;
+            oss << "no apply function has such a parameter" << std::endl;
         }
         oss << std::endl;
         return oss;

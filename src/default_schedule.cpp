@@ -1,6 +1,6 @@
-#include <graphitron/midend/schedule.h>
+#include <graphitron/midend/parameter.h>
 namespace graphitron {
-void user_defined_schedule (graphitron::mir::schedule::ProgramScheduleNode::Ptr program) {
+void user_defined_parameter (graphitron::mir::parameter::ProgramParameterNode::Ptr program) {
     
 }
 }

@@ -91,5 +91,5 @@ func main()
         println exetime;
     end
 end
-schedule:
+parameter:
     program->configSubpartitionPlan("s1", "estimator");

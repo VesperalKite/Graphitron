@@ -6,14 +6,14 @@
 #define GRAPHITRON_MIR_LOWER_H
 
 #include <graphitron/midend/mir_context.h>
-#include <graphitron/midend/schedule_space.h>
+#include <graphitron/midend/parameter_space.h>
 
 namespace graphitron {
     class MIRLower {
     public:  
         MIRLower(){};
 
-        void lower(MIRContext* mir_context, ScheduleSpace* schedule);
+        void lower(MIRContext* mir_context, ParameterSpace* parameter);
     };
 }
 

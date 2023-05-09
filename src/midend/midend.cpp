@@ -8,7 +8,7 @@
 namespace graphitron {
     int Midend::emitMIR(MIRContext* mir_context) {
         MIREmitter(mir_context).emitIR(fir_context_->getProgram());
-        MIRLower().lower(mir_context, schedule_);
+        MIRLower().lower(mir_context, parameter_);
         return 0;
     }
 }

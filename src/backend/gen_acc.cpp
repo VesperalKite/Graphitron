@@ -61,11 +61,11 @@ namespace graphitron {
         return 0;
     }
 
-    int GenAcc::genSchedule() {
-        if (mir_context_->schedule_ == nullptr) {
-            oss << "no schedule" << std::endl;
+    int GenAcc::genParameter() {
+        if (mir_context_->parameter_ == nullptr) {
+            oss << "no parameter" << std::endl;
         } else {
-            oss << *(mir_context_->schedule_);
+            oss << *(mir_context_->parameter_);
         }
         return 0;
     }

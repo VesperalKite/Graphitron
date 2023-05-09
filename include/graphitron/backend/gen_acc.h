@@ -20,7 +20,7 @@ namespace graphitron {
         }
         int genMIR();
         int genl2_h();
-        int genSchedule();
+        int genParameter();
     protected:
         virtual void visit(mir::IdentDecl::Ptr);
 

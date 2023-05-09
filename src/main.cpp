@@ -3,7 +3,7 @@
 #include <graphitron/frontend/frontend.h>
 #include <graphitron/midend/midend.h>
 #include <graphitron/backend/backend.h>
-#include <graphitron/midend/schedule.h>
+#include <graphitron/midend/parameter.h>
 
 #include <graphitron/utils/command_line.h>
 #include <graphitron/frontend/error.h>
@@ -11,7 +11,7 @@
 using namespace graphitron;
 
 namespace graphitron {
-    extern void user_defined_schedule (mir::schedule::ProgramScheduleNode::Ptr program);
+    extern void user_defined_parameter (mir::parameter::ProgramParameterNode::Ptr program);
 }
 
 int main(int argc, char* argv[]) {
@@ -47,14 +47,14 @@ int main(int argc, char* argv[]) {
     // fir << *(context->getProgram());
     // fir << std::endl;
 
-    mir::schedule::ProgramScheduleNode::Ptr program
-        = std::make_shared<mir::schedule::ProgramScheduleNode>();
+    mir::parameter::ProgramParameterNode::Ptr program
+        = std::make_shared<mir::parameter::ProgramParameterNode>();
 
-    #ifndef USE_DEFAULT_SCHEDULE
-        std::cout << "INFO: Get User Defined Schedule.." << std::endl;
-        user_defined_schedule(program);
+    #ifndef USE_DEFAULT_PARAMETER
+        std::cout << "INFO: Get User Defined Parameter.." << std::endl;
+        user_defined_parameter(program);
     #endif
-    Midend* me = new Midend(context, program->getSchedule());
+    Midend* me = new Midend(context, program->getParameter());
     std::cout << "INFO: Generate MIR.." << std::endl;
     me->emitMIR(mir_context);
     Backend* be= new Backend(mir_context);

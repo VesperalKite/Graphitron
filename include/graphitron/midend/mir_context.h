@@ -14,7 +14,7 @@
 
 #include <graphitron/utils/scopedmap.h>
 #include <graphitron/midend/mir.h>
-#include <graphitron/midend/schedule_space.h>
+#include <graphitron/midend/parameter_space.h>
 
 namespace graphitron {
 
@@ -384,7 +384,7 @@ namespace graphitron {
       mir::VarDecl::Ptr Iteration;
       mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
-      ScheduleSpace* schedule_; 
+      ParameterSpace* parameter_; 
       // scatter-gather 
       std::string have_edge_prop = "true";
       std::string have_unsigned_prop = "false";

@@ -55,5 +55,5 @@ func main()
     end
 end
 
-schedule:
+parameter:
     program->configUnsignedProp("s1", true)->configSubpartitionPlan("s1", "estimator");

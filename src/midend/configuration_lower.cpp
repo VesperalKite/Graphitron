@@ -3,44 +3,44 @@
 //
 
 #include <graphitron/midend/configuration_lower.h>
-#include <graphitron/midend/schedule.h>
+#include <graphitron/midend/parameter.h>
 
 namespace graphitron {
     void ConfigurationLower::lower(){
-        auto lower_gas_expr = LowerGASExpr(schedule_, mir_context_);
+        auto lower_gas_expr = LowerGASExpr(parameter_, mir_context_);
         lower_gas_expr.rewrite();
-        if (schedule_ != nullptr && schedule_->fpga_schedules != nullptr) {
-            mir_context_->freq = schedule_->fpga_schedules->Frequency;
+        if (parameter_ != nullptr && parameter_->fpga_parameters != nullptr) {
+            mir_context_->freq = parameter_->fpga_parameters->Frequency;
         }
     }
 
     void ConfigurationLower::LowerGASExpr::visit(mir::GsExpr::Ptr gs) {
-        if (schedule_ != nullptr ) {
+        if (parameter_ != nullptr ) {
             auto current_scope_name = label_scope_.getCurrentScope();
-            if (schedule_->gs_schedules != nullptr) {
-                auto gs_schedule = schedule_->gs_schedules->find(current_scope_name);
-                if (gs_schedule != schedule_->gs_schedules->end()) {
+            if (parameter_->gs_parameters != nullptr) {
+                auto gs_parameter = parameter_->gs_parameters->find(current_scope_name);
+                if (gs_parameter != parameter_->gs_parameters->end()) {
 
-                    if (gs_schedule->second.UnsignedProp) {
+                    if (gs_parameter->second.UnsignedProp) {
                         mir_context_->have_unsigned_prop = "true";
                     } else {
                         mir_context_->have_unsigned_prop = "false";
                     }
 
-                    mir_context_->queue_size_filter = gs_schedule->second.StreamFilterDepth;
-                    mir_context_->queue_size_memory = gs_schedule->second.StreamMemoryDepth;
-                    mir_context_->read_burst_size = gs_schedule->second.ReadBurstSize;
-                    mir_context_->log_scatter_cache_burst_size = gs_schedule->second.CacheBurstSize;
-                    if (gs_schedule->second.TargetPartitionFlag) {
-                        mir_context_->TargetPartitionFlag = gs_schedule->second.TargetPartitionFlag;
-                        mir_context_->TargetPartitionSize = gs_schedule->second.TargetPartitionSize;
+                    mir_context_->queue_size_filter = gs_parameter->second.StreamFilterDepth;
+                    mir_context_->queue_size_memory = gs_parameter->second.StreamMemoryDepth;
+                    mir_context_->read_burst_size = gs_parameter->second.ReadBurstSize;
+                    mir_context_->log_scatter_cache_burst_size = gs_parameter->second.CacheBurstSize;
+                    if (gs_parameter->second.TargetPartitionFlag) {
+                        mir_context_->TargetPartitionFlag = gs_parameter->second.TargetPartitionFlag;
+                        mir_context_->TargetPartitionSize = gs_parameter->second.TargetPartitionSize;
                     }
-                    mir_context_->TargetBandWidth = gs_schedule->second.TargetBandWidth;
-                    mir_context_->UramUpbound = gs_schedule->second.UramUpbound;
+                    mir_context_->TargetBandWidth = gs_parameter->second.TargetBandWidth;
+                    mir_context_->UramUpbound = gs_parameter->second.UramUpbound;
                     
-                    if (gs_schedule->second.subpartitionplan == GatherScatterSchedule::SubpartitionPlan::normal) {
+                    if (gs_parameter->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::normal) {
                         mir_context_->subpartitionplan = "normal";
-                    } else if (gs_schedule->second.subpartitionplan == GatherScatterSchedule::SubpartitionPlan::secondOrderEstimator) {
+                    } else if (gs_parameter->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::secondOrderEstimator) {
                         mir_context_->subpartitionplan = "secondOrderEstimator";
                     }
                     
@@ -51,11 +51,11 @@ namespace graphitron {
  
     void ConfigurationLower::LowerGASExpr::visit(mir::ApplyExpr::Ptr apply) {
         mir_context_->have_apply = "true";
-        // if (schedule_ != nullptr) {
+        // if (parameter_ != nullptr) {
         //     auto current_scope_name = label_scope_.getCurrentScope();
-        //     if (schedule_->apply_schedules != nullptr) {
-        //         auto apply_schedule = schedule_->apply_schedules->find(current_scope_name);
-        //         if (apply_schedule != schedule_->apply_schedules->end()) {
+        //     if (parameter_->apply_parameters != nullptr) {
+        //         auto apply_parameter = parameter_->apply_parameters->find(current_scope_name);
+        //         if (apply_parameter != parameter_->apply_parameters->end()) {
                     
         //         }
                 
