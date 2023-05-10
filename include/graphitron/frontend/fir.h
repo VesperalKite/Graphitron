@@ -770,6 +770,16 @@ namespace graphitron{
                 visitor->visit(self<InitExpr>());
             }
         };
+
+        struct ProcExpr : public Expr {
+            Expr::Ptr target;
+            FuncExpr::Ptr input_function;
+            typedef std::shared_ptr<ProcExpr> Ptr;
+
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<ProcExpr>());
+            }
+        };
     }
 }
 

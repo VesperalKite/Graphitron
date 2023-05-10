@@ -147,6 +147,29 @@ namespace graphitron {
         }
     }
 
+    void ExprGenerator::visit(mir::ProcExpr::Ptr expr) {
+        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
+        if (mir_context_->isConstVertexSet(mir_var->var.getName()) || mir_context_->isEdgeSet(mir_var->var.getName())) {
+            auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+            assert(associated_element_type);
+            auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+            assert(associated_element_type_size);
+            oss_ << "this is process expr, target: " << mir_var->var.getName();
+            oss_ << ", input function: ";
+            expr->input_function->accept(this);
+            // oss_ << "loop_for_lambda((int)0, (int)";
+            // associated_element_type_size->accept(this);
+            // oss_ << ", [&] (int init_iter) {"<< endl;
+            // indent();
+            // printIndent();
+            // expr->input_function->accept(this);
+            // oss_ << "(init_iter);" << endl;
+            // dedent();
+            // printIndent();
+            // oss_ << "})";
+        }   
+    }
+
     void ExprGenerator::visit(mir::EqExpr::Ptr expr) {
         oss_ << "(";
         expr->operands[0]->accept(this);

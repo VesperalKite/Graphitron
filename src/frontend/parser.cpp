@@ -638,6 +638,13 @@ namespace graphitron {
                 init_expr->input_function = parseFunctorExpr();
                 consume(Token::Type::RP);
                 expr = init_expr;
+            } else if (tryConsume(Token::Type::PROC)) {
+                consume(Token::Type::LP);
+                auto process_expr = std::make_shared<fir::ProcExpr>();
+                process_expr->target = expr;
+                process_expr->input_function = parseFunctorExpr();
+                consume(Token::Type::RP);
+                expr = process_expr;
             } else if (peek().type == Token::Type::IDENT) {
                 // transforming into builtin intrinsics (runtime libraries)
                 auto ident = parseIdent();

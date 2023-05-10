@@ -569,6 +569,13 @@ namespace graphitron {
             oss << ")";
         }
 
+        void FIRPrinter::visit(ProcExpr::Ptr expr) {
+            expr->target->accept(this);
+            oss << ".PROCESS(";
+            expr->input_function->accept(this);
+            oss << ")";
+        }
+
         void FIRPrinter::printIdentDecl(IdentDecl::Ptr decl) {
             decl->name->accept(this);
             oss << " : ";

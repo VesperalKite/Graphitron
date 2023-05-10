@@ -70,6 +70,7 @@ namespace graphitron {
         struct GsActiveExpr;
         struct ApplyExpr;
         struct InitExpr;
+        struct ProcExpr;
 
         struct BreakStmt;
         struct ReduceStmt;
@@ -262,6 +263,7 @@ namespace graphitron {
             virtual void visit(std::shared_ptr<GsExpr>);
             virtual void visit(std::shared_ptr<ApplyExpr>);
             virtual void visit(std::shared_ptr<InitExpr>);
+            virtual void visit(std::shared_ptr<ProcExpr>);
             //virtual void visit(std::shared_ptr<WhereExpr>);
             //virtual void visit(std::shared_ptr<FromExpr>);
             //virtual void visit(std::shared_ptr<ToExpr>);

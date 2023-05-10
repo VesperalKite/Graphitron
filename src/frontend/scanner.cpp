@@ -22,6 +22,7 @@ namespace graphitron {
         if (token == "gs") return Token::Type::GS;
         if (token == "apply") return Token::Type::APPLY;
         if (token == "init") return Token::Type::INIT;
+        if (token == "process") return Token::Type::PROC;
         if (token == "if") return Token::Type::IF;
         if (token == "elif") return Token::Type::ELIF;
         if (token == "else") return Token::Type::ELSE;

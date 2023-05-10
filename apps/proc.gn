@@ -1,0 +1,17 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const prop : vector{Vertex}(intx) = vertices.getProperty();
+
+func reset(v : Vertex)
+    prop[v]=0;
+end
+
+
+func main()
+    vertices.process(reset);
+end
+
+parameter:
+    program->configSubpartitionPlan("s1", "estimator");

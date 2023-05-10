@@ -55,6 +55,8 @@
 //ApplyExpr
 //InitExpr
 
+//ProcExpr
+
 //NaryExpr
 //BinaryExpr
 //NegExpr
@@ -596,6 +598,27 @@ namespace graphitron {
             InitExpr() {}
 
             InitExpr(std::string target_name,
+                        mir::Type::Ptr target_type,
+                        mir::FuncExpr::Ptr input_func) {
+                mir::VarExpr::Ptr target_expr = std::make_shared<mir::VarExpr>();
+                mir::Var target_var = mir::Var(target_name, target_type);
+                target_expr->var = target_var;
+                target = target_expr;
+                input_function = input_func;}
+        };
+
+        struct ProcExpr : public Expr {
+            Expr::Ptr target;
+            FuncExpr::Ptr input_function = nullptr;
+            typedef std::shared_ptr<ProcExpr> Ptr;
+
+            virtual void accept(MIRVisitor *visitor) {
+                visitor->visit(self<ProcExpr>());
+            }
+
+            ProcExpr() {}
+
+            ProcExpr(std::string target_name,
                         mir::Type::Ptr target_type,
                         mir::FuncExpr::Ptr input_func) {
                 mir::VarExpr::Ptr target_expr = std::make_shared<mir::VarExpr>();

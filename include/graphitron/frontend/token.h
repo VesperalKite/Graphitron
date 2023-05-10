@@ -29,6 +29,8 @@ namespace graphitron {
             APPLY,//apply
             INIT,//init
 
+            PROC,//process
+
             IF,//if
             ELIF,//elif
             ELSE,//else

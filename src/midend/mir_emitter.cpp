@@ -351,7 +351,7 @@ namespace graphitron {
 
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
         if (!mir_var) {
-            std::cout << "error in getting name of the vector in GsExpr" << std::endl;
+            std::cout << "error in getting name of the target in GsExpr" << std::endl;
             return;
         }
 
@@ -392,7 +392,7 @@ namespace graphitron {
 
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
         if (!mir_var) {
-            std::cout << "error in getting name of the vector in ApplyExpr" << std::endl;
+            std::cout << "error in getting name of the target in ApplyExpr" << std::endl;
             return;
         }
 
@@ -420,7 +420,7 @@ namespace graphitron {
 
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
         if (!mir_var) {
-            std::cout << "error in getting name of the vector in InitExpr" << std::endl;
+            std::cout << "error in getting name of the target in InitExpr" << std::endl;
             return;
         }
 
@@ -437,7 +437,31 @@ namespace graphitron {
 
             retExpr = mir_init_expr;
         } else {
-            std::cout << "Init function must target vertex set" << std::endl;
+            std::cout << "Init function must target vertex set or edgeset set" << std::endl;
+            return;
+        }
+    }
+
+    void MIREmitter::visit(fir::ProcExpr::Ptr process_expr) {
+        auto target_expr = emitExpr(process_expr->target);
+
+        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
+        if (!mir_var) {
+            std::cout << "error in getting name of the target in Process Expr" << std::endl;
+            return;
+        }
+
+        if (mir::isa<mir::VertexSetType>(mir_var->var.getType()) || mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
+            //dense vertexset apply
+            auto mir_process_expr = std::make_shared<mir::ProcExpr>();
+            mir_process_expr->target = target_expr;
+
+            auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(process_expr->input_function));
+            mir_process_expr->input_function = funcExpr;
+
+            retExpr = mir_process_expr;
+        } else {
+            std::cout << "Process function must target vertex set or edgeset set" << std::endl;
             return;
         }
     }

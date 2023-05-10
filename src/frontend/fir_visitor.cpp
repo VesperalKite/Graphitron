@@ -282,6 +282,11 @@ namespace graphitron {
             expr->target->accept(this);
         }
 
+        void FIRVisitor::visit(std::shared_ptr<ProcExpr> expr) {
+            expr->input_function->accept(this);
+            expr->target->accept(this);
+        }
+
         void FIRVisitor::visitUnaryExpr(UnaryExpr::Ptr expr) {
             expr->operand->accept(this);
         }

@@ -44,6 +44,8 @@ namespace graphitron {
         struct ApplyExpr;
         struct InitExpr;
 
+        struct ProcExpr;
+
         struct TensorReadExpr;
 
         struct ConstantVectorExpr;
@@ -120,6 +122,8 @@ namespace graphitron {
             virtual void visit(std::shared_ptr<ApplyExpr>);
 
             virtual void visit(std::shared_ptr<InitExpr>);
+
+            virtual void visit(std::shared_ptr<ProcExpr>);
 
             virtual void visit(std::shared_ptr<TensorReadExpr>);
 

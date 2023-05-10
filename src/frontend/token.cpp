@@ -45,6 +45,9 @@ namespace graphitron {
             case Token::Type::INIT: 
                 return "init";
 
+            case Token::Type::PROC:
+                return "process";
+
             case Token::Type::IF:
                 return "if";    
             case Token::Type::ELIF:

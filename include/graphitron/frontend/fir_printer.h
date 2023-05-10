@@ -110,6 +110,7 @@ namespace graphitron {
             virtual void visit(GsExpr::Ptr);
             virtual void visit(ApplyExpr::Ptr);
             virtual void visit(InitExpr::Ptr);
+            virtual void visit(ProcExpr::Ptr);
             //virtual void visit(WhereExpr::Ptr);
             //virtual void visit(IntersectionExpr::Ptr);
             //virtual void visit(IntersectNeighborExpr::Ptr);
