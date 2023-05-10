@@ -193,7 +193,7 @@ namespace graphitron {
         oss << "CUSTOMIZE_APPLY=" << mir_context_->customize_apply << endl;
         oss << "HAVE_APPLY_OUTDEG=true" << endl;
         oss << "#subpartition plan" << endl;
-        oss << "Plan=" << mir_context_->subpartitionplan << endl;  
+        oss << "SCHEDULER=" << mir_context_->subpartitionplan << endl;  
         oss.close();
         return 0;   
     }
