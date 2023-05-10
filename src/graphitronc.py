@@ -14,6 +14,7 @@ def parseArgs():
     parser = argparse.ArgumentParser(description='compiling graphitron files')
     parser.add_argument('-f', dest = 'input_file_name')
     parser.add_argument('-o', dest = 'output_file_name')
+    parser.add_argument('-p', dest = 'optimization_option')
     parser.add_argument('-a', dest = 'input_algo_file_name')
     parser.add_argument('-i', dest = 'runtime_include_path', default = GRAPHITRON_SOURCE_DIRECTORY+'/include/')
     parser.add_argument('-l', dest = 'graphitronlib_path', default = GRAPHITRON_BUILD_DIRECTORY+'/lib/libgraphitronlib.a')
@@ -37,6 +38,11 @@ if __name__ == '__main__':
     else:
         # use the input_file for both the algorithm and parameter
         algo_file_name = 'algo.gt'
+
+    if (args['optimization_option']):
+        optimization_option = args['optimization_option']
+    else:
+        optimization_option = "0"
 
     compile_file_name = 'compile.cpp'
 
@@ -94,7 +100,7 @@ if __name__ == '__main__':
             raise
 
     try:
-        subprocess.check_call(COMPILER_BINARY + " -f " + algo_file_name +  " -o " + output_file_name , stderr=subprocess.STDOUT, shell=True)
+        subprocess.check_call(COMPILER_BINARY + " -p " + optimization_option + " -f " + algo_file_name +  " -o " + output_file_name , stderr=subprocess.STDOUT, shell=True)
     except subprocess.CalledProcessError as e:
         print(e.output)
         raise

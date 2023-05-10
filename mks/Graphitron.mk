@@ -1,6 +1,10 @@
 TARGETS := hw
 
 APP := bfs
+#defalut optimization: 
+# 0: More freedom but no guarantee of performance
+# 1: Using ECP-GAS Model to obtain high performance
+opt := 0 
 
 TARGET_BANDWIDTH := 77
 

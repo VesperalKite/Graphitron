@@ -6,5 +6,5 @@ compile: cleanbuild
 	$(CP) $(ABS_ROOT_REPO)/lib/template/kernel $(FPGA_PATH)
 	$(CP) $(ABS_ROOT_REPO)/lib/libfpga $(FPGA_PATH)
 	$(CP) $(ABS_ROOT_REPO)/lib/libgraph $(FPGA_PATH)
-	python3 ./graphitron_compiler/graphitronc.py -f ${APP_INPUT} -o ${FPGA_APP_PATH}
+	python3 ./graphitron_compiler/graphitronc.py -f ${APP_INPUT} -o ${FPGA_APP_PATH} -p $(OPT)
 	-$(RMDIR) $(FPGA_APP_PATH)/../tmp/

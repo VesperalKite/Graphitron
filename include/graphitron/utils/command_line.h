@@ -22,10 +22,11 @@ protected:
     char** argv_;
     std::string name_;
     // f: means -f flag requires a follow on name,
-    std::string get_args_ = "f:o:h";
+    std::string get_args_ = "f:o:p:h";
     std::vector<std::string> help_strings_;
     std::string input_filename_ = "";
     std::string output_path_ = "";
+    std::string optimization_option_ = "";
 
 
     void AddHelpLine(char opt, std::string opt_arg, std::string text,
@@ -47,6 +48,7 @@ public:
         AddHelpLine('h', "", "print this help message");
         AddHelpLine('f', "file", "input file");
         AddHelpLine('o', "", "output path");
+        AddHelpLine('p', "", "optimization option");
     }
 
     bool ParseArgs() {
@@ -71,6 +73,7 @@ public:
         switch (opt) {
             case 'f': input_filename_ = std::string(opt_arg);     break;
             case 'o': output_path_ = std::string(opt_arg);    break;
+            case 'p': optimization_option_ = std::string(opt_arg); break;
             case 'h': PrintUsage();                               break;
         }
     }
@@ -85,6 +88,7 @@ public:
 
     std::string input_filename() const { return input_filename_; }
     std::string output_path() const { return output_path_; }
+    std::string optimization_option() const {return optimization_option_;}
 };
 
 #endif //GRAPHITRON_COMMAND_LINE_H

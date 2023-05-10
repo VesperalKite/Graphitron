@@ -37,6 +37,8 @@ int main(int argc, char* argv[]) {
 
     std::string output_path = cli.output_path();
 
+    std::string optimization_option = cli.optimization_option();
+
     //compile the input file
     std::cout << "INFO: Parse Input File.." << std::endl;
     fe->parseStream(buffer, context, errors);
@@ -59,7 +61,7 @@ int main(int argc, char* argv[]) {
     me->emitMIR(mir_context);
     Backend* be= new Backend(mir_context);
     std::cout << "INFO: Generate Synthesizable Code.." << std::endl;
-    be->emitACC(output_path);
+    be->emitACC(output_path, optimization_option);
 
     return 0;
 }
