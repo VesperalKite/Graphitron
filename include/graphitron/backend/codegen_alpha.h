@@ -21,6 +21,8 @@ namespace graphitron {
             root_path = output_path_+"/../../../..";
         }
         int genFPGA();
+
+        int genMain();
     private:  
     std::string output_path_;
     std::string root_path;
@@ -41,6 +43,9 @@ namespace graphitron {
     void printIndent() { oss << std::string(2 * indentLevel, ' '); }
     void printBeginIndent() { oss << std::string(2 * indentLevel, ' ') << "{" << std::endl; }
     void printEndIndent() { oss << std::string(2 * indentLevel, ' ') << "}"; }
+
+    void genIncludeStmts();
+    void genEdgesetDecl();
     };
 }
 

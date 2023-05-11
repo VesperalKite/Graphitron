@@ -59,6 +59,9 @@ int main(int argc, char* argv[]) {
     Midend* me = new Midend(context, program->getParameter());
     std::cout << "INFO: Generate MIR.." << std::endl;
     me->emitMIR(mir_context);
+    me->printMIR(output_path, mir_context);
+
+
     Backend* be= new Backend(mir_context);
     std::cout << "INFO: Generate Synthesizable Code.." << std::endl;
     be->emitACC(output_path, optimization_option);

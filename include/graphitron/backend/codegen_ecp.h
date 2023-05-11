@@ -31,7 +31,6 @@ namespace graphitron {
 
 
         int genMain();
-        int genMIRcontext();
         int genNewfiles();
         int genGAS();
         int genConfig();
