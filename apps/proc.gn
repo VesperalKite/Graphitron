@@ -2,15 +2,31 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const prop : vector{Vertex}(intx) = vertices.getProperty();
+const prop : vector{Vertex}(intx);
 
 func reset(v : Vertex)
     prop[v]=0;
 end
 
+func calc(v : Vertex)
+    if (v == 6)
+        prop[v] = 1;
+    end
+end
+
+func res_print()
+    for i in 0:10
+        print prop[i];
+    end
+    println ".";
+end
 
 func main()
-    vertices.process(reset);
+    vertices.init(reset);
+    edges.partition();
+    vertices.process(calc);
+    prop.update();
+    res_print();
 end
 
 parameter:

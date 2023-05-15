@@ -75,7 +75,6 @@ namespace graphitron {
     void genIncludeStmts();
     void genEdgesetDecl();
     void genMainBody();
-    void genDataPre();
     void genPropertyArrayDecl(mir::VarDecl::Ptr var_decl);
     void genScalarDecl(mir::VarDecl::Ptr var_decl);
     void genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl);

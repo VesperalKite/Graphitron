@@ -452,11 +452,12 @@ namespace graphitron {
         }
 
         if (mir::isa<mir::VertexSetType>(mir_var->var.getType()) || mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
-            //dense vertexset apply
             auto mir_process_expr = std::make_shared<mir::ProcExpr>();
             mir_process_expr->target = target_expr;
 
             auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(process_expr->input_function));
+            auto process = ctx->getFunction(funcExpr->function_name->name);
+            process->isFunctor = false;
             mir_process_expr->input_function = funcExpr;
 
             retExpr = mir_process_expr;

@@ -114,11 +114,6 @@ namespace graphitron {
         oss << "}" << endl;
     }
 
-    void CodeGenEcp::genDataPre() {
-        for (auto edgeset : mir_context_->getEdgeSets()) {
-            oss << "acceleratorDataPreprocess(&)";
-        } 
-    }
 
     void CodeGenEcp::genPropertyArrayDecl(mir::VarDecl::Ptr var_decl) {
         mir::VectorType::Ptr vector_type = std::dynamic_pointer_cast<mir::VectorType>(var_decl->type);

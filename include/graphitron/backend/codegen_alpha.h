@@ -23,6 +23,8 @@ namespace graphitron {
         int genFPGA();
 
         int genMain();
+    protected: 
+        virtual void visit(mir::FuncDecl::Ptr);
     private:  
     std::string output_path_;
     std::string root_path;
@@ -31,6 +33,8 @@ namespace graphitron {
     ExprGenerator* expr_visitor;
     TypeGenerator* type_visitor;
     StmtGenerator* stmt_visitor;
+
+    unsigned int user_mem_count;
 
     unsigned int indentLevel;
     void reset() {
@@ -46,6 +50,12 @@ namespace graphitron {
 
     void genIncludeStmts();
     void genEdgesetDecl();
+    void genMainBody();
+    void genPropertyArrayDecl(mir::VarDecl::Ptr var_decl);
+    void genScalarDecl(mir::VarDecl::Ptr var_decl);
+
+    void AddUserMem(mir::VarDecl::Ptr var_decl);
+    void AddScalarArg(mir::VarDecl::Ptr var_decl);
     };
 }
 
