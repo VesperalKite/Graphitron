@@ -5,102 +5,55 @@
 
 #define MAX_PARTITIONS_NUM      (128)
 
-
-typedef struct
+typedef struct 
 {
-    double fpgaExeTime;
-    double effic;
-    double compress;
-    double degree;
-} profileLog;
+    unsigned int edgeStart;
+    unsigned int edgeEnd;
+    unsigned int dstStart;
+    unsigned int dstEnd;
+    unsigned int srcStart;
+    unsigned int srcEnd;
+    float        compressRatio;
+    he_mem_t     partSrc;
+    he_mem_t     partDst;
+    unsigned int mapedTotalIndex;
 
-typedef struct
-{
-    unsigned int  listStart;
-    unsigned int  listEnd;
-    unsigned int  dstVertexStart;
-    unsigned int  dstVertexEnd;
-    unsigned int  srcVertexStart;
-    unsigned int  srcVertexEnd;
-    float         scatterCacheRatio;
-    float         compressRatio;
-    he_mem_t      edgeTail;
-    he_mem_t      edgeHead;
-    he_mem_t      edgeProp;
-    he_mem_t      tmpProp;
-    unsigned int  mapedTotalIndex;
-    unsigned int  cuIndex;
-    profileLog log;
-} subPartitionDescriptor;
-
-typedef struct
-{
-    subPartitionDescriptor  *sub[SUB_PARTITION_NUM];
-    int                     finalOrder[SUB_PARTITION_NUM];
-    unsigned int            totalEdge;
-    unsigned int            subPartitionSize;
-    cl_event                syncEvent[SUB_PARTITION_NUM];
-    cl_event                applyEvent;
-    double                  applyExeTime;
+    unsigned int totalEdge;
+    cl_event     alphaEvent;
+    double       alphaExeTime;
 } partitionDescriptor;
 
-typedef struct
+typedef struct 
 {
     const char* name;
-    int partition_mem_attr;
-    int prop_id;
-    int output_id;
-    cl_kernel kernel;
-    he_mem_t  prop[2];
-    he_mem_t  tmpProp;
-} gatherScatterDescriptor;
+    cl_kernel   kernel;
+} alphaDescriptor;
 
-typedef struct
-{
-    const char* name;
-    cl_kernel kernel;
-} applyDescriptor;
 
-typedef struct
+typedef struct 
 {
     CSR* csr;
 
-    subPartitionDescriptor subPartitions[MAX_PARTITIONS_NUM * SUB_PARTITION_NUM];
-
     partitionDescriptor partitions[MAX_PARTITIONS_NUM];
 
-    gatherScatterDescriptor * gsKernel[SUB_PARTITION_NUM];
+    alphaDescriptor*    alphaKernel;
 
-    applyDescriptor * applyKernel;
+    cl_command_queue    alphaOps;
 
-    cl_command_queue gsOps[SUB_PARTITION_NUM];
+    cl_program          program;
 
-    cl_command_queue applyOps;
+    cl_platform_id      platform;
 
-    cl_program program;
+    cl_device_id        device;
 
-    cl_platform_id platform;
+    cl_context          context; 
+}graphAccelerator;
 
-    cl_device_id device;
-
-    cl_context context;
-
-} graphAccelerator;
-
-
-subPartitionDescriptor * getSubPartition(int partID);
 partitionDescriptor * getPartition(int partID);
 
-gatherScatterDescriptor * getGatherScatter(int kernelID);
-applyDescriptor * getApply(void);
+alphaDescriptor * getAlpha(void);
 
 graphAccelerator * getAccelerator(void);
-
-
-inline int getCuIDbyInterface(int order)
-{
-    return he_get_interface_id(order);
-}
 
 
 #endif /* __HOST_GRAPH_DATA_STRUCTURE_H__ */

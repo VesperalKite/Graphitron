@@ -19,8 +19,6 @@
 #include "host_graph_misc_inner.h"
 #include "host_graph_data_structure.h"
 #include "host_graph_kernel.h"
-#include "host_graph_csv.hpp"
-#include "host_graph_scheduler.h"
 
 static double start_time;
 static double stop_time;
@@ -38,7 +36,6 @@ static int builtin_getVertices(graphInfo &edges){
     return edges.vertexNum;
 }
 static void builtin_partition(graphInfo &edges){
-    schedulerRegister();
     partitionFunction(&edges);
 }
 //may deprecated

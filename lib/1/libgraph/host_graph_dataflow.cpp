@@ -6,21 +6,21 @@
 #define XCL_BIN NULL
 #endif
 
-graphAccelerator thunderGraph;
+graphAccelerator graphitronGraph;
 
 graphAccelerator * getAccelerator(void)
 {
-    return &thunderGraph;
+    return &graphitronGraph;
 }
 
 subPartitionDescriptor * getSubPartition(int partID)
 {
-    return &thunderGraph.subPartitions[partID];
+    return &graphitronGraph.subPartitions[partID];
 }
 
 partitionDescriptor * getPartition(int partID)
 {
-    return &thunderGraph.partitions[partID];
+    return &graphitronGraph.partitions[partID];
 }
 
 

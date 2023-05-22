@@ -1,7 +1,12 @@
 SHELL := /bin/bash
 TARGET := $(TARGETS)
 DEVICE := $(DEVICES)
+
+OPT := 0
+
+ifdef opt
 OPT := $(opt)
+endif
 
 COMMON_REPO     = ./
 ABS_COMMON_REPO = $(shell readlink -f $(COMMON_REPO))
