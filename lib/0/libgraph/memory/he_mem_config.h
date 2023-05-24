@@ -65,7 +65,13 @@ he_mem_t local_mem[] = {
 
 he_mem_t user_mem[]={
     // insert
-
+    {
+        MEM_ID_PROP,
+        "prop",
+        ATTR_PL_HBM,
+        sizeof(int),
+        SIZE_IN_VERTEX,
+    }
 };
 
 #endif

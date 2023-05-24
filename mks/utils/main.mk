@@ -48,6 +48,9 @@ include $(UTILS_PATH)/common.mk
 -include $(FPGA_KERNEL_PATH)/gs_kernel.mk
 -include $(FPGA_KERNEL_PATH)/apply_kernel.mk
 
+-include $(FPGA_KERNEL_PATH)/ep_kernel.mk
+-include $(FPGA_KERNEL_PATH)/vp_kernel.mk
+
 include ${UTILS_PATH}/bitstream.mk
 include ${UTILS_PATH}/clean.mk 
 
