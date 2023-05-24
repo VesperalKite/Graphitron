@@ -10,9 +10,14 @@
 #define MEM_ID_OUT_DEG_ORIGIN       (4)
 #define MEM_ID_VERTEX_INDEX_MAP     (5)
 #define MEM_ID_VERTEX_INDEX_REMAP   (6)
+#define MEM_ID_EDGE_SRC             (7)
+#define MEM_ID_EDGE_DST             (8)
+
+#define MEM_ID_PARTITION_BASE        (100)
+#define MEM_ID_PARTITION_OFFSET      (128)
 
 
-#define MEM_ID_USER_DEFINE_BASE     (100)
+#define MEM_ID_USER_DEFINE_BASE     (16384)
 #define BANK_ID_USER_DEFINE_BASE    (5)
 
 // User Define Part

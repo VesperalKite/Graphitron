@@ -2,7 +2,7 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const prop : vector{Vertex}(intx);
+const prop : vector{Vertex}(int);
 
 func reset(v : Vertex)
     prop[v]=0;
@@ -28,6 +28,3 @@ func main()
     prop.update();
     res_print();
 end
-
-parameter:
-    program->configSubpartitionPlan("s1", "estimator");

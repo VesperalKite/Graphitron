@@ -3,6 +3,7 @@
 //
 
 #include <graphitron/midend/mir_emitter.h>
+#include <iostream>
 
 namespace graphitron {
 
@@ -152,6 +153,31 @@ namespace graphitron {
             }
         } else if (mir::isa<mir::StringLiteral>(mir_print_stmt->expr)){
             mir_print_stmt->format = "%s";
+        } else if (mir::isa<mir::TensorReadExpr>(mir_print_stmt->expr)) {
+            auto tensor_expr = mir::to<mir::TensorReadExpr>(mir_print_stmt->expr);
+            auto var = ctx->getSymbol(tensor_expr->getTargetNameStr());
+            if (mir::isa<mir::VectorType>(var.getType())) {
+                auto element_type = mir::to<mir::VectorType>(var.getType())->vector_element_type;
+                if (mir::isa<mir::ScalarType>(element_type)){
+                    switch(mir::to<mir::ScalarType>(element_type)->type) {
+                        case mir::ScalarType::Type::FLOAT:
+                            mir_print_stmt->format = "%f";
+                            break;
+                        case mir::ScalarType::Type::INT:
+                        case mir::ScalarType::Type::INTX:
+                            mir_print_stmt->format = "%d";
+                            break;
+                        case mir::ScalarType::Type::DOUBLE: 
+                            mir_print_stmt->format = "%lf";
+                            break;
+                        case mir::ScalarType::Type::STRING:
+                            mir_print_stmt->format = "%s";
+                            break;
+                        default:  
+                            break;
+                    }
+                }
+            }
         } else {
             mir_print_stmt->format = "";
         }

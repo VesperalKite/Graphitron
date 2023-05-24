@@ -4,11 +4,12 @@
 #include "graph.h"
 
 #define MAX_PARTITIONS_NUM      (128)
+#define EP_KERNEL_NUM           (1)
+#define VP_KERNEL_NUM           (1)
+
 
 typedef struct 
 {
-    unsigned int edgeStart;
-    unsigned int edgeEnd;
     unsigned int dstStart;
     unsigned int dstEnd;
     unsigned int srcStart;
@@ -16,29 +17,39 @@ typedef struct
     float        compressRatio;
     he_mem_t     partSrc;
     he_mem_t     partDst;
-    unsigned int mapedTotalIndex;
 
+    unsigned int mapedTotalIndex;
     unsigned int totalEdge;
-    cl_event     alphaEvent;
-    double       alphaExeTime;
+
+    cl_event    epEvent[EP_KERNEL_NUM];
+    cl_event    vpEvent[VP_KERNEL_NUM];
 } partitionDescriptor;
 
-typedef struct 
+typedef struct
 {
     const char* name;
     cl_kernel   kernel;
-} alphaDescriptor;
+} epDescriptor;
 
+typedef struct
+{
+    const char* name;
+    cl_kernel   kernel;
+} vpDescriptor;
 
 typedef struct 
 {
     CSR* csr;
 
     partitionDescriptor partitions[MAX_PARTITIONS_NUM];
+    
+    epDescriptor*       epKernel[EP_KERNEL_NUM];
 
-    alphaDescriptor*    alphaKernel;
+    vpDescriptor*       vpKernel[VP_KERNEL_NUM];
 
-    cl_command_queue    alphaOps;
+    cl_command_queue    epOps[EP_KERNEL_NUM];
+
+    cl_command_queue    vpOps[VP_KERNEL_NUM];
 
     cl_program          program;
 
@@ -51,7 +62,9 @@ typedef struct
 
 partitionDescriptor * getPartition(int partID);
 
-alphaDescriptor * getAlpha(void);
+epDescriptor* getEdgesProc(int kernelID);
+
+vpDescriptor* getVerticesProc(int kernelID);
 
 graphAccelerator * getAccelerator(void);
 
