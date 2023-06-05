@@ -9,7 +9,7 @@ extern "C" {
 
 
         // insert1
-        unsigned int partEdgeNum,
+        unsigned int partEdgeNum
     ){
 #pragma HLS INTERFACE m_axi port=partSrcArray offset=slave bundle=gmem0 
 #pragma HLS INTERFACE s_axilite port=partSrcArray bundle=control
@@ -22,8 +22,6 @@ extern "C" {
 #pragma HLS INTERFACE s_axilite port=partEdgeNum      bundle=control
 #pragma HLS INTERFACE s_axilite port=return              bundle=control
 
-    for (int i = 0; i < partEdgeNum; i++) {
         // insert3
-    }
     }
 }

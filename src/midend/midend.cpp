@@ -152,6 +152,16 @@ namespace graphitron {
             oss << mir_context_->ApplyFunc->name;
         }
         oss << endl;
+        oss << "[INFO] vertex process functions: ["<< mir_context_->vertex_process_funcs.size() << "]" << endl;
+        for (auto it : mir_context_->vertex_process_funcs) {
+            oss << it->name << " ";
+        }
+        oss << endl;
+        oss << "[INFO] edge process functions: ["<< mir_context_->edge_process_funcs.size() << "]" << endl;
+        for (auto it : mir_context_->edge_process_funcs) {
+            oss << it->name << " ";
+        }
+        oss << endl;
         oss.close();
         return 0;
     }

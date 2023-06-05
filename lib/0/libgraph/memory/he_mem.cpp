@@ -6,8 +6,11 @@
 
 #include "common.h"
 #include "he_mem.h"
+#include "he_mem_id.h"
 
 #include "he_mem_attr.h"
+
+#define HE_DEBUG(fmt,...) ;
 
 int register_size_attribute(unsigned int attr_id, int value) {
     for (unsigned int i = 0; i < ARRAY_SIZE(local_size_ctrl); i++) {
@@ -74,6 +77,8 @@ int he_mem_init(cl_context &dev_context, he_mem_t *item) {
             exit(1);
         }
     }
+
+    return 0;
 }
 
 he_mem_t* get_he_mem(unsigned int id)
@@ -172,11 +177,11 @@ int transfer_data_from_pl(cl_context &dev_context, cl_device_id device_id, int m
     }
     if (p_mem->dirty_flags == FLAG_RESET)
     {
-        DEBUG_PRINTF("0x%08x is clean\n", mem_id);
+        HE_DEBUG("0x%08x is clean\n", mem_id);
     }
     else
     {
-        DEBUG_PRINTF("0x%08x is dirty\n", mem_id);
+        HE_DEBUG("0x%08x is dirty\n", mem_id);
         status = clEnqueueMigrateMemObjects(ops, 1, &p_mem->device, CL_MIGRATE_MEM_OBJECT_HOST, 0, NULL, NULL);
         clFinish(ops);
         p_mem->dirty_flags = FLAG_RESET;

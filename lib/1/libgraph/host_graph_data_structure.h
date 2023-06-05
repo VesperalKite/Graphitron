@@ -37,7 +37,7 @@ typedef struct
 {
     subPartitionDescriptor  *sub[SUB_PARTITION_NUM];
     int                     finalOrder[SUB_PARTITION_NUM];
-    unsigned int            totalEdge;
+    unsigned int            partEdgeNum;
     unsigned int            subPartitionSize;
     cl_event                syncEvent[SUB_PARTITION_NUM];
     cl_event                applyEvent;

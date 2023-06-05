@@ -3,6 +3,7 @@
 
 #define SIZE_IN_EDGE            (0)
 #define SIZE_IN_VERTEX          (1)
+#define SIZE_DEFAULT            (2)
 
 #define MEM_ID_RPA                  (1)
 #define MEM_ID_CIA                  (2)
@@ -25,6 +26,5 @@
 #define GetUserBankId(mem_id)       (mem_id-MEM_ID_USER_DEFINE_BASE+BANK_ID_USER_DEFINE_BASE)
 
 // insert
-#define MEM_ID_PROP                 SetUserMemId(1)
 
 #endif

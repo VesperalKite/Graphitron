@@ -1,17 +1,18 @@
 #include "host_graph_sw.h"
 #include "he_mem_config.h"
 
+
+// HBM Banks requirements
 #define MAX_HBM_BANKCOUNT 32
 #define BANK_NAME(n) n | XCL_MEM_TOPOLOGY
 const int bank[MAX_HBM_BANKCOUNT] = {
-    BANK_NAME(0), BANK_NAME(1), BANK_NAME(2), BANK_NAME(3),
-    BANK_NAME(4), BANK_NAME(5), BANK_NAME(6), BANK_NAME(7),
-    BANK_NAME(8), BANK_NAME(9), BANK_NAME(10), BANK_NAME(11),
-    BANK_NAME(12), BANK_NAME(13), BANK_NAME(14), BANK_NAME(15),
-    BANK_NAME(16), BANK_NAME(17), BANK_NAME(18), BANK_NAME(19),
-    BANK_NAME(20), BANK_NAME(21), BANK_NAME(22), BANK_NAME(23),
-    BANK_NAME(24), BANK_NAME(25), BANK_NAME(26), BANK_NAME(27),
-    BANK_NAME(28), BANK_NAME(29), BANK_NAME(30), BANK_NAME(31)};
+    BANK_NAME(0),  BANK_NAME(1),  BANK_NAME(2),  BANK_NAME(3),  BANK_NAME(4),
+    BANK_NAME(5),  BANK_NAME(6),  BANK_NAME(7),  BANK_NAME(8),  BANK_NAME(9),
+    BANK_NAME(10), BANK_NAME(11), BANK_NAME(12), BANK_NAME(13), BANK_NAME(14),
+    BANK_NAME(15), BANK_NAME(16), BANK_NAME(17), BANK_NAME(18), BANK_NAME(19),
+    BANK_NAME(20), BANK_NAME(21), BANK_NAME(22), BANK_NAME(23), BANK_NAME(24),
+    BANK_NAME(25), BANK_NAME(26), BANK_NAME(27), BANK_NAME(28), BANK_NAME(29),
+    BANK_NAME(30), BANK_NAME(31)};
 
 void base_mem_init(cl_context &context)
 {
@@ -34,19 +35,19 @@ void partition_mem_init(cl_context &context, int blkIndex, int size)
 {
     partitionDescriptor *partition = getPartition(blkIndex);
 
-    partition->partSrc.id = MEM_ID_PARTITION_BASE + i * MEM_ID_PARTITION_OFFSET;
+    partition->partSrc.id = MEM_ID_PARTITION_BASE + blkIndex * MEM_ID_PARTITION_OFFSET;
     partition->partSrc.name = "partition edge src";
     partition->partSrc.attr = ATTR_PL_HBM;
     partition->partSrc.unit_size = size * sizeof(int);
-    partition->partSrc.size_attr = 1;
+    partition->partSrc.size_attr = SIZE_DEFAULT;
     partition->partSrc.ext_attr.flags = bank[0];
     he_mem_init(context, &partition->partSrc);
 
-    partition->partDst.id = MEM_ID_PARTITION_BASE + i * MEM_ID_PARTITION_OFFSET + 1;
+    partition->partDst.id = MEM_ID_PARTITION_BASE + blkIndex * MEM_ID_PARTITION_OFFSET + 1;
     partition->partDst.name = "partition edge dst";
     partition->partDst.attr = ATTR_PL_HBM;
     partition->partDst.unit_size = size * sizeof(int);
-    partition->partDst.size_attr = 1;
+    partition->partDst.size_attr = SIZE_DEFAULT;
     partition->partDst.ext_attr.flags = bank[1];
     he_mem_init(context, &partition->partDst);
 }

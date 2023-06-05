@@ -16,7 +16,8 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     int edgeNum = csr->edgeNum;
 
     register_size_attribute(SIZE_IN_EDGE    , EDEG_MEMORY_SIZE);
-    register_size_attribute(SIZE_IN_VERTEX  , VERTEX_MEMORY_SIZE);
+    register_size_attribute(SIZE_IN_VERTEX  , vertexNum);
+    register_size_attribute(SIZE_DEFAULT, 1);
 
     base_mem_init(acc->context);
     user_mem_init(acc->context);
@@ -24,8 +25,8 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia = (int*)get_host_mem_pointer(MEM_ID_CIA);
 
-    int *outDeg         = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
-    int *outDegOriginal = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG_ORIGIN);
+    //int *outDeg         = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
+    int *outDegOriginal = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
     for (int i = 0; i < vertexNum; i++) {
         if (i < csr->vertexNum) { // 'vertexNum' may be aligned.
             rpa[i] = csr->rpao[i];
@@ -41,27 +42,28 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
         cia[i] = csr->ciao[i];
     }
 
-    /* compress vertex*/
-    unsigned int *vertexMap   = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_MAP);
-    unsigned int *vertexRemap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_REMAP);
+    // /* compress vertex*/
+    // unsigned int *vertexMap   = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_MAP);
+    // unsigned int *vertexRemap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_REMAP);
 
-    unsigned int mapedSourceIndex = 0;
+    // unsigned int mapedSourceIndex = 0;
 
-    for (int u = 0; u < vertexNum; u++) {
-        int num = rpa[u + 1] - rpa[u];
-        vertexMap[u] = mapedSourceIndex;
-        if (num != 0)
-        {
-            vertexRemap[mapedSourceIndex] = u;
-            outDeg[mapedSourceIndex] = num;
-            mapedSourceIndex ++;
-        }
-    }
+    // for (int u = 0; u < vertexNum; u++) {
+    //     int num = rpa[u + 1] - rpa[u];
+    //     vertexMap[u] = mapedSourceIndex;
+    //     if (num != 0)
+    //     {
+    //         vertexRemap[mapedSourceIndex] = u;
+    //         outDeg[mapedSourceIndex] = num;
+    //         mapedSourceIndex ++;
+    //     }
+    // }
 
     info->vertexNum = vertexNum;
-    info->compressedVertexNum = mapedSourceIndex;
+    //info->compressedVertexNum = mapedSourceIndex;
     info->edgeNum   = edgeNum;
-    info->blkNum =  (mapedSourceIndex + PARTITION_SIZE - 1) / PARTITION_SIZE;
+    //info->blkNum =  (mapedSourceIndex + PARTITION_SIZE - 1) / PARTITION_SIZE;
+    info->blkNum = (vertexNum + PARTITION_SIZE - 1) / PARTITION_SIZE;
 
     return 0;
 }
@@ -87,7 +89,6 @@ static void partitionTransfer(graphInfo* info) {
 
     DEBUG_PRINTF("%s", "transfer user mem\n");
     int user_mem_id[] = {
-        MEM_ID_PROP,
         // insert
     };
     transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));
@@ -101,11 +102,12 @@ void partitionFunction(graphInfo *info) {
 
     int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia = (int*)get_host_mem_pointer(MEM_ID_CIA);
-    unsigned int *vertexMap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_MAP);
-    unsigned int *vertexRemap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_REMAP);
+    // unsigned int *vertexMap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_MAP);
+    // unsigned int *vertexRemap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_REMAP);
 
-    unsigned int mapedSrc_idx = 0;
+    //unsigned int mapedSrc_idx = 0;
     int vertexNum = info->vertexNum;
+    DEBUG_PRINTF("\ndst partition size: %d\n", MAX_VERTICES_IN_ONE_PARTITION);
 
     for (int i = 0; i < info->blkNum; i++) {
         partitionDescriptor* partition = getPartition(i);
@@ -113,52 +115,52 @@ void partitionFunction(graphInfo *info) {
         unsigned int cur_edge_num = 0;
         int *edgePartitionSrcArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_SRC);
         int *edgePartitionDstArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_DST);
-        for (int u = 0; u < vertexNum; u++) {
-            int start = rpa[u];
-            int num = rpa[u+1] - rpa[u];
+        for (int src = 0; src < vertexNum; src++) {
+            int start = rpa[src];
+            int num = rpa[src+1] - rpa[src];
             for (int j = 0; j < num; j++) {
                 int cia_idx = start + j;
-                int mapedDst_idx = vertexMap[cia[cia_idx]];
-                if ((mapedDst_idx >= i * MAX_VERTICES_IN_ONE_PARTITION) && (mapedDst_idx < (i+1) * MAX_VERTICES_IN_ONE_PARTITION)) {
-                    edgePartitionSrcArray[cur_edge_num] = mapedSrc_idx;
-                    edgePartitionDstArray[cur_edge_num] = mapedDst_idx;
+                int dst = cia[cia_idx];
+                //int mapedDst_idx = vertexMap[cia[cia_idx]];
+                if ((dst >= i * MAX_VERTICES_IN_ONE_PARTITION) && (dst < (i+1) * MAX_VERTICES_IN_ONE_PARTITION)) {
+                    edgePartitionSrcArray[cur_edge_num] = src;
+                    edgePartitionDstArray[cur_edge_num] = dst;
                     cur_edge_num++;
                 }
             }
-            if (num != 0) {
-                mapedSrc_idx++;
-            }
+            // if (num != 0) {
+            //     mapedSrc_idx++;
+            // }
         }
 
-        partition->totalEdge = cur_edge_num;
+        partition->partEdgeNum = cur_edge_num;
 
-        DEBUG_PRINTF("\npartition %d edges by size of %d", partition->totalEdge, MAX_VERTICES_IN_ONE_PARTITION);
-
-        partition->compressRatio = (double (mapedSrc_idx)) / vertexNum;
-        DEBUG_PRINTF("compress ratio %d / %d is %lf \n", mapedSrc_idx, vertexNum, partition->compressRatio);
+        //partition->compressRatio = (double (mapedSrc_idx)) / vertexNum;
+        //DEBUG_PRINTF("compress ratio %d / %d is %lf \n", mapedSrc_idx, vertexNum, partition->compressRatio);
         partition->dstStart = MAX_VERTICES_IN_ONE_PARTITION * (i);
-        partition->dstEnd = (((unsigned int)(MAX_VERTICES_IN_ONE_PARTITION * (i+1)) > mapedSrc_idx) ? mapedSrc_idx : MAX_VERTICES_IN_ONE_PARTITION * (i+1)) - 1;
+        partition->dstEnd = (((int)(MAX_VERTICES_IN_ONE_PARTITION * (i+1)) > vertexNum) ? vertexNum : MAX_VERTICES_IN_ONE_PARTITION * (i+1)) - 1;
         partition->srcStart = edgePartitionSrcArray[0];
-        partition->srcEnd   = edgePartitionSrcArray[partition->totalEdge - 1];
-        partition->mapedTotalIndex = mapedSrc_idx;
+        partition->srcEnd   = edgePartitionSrcArray[partition->partEdgeNum - 1];
+        //partition->mapedTotalIndex = mapedSrc_idx;
+        partition->totalVertexNum = vertexNum;
 
-        partition_mem_init(acc->context, i, partition->totalEdge);
+        partition_mem_init(acc->context, i, partition->partEdgeNum);
 
-        memcpy(partition->partSrc.data, &edgePartitionSrcArray[0], partition->totalEdge * sizeof(int));
-        memcpy(partition->partDst.data, &edgePartitionDstArray[0], partition->totalEdge * sizeof(int));
+        memcpy(partition->partSrc.data, &edgePartitionSrcArray[0], partition->partEdgeNum * sizeof(int));
+        memcpy(partition->partDst.data, &edgePartitionDstArray[0], partition->partEdgeNum * sizeof(int));
     }
 
     for (int i = 0; i < info->blkNum; i++) {
         DEBUG_PRINTF("\n----------------------------------------------------------------------------------\n");
         DEBUG_PRINTF("[PART] Partition %d info :\n", i);
         partitionDescriptor* partition = getPartition(i);
-        DEBUG_PRINTF("[PART] \t edgelist from 0 to %d\n", partition->totalEdge - 1);
+        DEBUG_PRINTF("[PART] \t edgelist from 0 to %d\n", partition->partEdgeNum - 1);
         DEBUG_PRINTF("[PART] \t dst. vertex from %d to %d\n", partition->dstStart, partition->dstEnd);
         DEBUG_PRINTF("[PART] \t src. vertex from %d to %d\n", partition->srcStart, partition->srcEnd);
-        DEBUG_PRINTF("[PART] v: %d e: %d \n", (partition->dstEnd - partition->dstStart + 1), partition->totalEdge);
-        DEBUG_PRINTF("[PART] v/e %lf \n", (partition->dstEnd - partition->dstStart + 1) / ((float)(partition->totalEdge)));
-        DEBUG_PRINTF("[PART] est. efficient %lf\n", ((float)(partition->totalEdge)) / partition->mapedTotalIndex);
-        DEBUG_PRINTF("[PART] compressRatio %lf \n\n", partition->compressRatio);     
+        DEBUG_PRINTF("[PART] v: %d e: %d \n", (partition->dstEnd - partition->dstStart + 1), partition->partEdgeNum);
+        DEBUG_PRINTF("[PART] v/e %lf \n", (partition->dstEnd - partition->dstStart + 1) / ((float)(partition->partEdgeNum)));
+        DEBUG_PRINTF("[PART] est. efficient %lf\n", ((float)(partition->partEdgeNum)) / partition->totalVertexNum);
+        //DEBUG_PRINTF("[PART] compressRatio %lf \n\n", partition->compressRatio);     
     }
 
     partitionTransfer(info);

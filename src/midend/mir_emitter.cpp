@@ -484,6 +484,11 @@ namespace graphitron {
             auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(process_expr->input_function));
             auto process = ctx->getFunction(funcExpr->function_name->name);
             process->isFunctor = false;
+            if (mir::isa<mir::VertexSetType>(mir_var->var.getType())) {
+                ctx->vertex_process_funcs.push_back(process);
+            } else {
+                ctx->edge_process_funcs.push_back(process);
+            }
             mir_process_expr->input_function = funcExpr;
 
             retExpr = mir_process_expr;

@@ -326,6 +326,24 @@ namespace graphitron {
       void set_init_func(mir::FuncDecl::Ptr init){
          InitFuncs.push_back(init);
       }
+
+      int getIdxByVpFuncName(std::string func_name) {
+         for (int i = 0; i < vertex_process_funcs.size(); i++) {
+            if (vertex_process_funcs[i]->name == func_name) {
+               return i;
+            }
+         }
+         return -1;
+      }
+
+      int getIdxByEpFuncName(std::string func_name) {
+         for (int i = 0; i < edge_process_funcs.size(); i++) {
+            if (edge_process_funcs[i]->name == func_name) {
+               return i;
+            }
+         }
+         return -1;
+      }
         //private:
 
       // maps element type to an input file that reads the set from
@@ -378,6 +396,9 @@ namespace graphitron {
       std::set<std::string> defined_types;
 
       std::vector<mir::Type::Ptr> types_requiring_typedef;
+
+      std::vector<mir::FuncDecl::Ptr> edge_process_funcs;
+      std::vector<mir::FuncDecl::Ptr> vertex_process_funcs;
 
       bool have_frontier;
 

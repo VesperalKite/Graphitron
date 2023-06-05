@@ -3,6 +3,6 @@
 
 extern void base_mem_init(cl_context &context);
 extern void user_mem_init(cl_context &context);
-extern void partition_mem_init(cl_context &context);
+extern void partition_mem_init(cl_context &context, int blkIndex, int size);
 
 #endif

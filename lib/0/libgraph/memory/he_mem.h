@@ -6,7 +6,7 @@
 #define ATTR_HOST_ONLY          (0)
 #define ATTR_PL_HBM             (1)
 
-#define clSVMAlloc(context, flag, size, alignment) memalign(alignmemt, size)
+#define clSVMAlloc(context,flag,size,alignment) memalign(alignment, size)
 
 
 typedef struct 

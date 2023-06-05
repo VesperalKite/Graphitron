@@ -1,18 +1,7 @@
 #include "host_graph_sw.h"
 
-epDescriptor localepKernel[] = {
-    {
-        .name = "ep_kernel",
-    },
-    // insert1
-};
 
-vpDescriptor localvpKernel[] = {
-    {
-        .name = "vp_kernel",
-    },
-    // insert2
-};
+// insert
 
 
 epDescriptor* getEdgesProc(int kernelID) {

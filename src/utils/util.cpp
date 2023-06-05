@@ -144,6 +144,13 @@ namespace graphitron {
             }
             return num;
         }
+        void replaceSstream(std::stringstream &inbuf, std::stringstream &outbuf, const std::string &from, const std::string &to) {
+            std::string line;
+            while (std::getline(inbuf, line)) {
+                replaceLine(line, from, to);
+                outbuf << line << std::endl;
+            }
+        }
         void replaceFile(std::istream &in, std::ostream &out, const std::string &from, const std::string &to) {
             std::string str;
             while (std::getline(in, str))
@@ -152,6 +159,7 @@ namespace graphitron {
                 out << str << "\n";
             }
         }
+        //replace the key
         void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::stringstream &wbf) {
             std::ifstream input(in);
             std::ofstream output(out);
@@ -165,6 +173,7 @@ namespace graphitron {
             input.close();
             output.close();
         }
+        //insert before key
         void insertFile(const std::string &in, const std::string &out, const std::string &key, const std::stringstream &wbf) {
             std::ifstream input(in);
             std::ofstream output(out);

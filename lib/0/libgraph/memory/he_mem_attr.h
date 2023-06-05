@@ -8,7 +8,11 @@ size_attr_ctrl_t local_size_ctrl[] =
     },
     {
         .size_attr = SIZE_IN_VERTEX,
+    },
+    {
+        .size_attr = SIZE_DEFAULT,
     }
+
 };
 
 #endif

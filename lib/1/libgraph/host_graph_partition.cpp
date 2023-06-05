@@ -241,7 +241,7 @@ void partitionFunction(graphInfo *info)
             edgePartitionPropArray[cur_edge_num] = 0;
             cur_edge_num ++;
         }
-        partition->totalEdge = cur_edge_num;
+        partition->partEdgeNum = cur_edge_num;
 
 
         for (int subIndex = 0 ; subIndex < SUB_PARTITION_NUM ; subIndex ++ )
@@ -251,7 +251,7 @@ void partitionFunction(graphInfo *info)
             DEBUG_PRINTF("ratio %d / %d is %lf \n", mapedSourceIndex, vertexNum, partition->sub[subIndex]->compressRatio);
             partition->sub[subIndex]->dstVertexStart = MAX_VERTICES_IN_ONE_PARTITION * (i);
             partition->sub[subIndex]->dstVertexEnd   = (((unsigned int)(MAX_VERTICES_IN_ONE_PARTITION * (i + 1)) > mapedSourceIndex) ? mapedSourceIndex : MAX_VERTICES_IN_ONE_PARTITION * (i + 1)) - 1;
-            volatile int subPartitionSize = ((partition->totalEdge / SUB_PARTITION_NUM) / ALIGN_SIZE) * ALIGN_SIZE;
+            volatile int subPartitionSize = ((partition->partEdgeNum / SUB_PARTITION_NUM) / ALIGN_SIZE) * ALIGN_SIZE;
             partition->subPartitionSize = subPartitionSize;
             partition->sub[subIndex]->srcVertexStart =  edgePartitionHeadArray[subPartitionSize * subIndex];
             partition->sub[subIndex]->srcVertexEnd   =  edgePartitionHeadArray[subPartitionSize * (subIndex + 1) - 1];
@@ -267,12 +267,12 @@ void partitionFunction(graphInfo *info)
             unsigned int bound = subPartitionSize * (reOrderIndex + 1);
 
             partition->sub[subIndex]->listStart =  0;
-            partition->sub[subIndex]->listEnd = (bound > partition->totalEdge) ? (partition->totalEdge - (subPartitionSize * reOrderIndex)) : (subPartitionSize);
+            partition->sub[subIndex]->listEnd = (bound > partition->partEdgeNum) ? (partition->partEdgeNum - (subPartitionSize * reOrderIndex)) : (subPartitionSize);
             partition->sub[subIndex]->mapedTotalIndex = mapedSourceIndex;
             partition->sub[subIndex]->srcVertexStart =  edgePartitionHeadArray[subPartitionSize * reOrderIndex];
             partition->sub[subIndex]->srcVertexEnd   =  edgePartitionHeadArray[subPartitionSize * (reOrderIndex + 1) - 1];
 
-            DEBUG_PRINTF("[SIZE] %d cur_edge_num sub %d\n", partition->totalEdge, partition->sub[subIndex]->listEnd);
+            DEBUG_PRINTF("[SIZE] %d cur_edge_num sub %d\n", partition->partEdgeNum, partition->sub[subIndex]->listEnd);
             partition_mem_init(acc->context, partId, partition->sub[subIndex]->listEnd, subIndex); // subIndex --> cuIndex
             //DEBUG_PRINTF("sub %d tmpProp.id=%d", subIndex, partition->sub[subIndex]->tmpProp.id);
             memcpy(partition->sub[subIndex]->edgeTail.data , &edgePartitionTailArray[subPartitionSize * reOrderIndex], 
@@ -325,7 +325,7 @@ void partitionFunction(graphInfo *info)
 
     for (int i = 0; i < info->blkNum; i++)
     {
-        DEBUG_PRINTF("[SCHE] %d with %d @ %d \n", getArrangedPartitionID(i), getPartition(getArrangedPartitionID(i))->totalEdge, i);
+        DEBUG_PRINTF("[SCHE] %d with %d @ %d \n", getArrangedPartitionID(i), getPartition(getArrangedPartitionID(i))->partEdgeNum, i);
     }
 
     int paddingVertexNum  = ((vertexNum  - 1) / (ALIGN_SIZE * 4) + 1 ) * (ALIGN_SIZE * 4);

@@ -4,8 +4,16 @@
 #include "graph.h"
 
 #define MAX_PARTITIONS_NUM      (128)
+
+// insert
+
+#ifndef EP_KERNEL_NUM
 #define EP_KERNEL_NUM           (1)
+#endif
+
+#ifndef VP_KERNEL_NUM
 #define VP_KERNEL_NUM           (1)
+#endif
 
 
 typedef struct 
@@ -19,7 +27,8 @@ typedef struct
     he_mem_t     partDst;
 
     unsigned int mapedTotalIndex;
-    unsigned int totalEdge;
+    unsigned int partEdgeNum;
+    unsigned int totalVertexNum;
 
     cl_event    epEvent[EP_KERNEL_NUM];
     cl_event    vpEvent[VP_KERNEL_NUM];

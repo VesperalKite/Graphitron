@@ -149,41 +149,19 @@ namespace graphitron {
 
     void ExprGenerator::visit(mir::ProcExpr::Ptr expr) {
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
-        if (mir_context_->isConstVertexSet(mir_var->var.getName()) || mir_context_->isEdgeSet(mir_var->var.getName())) {
+        if (mir_context_->isConstVertexSet(mir_var->var.getName())){
             auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
             assert(associated_element_type);
             auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
             assert(associated_element_type_size);
-            oss_ << "//this is process expr, target: " << mir_var->var.getName();
-            oss_ << ", input function: ";
-            expr->input_function->accept(this);
-            oss_ << endl;
-            oss_ << "  int blkNum = edges->blkNum;" << endl;
-            oss_ << "  for (int i = 0; i < blkNum; i++) {" << endl;
-            oss_ << "      partitionDescriptor* partition = getPartition(i);" << endl;
-            oss_ << "      vpDescriptor* vpHandler = getVerticesProc(0);" << endl;
-            oss_ << "      int argvi = 0;" << endl;
-            oss_ << "      int partVertexNum = partition->dstEnd - partition->dstStart + 1;" << endl;
-            oss_ << "      int partDstIdStart = partition->dstStart;" << endl;
-            oss_ << "      clSetKernelArg(vpHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));" << endl;
-            oss_ << "      clSetKernelArg(vpHandler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_PROP));" << endl;
-            oss_ << "      he_set_dirty(MEM_ID_PROP);" << endl;
-            oss_ << "      clSetKernelArg(vpHandler->kernel, argvi++, sizeof(int), &partVertexNum);" << endl;
-            oss_ << "      clSetKernelArg(vpHandler->kernel, argvi++, sizeof(int), &partDstIdStart);" << endl;   
-            oss_ << "      clEnqueueTask(acc->vpOps[0], getVerticesProc(0)->kernel, 0, NULL, &partition->vpEvent[0]);" << endl;
-            oss_ << "  }" << endl;
-            oss_ << "  clFinish(acc->vpOps[0])";
-            // oss_ << "loop_for_lambda((int)0, (int)";
-            // associated_element_type_size->accept(this);
-            // oss_ << ", [&] (int init_iter) {"<< endl;
-            // indent();
-            // printIndent();
-            // expr->input_function->accept(this);
-            // oss_ << "(init_iter);" << endl;
-            // dedent();
-            // printIndent();
-            // oss_ << "})";
-        }   
+            oss_ << "vp_" << expr->input_function->function_name->name << "_kernel_runner()";
+        } else if ( mir_context_->isEdgeSet(mir_var->var.getName())) {
+            auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+            assert(associated_element_type);
+            auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+            assert(associated_element_type_size);
+            oss_ << "ep_" << expr->input_function->function_name->name << "_kernel_runner()";
+        }
     }
 
     void ExprGenerator::visit(mir::EqExpr::Ptr expr) {

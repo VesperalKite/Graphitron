@@ -23,6 +23,9 @@ namespace graphitron {
         int genFPGA();
 
         int genMain();
+        int genConfig();
+        int genNewfiles();
+        int genProcess();
     protected: 
         virtual void visit(mir::FuncDecl::Ptr);
     private:  
@@ -34,6 +37,24 @@ namespace graphitron {
     TypeGenerator* type_visitor;
     StmtGenerator* stmt_visitor;
 
+    std::string outdegkey = "//out_deg_key";
+    std::stringstream new_outdeg_buffer;
+    std::stringstream vp_kernel_cpp_buffer1;
+    std::stringstream vp_kernel_cpp_buffer2;
+    std::stringstream vp_kernel_mk_buffer;
+
+    std::stringstream ep_kernel_cpp_buffer1;
+    std::stringstream ep_kernel_cpp_buffer2;
+    std::stringstream ep_kernel_mk_buffer;
+    std::stringstream he_mem_config_h_buffer;
+    std::stringstream he_mem_id_h_buffer;
+    std::stringstream host_graph_partition_cpp_buffer;
+    std::stringstream host_graph_data_structure_h_buffer;
+    std::stringstream host_graph_kernel_cpp_buffer;
+
+    std::stringstream setkernel_buffer;
+
+    std::stringstream vp_func_kernel_buffer;
     unsigned int user_mem_count;
 
     unsigned int indentLevel;
@@ -50,12 +71,34 @@ namespace graphitron {
 
     void genIncludeStmts();
     void genEdgesetDecl();
+    void genKernelRunner();
     void genMainBody();
     void genPropertyArrayDecl(mir::VarDecl::Ptr var_decl);
     void genScalarDecl(mir::VarDecl::Ptr var_decl);
+    void genPropertyArrayAlloc(mir::VarDecl::Ptr var_decl);
+    void genScalarVectorAlloc(mir::VarDecl::Ptr var_decl, mir::VectorType::Ptr type);
+    void genScalarAlloc(mir::VarDecl::Ptr var_decl);
 
     void AddUserMem(mir::VarDecl::Ptr var_decl);
     void AddScalarArg(mir::VarDecl::Ptr var_decl);
+
+    void gen_he_mem_config_h(mir::VarDecl::Ptr var_decl);
+    void gen_he_mem_id_h(mir::VarDecl::Ptr var_decl);
+    void gen_vp_kernel_cpp(mir::VarDecl::Ptr var_decl);
+    void gen_vp_kernel_mk(mir::VarDecl::Ptr var_decl);
+    void gen_ep_kernel_cpp(mir::VarDecl::Ptr var_decl);
+    void gen_ep_kernel_mk(mir::VarDecl::Ptr var_decl);
+    void gen_set_kernel(mir::VarDecl::Ptr var_decl);
+    void gen_host_graph_partition_cpp(mir::VarDecl::Ptr var_decl);
+
+    void gen_vp_func_kernel_cpp(mir::FuncDecl::Ptr vp_func);
+    void gen_ep_func_kernel_cpp(mir::FuncDecl::Ptr ep_func);
+
+
+    void gen_VertexProcess();
+    void gen_EdgeProcess();
+
+
     };
 }
 

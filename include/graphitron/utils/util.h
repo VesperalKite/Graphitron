@@ -93,6 +93,7 @@ namespace graphitron {
 
         void printDebugInfo(const std::string &message);
         int replaceLine(std::string &str, const std::string &from, const std::string &to);
+        void replaceSstream(std::stringstream &inbuf, std::stringstream &outbuf, const std::string &from, const std::string &to);
         void replaceFile(std::istream &in, std::ostream &out, const std::string &from, const std::string &to);
         void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::stringstream &wbf);
         void insertFile(const std::string &in, const std::string &out, const std::string &key, const std::stringstream &wbf);
