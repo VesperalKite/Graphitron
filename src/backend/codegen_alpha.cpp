@@ -59,6 +59,7 @@ namespace graphitron {
         for (int i = 0; i < ep_funcs.size(); i++) {
             auto func = ep_funcs[i];
             oss << "void ep_" << func->name << "_kernel_runner() {" << endl;
+            oss << "    graphAccelerator* acc = getAccelerator();" << endl;
             oss << "    int blkNum = " << mir_context_->getEdgeSets().front()->name << ".blkNum;" << endl;
             oss << "    for (int i = 0; i < blkNum; i++) {" << endl;
             oss << "        partitionDescriptor* partition = getPartition(i);" << endl;
@@ -77,6 +78,7 @@ namespace graphitron {
         for (int i = 0; i < vp_funcs.size(); i++) {
             auto func = vp_funcs[i];
             oss << "void vp_" << func->name << "_kernel_runner() {" << endl;
+            oss << "    graphAccelerator* acc = getAccelerator();" << endl;
             oss << "    int blkNum = " << mir_context_->getEdgeSets().front()->name << ".blkNum;" << endl;
             oss << "    for (int i = 0; i < blkNum; i++) {" << endl;
             oss << "        partitionDescriptor* partition = getPartition(i);" << endl;
@@ -431,7 +433,7 @@ namespace graphitron {
         host_graph_kernel_cpp_buffer << "epDescriptor localepKernel[] = {" << endl;
         for (int i = 0; i < mir_context_->edge_process_funcs.size(); i++) {
             host_graph_kernel_cpp_buffer << "    {" << endl;
-            host_graph_kernel_cpp_buffer << "        .name = \"vp_" << mir_context_->edge_process_funcs[i]->name << "_kernel\"," << endl;
+            host_graph_kernel_cpp_buffer << "        .name = \"ep_" << mir_context_->edge_process_funcs[i]->name << "_kernel\"," << endl;
             host_graph_kernel_cpp_buffer << "    }," << endl;
         }
         host_graph_kernel_cpp_buffer << "};" << endl;

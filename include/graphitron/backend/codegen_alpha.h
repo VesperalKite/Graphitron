@@ -55,7 +55,7 @@ namespace graphitron {
     std::stringstream setkernel_buffer;
 
     std::stringstream vp_func_kernel_buffer;
-    unsigned int user_mem_count;
+    unsigned int user_mem_count = 0;
 
     unsigned int indentLevel;
     void reset() {
