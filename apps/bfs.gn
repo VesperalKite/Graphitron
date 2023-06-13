@@ -2,37 +2,24 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const prop : vector{Vertex}(intx) = vertices.getProperty();
-const eprop : vector{Edge}(intx) = edges.getProperty();
+const parent : vector{Vertex}(intx);
 const frontier : vector{Vertex}(int);
+
 func reset(v : Vertex)
-    prop[v]=0;
-    prop[3251]=1;
-    frontier[v]=0;
+    parent[v] = -1;
 end
-func e_reset(e : Edge)
-    eprop[e]=1;
-end
-func ScatterFunc(srcProp : intx) -> update : intx
-    update = srcProp;
-end
-func ActiveFunc(update : intx) -> flag : bool
-    flag = (update==1);
-end
-func GatherFunc(ori : intx, update : intx) -> tprop : intx
-    if (ori < update) and (update == 1)
-        tprop = update;
-    else 
-        tprop = ori;
+
+func tryvisit(src : Vertex, dst : Vertex)
+    if parent[dst] == -1
+       parent[dst] = src;
+       frontier[dst] = 1;
     end
 end
-func ApplyFunc(tprop : intx, srcProp : intx, v : Vertex) -> newprop : intx
-    if ((tprop == 1) and (srcProp == 0))
-        newprop = tprop;
-    else
-        newprop = srcProp;
-    end
+
+func frontier_reset(v : Vertex)
+    frontier[v] = 0;
 end
+
 func getSize() -> size : int
     var num : int = 0;
     for i in 0:edges.getVertices()
@@ -45,16 +32,13 @@ end
 
 func main()
     vertices.init(reset);
-    edges.init(e_reset);
+    parent[1] = 1;
     edges.partition();
     var frontier_size : int = 1;
-    var iteration : int = 0;
     while (frontier_size != 0)
-        print "[EPOCH] ";
-        println iteration;
         startTimer();
-        #s1# edges.iter(iteration).gs(ScatterFunc, ActiveFunc, GatherFunc);
-        vertices.apply(ApplyFunc);
+        vertices.process(frontier_reset);
+        edges.process(tryvisit);
         var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
@@ -62,9 +46,5 @@ func main()
         frontier_size = getSize();
         print "frontier size: ";
         println frontier_size;
-        iteration += 1;
     end
 end
-
-parameter:
-    program->configUnsignedProp("s1", true)->configSubpartitionPlan("s1", "estimator");

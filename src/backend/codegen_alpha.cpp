@@ -66,8 +66,8 @@ namespace graphitron {
             oss << "        epDescriptor* Handler = getEdgesProc(" << i << ");" << endl;
             oss << "        int argvi = 0;" << endl;
             oss << "        int partEdgeNum = partition->partEdgeNum;" << endl;
-            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_EDGE_SRC));" << endl;
-            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_EDGE_DST));" << endl;
+            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(partition->partSrc.id));" << endl;
+            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(partition->partDst.id));" << endl;
             oss << setkernel_buffer.str();
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partEdgeNum);" << endl;
             oss << "        clEnqueueTask(acc->epOps["<< i << "], Handler->kernel, 0, NULL, &partition->epEvent[" << i << "]);" << endl;
