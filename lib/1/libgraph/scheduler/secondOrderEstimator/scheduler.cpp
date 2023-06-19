@@ -44,7 +44,7 @@ int soeSubPartitionArrangementHandler(int partIndex)
         unsigned int subPartitionSize = partition->subPartitionSize;
         unsigned int bound = subPartitionSize * (i + 1);
 
-        int subTotalEdge = (bound > partition->totalEdge) ? (partition->totalEdge - (subPartitionSize * i)) : (subPartitionSize);
+        int subTotalEdge = (bound > partition->partEdgeNum) ? (partition->partEdgeNum - (subPartitionSize * i)) : (subPartitionSize);
         int subTotalVertex = partition->sub[i]->srcVertexEnd - partition->sub[i]->srcVertexStart;
         currentEst[i] = performanceEstimator(subTotalVertex, subTotalEdge);
         currentEstLut[i] = currentEst[i];
@@ -116,7 +116,7 @@ int soeSchedulerPartitionArrangement(int * table, int size)
     {
         for (int j = 0; j < size - i - 1; j++)
         {
-            if (getPartition(table[j])->totalEdge < getPartition(table[j + 1])->totalEdge)
+            if (getPartition(table[j])->partEdgeNum < getPartition(table[j + 1])->partEdgeNum)
             {
                 int tmpId = table[j];
                 table[j] = table[j + 1];

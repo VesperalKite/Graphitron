@@ -283,6 +283,8 @@ namespace graphitron{
             Expr::Ptr lower;
             Expr::Ptr upper;
 
+            bool getNghMode = true;
+
             typedef std::shared_ptr<RangeDomain> Ptr;
 
             virtual void accept(FIRVisitor *visitor) {

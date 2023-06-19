@@ -1339,9 +1339,10 @@ namespace graphitron {
         auto rangeDomain = std::make_shared<fir::RangeDomain>();
 
         rangeDomain->lower = parseExpr();
-        consume(Token::Type::COL);
-        rangeDomain->upper = parseExpr();
-
+        if (tryConsume(Token::Type::COL)) {
+            rangeDomain->upper = parseExpr();
+            rangeDomain->getNghMode = false;
+        }
         return rangeDomain;
     }
     fir::ReduceStmt::Ptr Parser::parseReduceStmt(Token::Type token_type,
@@ -1417,7 +1418,7 @@ namespace graphitron {
         intrinsics_.push_back("getOutDegrees");
         // intrinsics_.push_back("getOutDegreesUint");
         // intrinsics_.push_back("getOutDegree");
-        // intrinsics_.push_back("getNgh");
+        intrinsics_.push_back("getNeighbors");
         // intrinsics_.push_back("relabel");
 
         // // library functions for vertexset

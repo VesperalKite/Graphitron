@@ -10,14 +10,13 @@ func reset(v : Vertex)
 end
 
 func calc(v : Vertex)
-    for n in v.getNeighbors()
-    
-    end
     prop[v] = prop[v] + 1;
 end
 
-func eSet(src : Vertex, dst : Vertex)
-    prop[dst] = src + dst;
+func sum(v : Vertex)
+    for ng in v.getNeighbors()
+        prop[ng] = v + ng;
+    end
 end
 
 func res_print()
@@ -30,7 +29,7 @@ end
 func main()
     vertices.init(reset);
     edges.partition();
-    edges.process(eSet);
+    vertices.process(sum);
     vertices.process(calc);
     prop.update();
     res_print();

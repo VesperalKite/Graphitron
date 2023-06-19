@@ -18,20 +18,51 @@ namespace graphitron {
     }
 
     void StmtGenerator::visit(mir::ForStmt::Ptr stmt) {
-        printIndent();
-        auto for_domain = stmt->domain;
-        auto loop_var = stmt->loopVar;
-        oss_ << "for ( int " << loop_var << " = ";
-        for_domain->lower->accept(expr_visitor);
-        oss_ << "; " << loop_var << " < ";
-        for_domain->upper->accept(expr_visitor);
-        oss_ << "; " << loop_var << "++ )" << endl;
-        printBeginIndent();
-        indent();
-        stmt->body->accept(this);
-        dedent();
-        printEndIndent();
-        oss_ << endl;
+        if (stmt->domain->getNghMode) {
+            auto for_domain = stmt->domain;
+            auto loop_var = stmt->loopVar;
+            auto loop_var_idx = loop_var + "_idx";
+            auto loop_var_idx_start = loop_var + "_start"; 
+            if (mir::isa<mir::Call>(for_domain->lower)) {
+                auto Nghs_expr = mir::to<mir::Call>(for_domain->lower);
+                if (Nghs_expr->name == "builtin_getNeighbors") {
+                    printIndent();
+                    oss_ << "int " << loop_var_idx_start << " = rpa["; 
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "];" << endl; 
+                    printIndent();
+                    oss_ << "for ( int " << loop_var_idx << " = 0; " << loop_var_idx << " < ";
+                    oss_ << "rpa[";
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "+1] - rpa[";
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "]; " << loop_var_idx << "++ )" << endl;
+                    printBeginIndent();
+                    indent();
+                    printIndent();
+                    oss_ << "int " << loop_var << " = cia[" << loop_var_idx_start << " + " << loop_var_idx << "];" << endl;
+                    stmt->body->accept(this);
+                    dedent();
+                    printEndIndent();
+                    oss_ << endl;
+                }
+            }
+        } else {
+            printIndent();
+            auto for_domain = stmt->domain;
+            auto loop_var = stmt->loopVar;
+            oss_ << "for ( int " << loop_var << " = ";
+            for_domain->lower->accept(expr_visitor);
+            oss_ << "; " << loop_var << " < ";
+            for_domain->upper->accept(expr_visitor);
+            oss_ << "; " << loop_var << "++ )" << endl;
+            printBeginIndent();
+            indent();
+            stmt->body->accept(this);
+            dedent();
+            printEndIndent();
+            oss_ << endl;
+        }
     }
 
     void StmtGenerator::visit(mir::WhileStmt::Ptr stmt) {

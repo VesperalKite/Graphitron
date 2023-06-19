@@ -69,6 +69,8 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "cinttypes": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "complex": "cpp",
+        "algorithm": "cpp"
     }
 }

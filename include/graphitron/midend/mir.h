@@ -300,6 +300,8 @@ namespace graphitron {
             Expr::Ptr lower;
             Expr::Ptr upper;
 
+            bool getNghMode;
+
             typedef std::shared_ptr<ForDomain> Ptr;
 
             virtual void accept(MIRVisitor *visitor) {

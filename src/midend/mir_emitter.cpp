@@ -53,8 +53,14 @@ namespace graphitron {
 
     void MIREmitter::visit(fir::RangeDomain::Ptr for_domain) {
         auto mir_for_domain = std::make_shared<mir::ForDomain>();
-        mir_for_domain->upper = emitExpr(for_domain->upper);
-        mir_for_domain->lower = emitExpr(for_domain->lower);
+        if (for_domain->getNghMode) {
+            mir_for_domain->upper = emitExpr(for_domain->lower);
+            mir_for_domain->lower = emitExpr(for_domain->lower);
+        } else {
+            mir_for_domain->upper = emitExpr(for_domain->upper);
+            mir_for_domain->lower = emitExpr(for_domain->lower);
+        }
+        mir_for_domain->getNghMode = for_domain->getNghMode;
         retForDomain = mir_for_domain;
     }
 
@@ -325,7 +331,7 @@ namespace graphitron {
             } else if (method_call_expr->method_name->ident == "builtin_getOutDegrees") {
                 mir_call_expr->alias = "out_deg";
                 retExpr = mir_call_expr;
-            }
+            } 
         } else {
             // If target is a vector or an edgeset (actual concrete object)
             if (method_call_expr->method_name->ident == "builtin_getProperty") {
