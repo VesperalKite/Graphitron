@@ -61,6 +61,6 @@ deploy: check-vitis $(BINARY_CONTAINERS)
 exe: check-vitis $(EXECUTABLE)
 
 all:
-	$(MAKE) app=$(APP) build
-	$(MAKE) app=$(APP) deploy
-	$(MAKE) app=$(APP) exe
+	$(MAKE) app=$(APP) build opt=$(OPT)
+	$(MAKE) app=$(APP) deploy opt=$(OPT)
+	$(MAKE) app=$(APP) exe opt=$(OPT)

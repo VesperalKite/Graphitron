@@ -8,14 +8,14 @@ he_mem_t local_mem[] = {
     {
         MEM_ID_RPA,
         "rpa",
-        ATTR_HOST_ONLY,
+        ATTR_PL_HBM,
         sizeof(int) * 2,
         SIZE_IN_VERTEX,
     },
     {
         MEM_ID_CIA,
         "cia",
-        ATTR_HOST_ONLY,
+        ATTR_PL_HBM,
         sizeof(int) * 2,
         SIZE_IN_EDGE,
     },

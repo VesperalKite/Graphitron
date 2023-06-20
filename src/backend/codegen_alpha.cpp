@@ -87,6 +87,8 @@ namespace graphitron {
             oss << "        int partVertexNum = partition->dstEnd - partition->dstStart + 1;" << endl;
             oss << "        int partDstIdStart = partition->dstStart;" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));" << endl;
+            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_RPA));" << endl;
+            oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_CIA));" << endl;
             oss << setkernel_buffer.str();
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partVertexNum);" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partDstIdStart);" << endl;

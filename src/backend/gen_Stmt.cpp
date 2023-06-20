@@ -27,20 +27,20 @@ namespace graphitron {
                 auto Nghs_expr = mir::to<mir::Call>(for_domain->lower);
                 if (Nghs_expr->name == "builtin_getNeighbors") {
                     printIndent();
-                    oss_ << "int " << loop_var_idx_start << " = rpa["; 
+                    oss_ << "int " << loop_var_idx_start << " = partRPA["; 
                     Nghs_expr->args[0]->accept(expr_visitor);
                     oss_ << "];" << endl; 
                     printIndent();
                     oss_ << "for ( int " << loop_var_idx << " = 0; " << loop_var_idx << " < ";
-                    oss_ << "rpa[";
+                    oss_ << "partRPA[";
                     Nghs_expr->args[0]->accept(expr_visitor);
-                    oss_ << "+1] - rpa[";
+                    oss_ << "+1] - partRPA[";
                     Nghs_expr->args[0]->accept(expr_visitor);
                     oss_ << "]; " << loop_var_idx << "++ )" << endl;
                     printBeginIndent();
                     indent();
                     printIndent();
-                    oss_ << "int " << loop_var << " = cia[" << loop_var_idx_start << " + " << loop_var_idx << "];" << endl;
+                    oss_ << "int " << loop_var << " = partCIA[" << loop_var_idx_start << " + " << loop_var_idx << "];" << endl;
                     stmt->body->accept(this);
                     dedent();
                     printEndIndent();

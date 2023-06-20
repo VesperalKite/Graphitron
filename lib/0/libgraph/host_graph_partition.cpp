@@ -75,6 +75,8 @@ static void partitionTransfer(graphInfo* info) {
 
     DEBUG_PRINTF("%s", "transfer base mem\n");
     int base_mem_id[] = {
+        MEM_ID_RPA,
+        MEM_ID_CIA,
         MEM_ID_OUT_DEG
     };
     transfer_data_to_pl(acc->context, acc->device, base_mem_id, ARRAY_SIZE(base_mem_id));

@@ -5,12 +5,18 @@
 extern "C" {
     void vp_kernel(
         int  *partOutdegArray,
+        int  *partRPA,
+        int  *partCIA,
         // insert1
         unsigned int partVertexNum,
         unsigned int partDstIdStart  
     ){
 #pragma HLS INTERFACE m_axi port=partOutdegArray offset=slave bundle=gmem2
 #pragma HLS INTERFACE s_axilite port=partOutdegArray bundle=control
+#pragma HLS INTERFACE m_axi port=partRPA offset=slave bundle=gmem30
+#pragma HLS INTERFACE s_axilite port=partRPA bundle=control
+#pragma HLS INTERFACE m_axi port=partCIA offset=slave bundle=gmem31
+#pragma HLS INTERFACE s_axilite port=partCIA bundle=control
 // insert2
 
 #pragma HLS INTERFACE s_axilite port=partVertexNum      bundle=control

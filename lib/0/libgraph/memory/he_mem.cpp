@@ -65,6 +65,8 @@ int he_mem_init(cl_context &dev_context, he_mem_t *item) {
         // hardcode the bank for the outdeg variable... 
 
         if((strcmp (item->name, "outDeg") == 0)) item->ext_attr.flags = (2 | XCL_MEM_TOPOLOGY);
+        if((strcmp (item->name, "rpa") == 0)) item->ext_attr.flags = (30 | XCL_MEM_TOPOLOGY);
+        if((strcmp (item->name, "cia") == 0)) item->ext_attr.flags = (31 | XCL_MEM_TOPOLOGY);
 
         std::cout << item->name << " is banked to " << std::hex << item->ext_attr.flags << std::endl; 
 

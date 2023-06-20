@@ -1,0 +1,62 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const sp : vector{Vertex}(int);
+const frontier : vector{Vertex}(int);
+
+func reset(v : Vertex)
+    sp[v] = 2147483647;
+    frontier[v] = 0;
+end
+
+func calc(v : Vertex)
+    for ngh in v.getNeighbors()
+        var newdis : int = sp[v] + 1;
+        if newdis < sp[ngh]
+            frontier[ngh] = 1;
+            sp[ngh] = newdis;
+        end
+    end
+end
+
+func getSize() -> size : int
+    var num : int = 0;
+    for i in 0:edges.getVertices()
+        if (frontier[i]==1)
+           num += 1;
+        end
+    end
+    size = num;
+end
+
+func res_print()
+    for i in 0:edges.getVertices()
+        print sp[i];
+    end
+    println "";
+end
+
+func frontier_reset(v : Vertex)
+    frontier[v] = 0;
+end
+
+func main()
+    vertices.init(reset);
+    sp[1] = 0;
+    frontier[1] = 1;
+    edges.partition();
+    var frontier_size : int = 1;
+    while (frontier_size != 0)
+        startTimer();
+        vertices.process(frontier_reset);
+        vertices.process(calc);
+        var elapsed_time : double = stopTimer();
+        sp.update();
+        res_print();
+        print "elapsed time: ";
+        println elapsed_time;
+        frontier.update();
+        frontier_size = getSize();
+    end
+end
