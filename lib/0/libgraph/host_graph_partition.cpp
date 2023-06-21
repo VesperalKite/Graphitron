@@ -73,20 +73,24 @@ static void partitionTransfer(graphInfo* info) {
     DEBUG_PRINTF("%s", "transfer mem start\n");
     double begin = getCurrentTimestamp();
 
-    DEBUG_PRINTF("%s", "transfer base mem\n");
-    int base_mem_id[] = {
-        MEM_ID_RPA,
-        MEM_ID_CIA,
-        MEM_ID_OUT_DEG
-    };
-    transfer_data_to_pl(acc->context, acc->device, base_mem_id, ARRAY_SIZE(base_mem_id));
+    if (VP_KERNEL_NUM > 0) {
+        DEBUG_PRINTF("%s", "transfer vp kernel mem\n");
+        int base_mem_id[] = {
+            MEM_ID_RPA,
+            MEM_ID_CIA,
+            MEM_ID_OUT_DEG
+        };
+        transfer_data_to_pl(acc->context, acc->device, base_mem_id, ARRAY_SIZE(base_mem_id));
+    }
     
-    DEBUG_PRINTF("%s", "transfer partition mem\n");
-    for (int i = 0; i < info->blkNum; i++) {
-        int mem_id[2];
-        mem_id[0] = getPartition(i)->partSrc.id;
-        mem_id[1] = getPartition(i)->partDst.id;
-        transfer_data_to_pl(acc->context, acc->device, mem_id, ARRAY_SIZE(mem_id));
+    if (EP_KERNEL_NUM > 0) {
+        DEBUG_PRINTF("%s", "transfer ep kernel mem\n");
+        for (int i = 0; i < info->blkNum; i++) {
+            int mem_id[2];
+            mem_id[0] = getPartition(i)->partSrc.id;
+            mem_id[1] = getPartition(i)->partDst.id;
+            transfer_data_to_pl(acc->context, acc->device, mem_id, ARRAY_SIZE(mem_id));
+        }
     }
 
     DEBUG_PRINTF("%s", "transfer user mem\n");

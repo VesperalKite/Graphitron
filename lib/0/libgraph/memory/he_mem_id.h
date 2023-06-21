@@ -19,7 +19,7 @@
 
 
 #define MEM_ID_USER_DEFINE_BASE     (16384)
-#define BANK_ID_USER_DEFINE_BASE    (2)
+#define BANK_ID_USER_DEFINE_BASE    (4)
 
 // User Define Part
 #define SetUserMemId(i)             (MEM_ID_USER_DEFINE_BASE+i)

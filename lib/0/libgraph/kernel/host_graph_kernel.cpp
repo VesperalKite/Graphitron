@@ -5,10 +5,12 @@
 
 
 epDescriptor* getEdgesProc(int kernelID) {
+    if (EP_KERNEL_NUM == 0) return nullptr;
     return &localepKernel[kernelID];
 }
 
 vpDescriptor* getVerticesProc(int kernelID) {
+    if (VP_KERNEL_NUM == 0) return nullptr;
     return &localvpKernel[kernelID];
 }
 

@@ -1,7 +1,7 @@
 #include <graphitron/backend/codegen_alpha.h>
 #include <graphitron/midend/mir.h>
-#define BANK_ID_USER_DEFINE_BASE    (2)
-#define GMEM_ID_USER_DEFINE_BASE    (2)
+#define BANK_ID_USER_DEFINE_BASE    (4)
+#define GMEM_ID_USER_DEFINE_BASE    (4)
 using namespace std;
 namespace graphitron {
     int CodeGenAlpha::genFPGA() {
@@ -58,7 +58,7 @@ namespace graphitron {
         auto ep_funcs = mir_context_->edge_process_funcs;
         for (int i = 0; i < ep_funcs.size(); i++) {
             auto func = ep_funcs[i];
-            oss << "void ep_" << func->name << "_kernel_runner() {" << endl;
+            oss << "void ep_" << func->name << "_fpga_kernel() {" << endl;
             oss << "    graphAccelerator* acc = getAccelerator();" << endl;
             oss << "    int blkNum = " << mir_context_->getEdgeSets().front()->name << ".blkNum;" << endl;
             oss << "    for (int i = 0; i < blkNum; i++) {" << endl;
@@ -77,7 +77,7 @@ namespace graphitron {
         }
         for (int i = 0; i < vp_funcs.size(); i++) {
             auto func = vp_funcs[i];
-            oss << "void vp_" << func->name << "_kernel_runner() {" << endl;
+            oss << "void vp_" << func->name << "_fpga_kernel() {" << endl;
             oss << "    graphAccelerator* acc = getAccelerator();" << endl;
             oss << "    int blkNum = " << mir_context_->getEdgeSets().front()->name << ".blkNum;" << endl;
             oss << "    for (int i = 0; i < blkNum; i++) {" << endl;

@@ -45,6 +45,26 @@ namespace graphitron {
                     dedent();
                     printEndIndent();
                     oss_ << endl;
+                } else if (Nghs_expr->name == "builtin_getOutEdges") {
+                    printIndent();
+                    oss_ << "int " << loop_var_idx_start << " = partRPA["; 
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "];" << endl; 
+                    printIndent();
+                    oss_ << "for ( int " << loop_var_idx << " = 0; " << loop_var_idx << " < ";
+                    oss_ << "partRPA[";
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "+1] - partRPA[";
+                    Nghs_expr->args[0]->accept(expr_visitor);
+                    oss_ << "]; " << loop_var_idx << "++ )" << endl;
+                    printBeginIndent();
+                    indent();
+                    printIndent();
+                    oss_ << "int " << loop_var << " = " << loop_var_idx_start << " + " << loop_var_idx << ";" << endl;
+                    stmt->body->accept(this);
+                    dedent();
+                    printEndIndent();
+                    oss_ << endl;                    
                 }
             }
         } else {

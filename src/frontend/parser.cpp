@@ -655,6 +655,7 @@ namespace graphitron {
                     if (isIntrinsic(ident->ident)) {
                         ident->ident = "builtin_" + ident->ident;
                     }
+
                     method_call_expr->method_name = ident;
                     if (peek().type != Token::Type::RP) {
                         method_call_expr->args = parseExprParams();
@@ -1419,8 +1420,9 @@ namespace graphitron {
         // intrinsics_.push_back("getOutDegreesUint");
         // intrinsics_.push_back("getOutDegree");
         intrinsics_.push_back("getNeighbors");
+        intrinsics_.push_back("getOutEdges");
         // intrinsics_.push_back("relabel");
-
+        intrinsics_.push_back("dst");
         // // library functions for vertexset
         intrinsics_.push_back("getProperty");
         intrinsics_.push_back("update");

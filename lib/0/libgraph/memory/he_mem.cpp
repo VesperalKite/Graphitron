@@ -9,6 +9,7 @@
 #include "he_mem_id.h"
 
 #include "he_mem_attr.h"
+#include "host_graph_sw.h"
 
 #define HE_DEBUG(fmt,...) ;
 
@@ -60,13 +61,23 @@ int he_mem_init(cl_context &dev_context, he_mem_t *item) {
     if (item->attr == ATTR_HOST_ONLY) {
         return 0;
     } else {
+        if (EP_KERNEL_NUM == 0 ) {
+            if ((strcmp (item->name, "partition edge src") == 0) || (strcmp (item->name, "partition edge dst") == 0)) {
+                return 0;
+            }
+        }
+        if (VP_KERNEL_NUM == 0) {
+            if ((strcmp (item->name, "outDeg") == 0) || (strcmp (item->name, "rpa") == 0) || (strcmp (item->name, "cia") == 0)) {
+                return 0;
+            }
+        }
         item->ext_attr.obj = item->data;
         item->ext_attr.param = 0;
         // hardcode the bank for the outdeg variable... 
 
         if((strcmp (item->name, "outDeg") == 0)) item->ext_attr.flags = (2 | XCL_MEM_TOPOLOGY);
-        if((strcmp (item->name, "rpa") == 0)) item->ext_attr.flags = (30 | XCL_MEM_TOPOLOGY);
-        if((strcmp (item->name, "cia") == 0)) item->ext_attr.flags = (31 | XCL_MEM_TOPOLOGY);
+        if((strcmp (item->name, "rpa") == 0)) item->ext_attr.flags = (3 | XCL_MEM_TOPOLOGY);
+        if((strcmp (item->name, "cia") == 0)) item->ext_attr.flags = (4 | XCL_MEM_TOPOLOGY);
 
         std::cout << item->name << " is banked to " << std::hex << item->ext_attr.flags << std::endl; 
 

@@ -74,7 +74,11 @@ namespace graphitron {
             } else {
                 oss_ << "transfer_data_from_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
             }
-        }else {
+        } else if (expr->name == "builtin_dst") {
+            oss_ << "partCIA[";
+            expr->args[0]->accept(this);
+            oss_ << "]";
+        } else {
             oss_ << expr->name;
             oss_ << "(";
             bool printDelimiter = false;
@@ -154,13 +158,13 @@ namespace graphitron {
             assert(associated_element_type);
             auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
             assert(associated_element_type_size);
-            oss_ << "vp_" << expr->input_function->function_name->name << "_kernel_runner()";
+            oss_ << "vp_" << expr->input_function->function_name->name << "_fpga_kernel()";
         } else if ( mir_context_->isEdgeSet(mir_var->var.getName())) {
             auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
             assert(associated_element_type);
             auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
             assert(associated_element_type_size);
-            oss_ << "ep_" << expr->input_function->function_name->name << "_kernel_runner()";
+            oss_ << "ep_" << expr->input_function->function_name->name << "_fpga_kernel()";
         }
     }
 

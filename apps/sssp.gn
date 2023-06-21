@@ -2,20 +2,22 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const sp : vector{Vertex}(int);
+const dis : vector{Vertex}(int);
 const frontier : vector{Vertex}(int);
+const map_w : vector{Edge}(int);
 
 func reset(v : Vertex)
-    sp[v] = 2147483647;
+    dis[v] = 2147483647;
     frontier[v] = 0;
 end
 
 func calc(v : Vertex)
-    for ngh in v.getNeighbors()
-        var newdis : int = sp[v] + 1;
-        if newdis < sp[ngh]
+    for e in v.getOutEdges()
+        var newdis : int = dis[v] + map_w[e];
+        var ngh : Vertex = e.dst();
+        if newdis < dis[ngh]
             frontier[ngh] = 1;
-            sp[ngh] = newdis;
+            dis[ngh] = newdis;
         end
     end
 end
@@ -32,7 +34,12 @@ end
 
 func res_print()
     for i in 0:edges.getVertices()
-        print sp[i];
+        if dis[i] == 2147483647
+            print "infinite";
+        else
+            print dis[i];
+        end
+        print " ";
     end
     println "";
 end
@@ -43,7 +50,12 @@ end
 
 func main()
     vertices.init(reset);
-    sp[1] = 0;
+    map_w[0] = 4;
+    map_w[1] = 2;
+    map_w[2] = 1;
+    map_w[3] = 1;
+    map_w[4] = 4;
+    dis[1] = 0;
     frontier[1] = 1;
     edges.partition();
     var frontier_size : int = 1;
@@ -52,7 +64,7 @@ func main()
         vertices.process(frontier_reset);
         vertices.process(calc);
         var elapsed_time : double = stopTimer();
-        sp.update();
+        dis.update();
         res_print();
         print "elapsed time: ";
         println elapsed_time;

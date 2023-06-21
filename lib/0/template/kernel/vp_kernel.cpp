@@ -13,9 +13,9 @@ extern "C" {
     ){
 #pragma HLS INTERFACE m_axi port=partOutdegArray offset=slave bundle=gmem2
 #pragma HLS INTERFACE s_axilite port=partOutdegArray bundle=control
-#pragma HLS INTERFACE m_axi port=partRPA offset=slave bundle=gmem30
+#pragma HLS INTERFACE m_axi port=partRPA offset=slave bundle=gmem3
 #pragma HLS INTERFACE s_axilite port=partRPA bundle=control
-#pragma HLS INTERFACE m_axi port=partCIA offset=slave bundle=gmem31
+#pragma HLS INTERFACE m_axi port=partCIA offset=slave bundle=gmem4
 #pragma HLS INTERFACE s_axilite port=partCIA bundle=control
 // insert2
 
