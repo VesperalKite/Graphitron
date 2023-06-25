@@ -52,6 +52,18 @@ int Graph::getMinIdx(const std::vector<std::vector<int>> &data) {
     return minIdx;
 }
 
+std::vector<std::vector<int>> Graph::getReverseEL(std::vector<std::vector<int>> ori) {
+    std::vector<std::vector<int>> res;
+    res.assign(ori.begin(), ori.end());
+    for (auto edge = res.begin(); edge != res.end(); edge++) {
+        int tmp=(*edge)[0];
+        (*edge)[0] = (*edge)[1];
+        (*edge)[1] = tmp;
+    }
+    return res;
+}
+
+
 Graph::Graph(const std::string& gName) {
 
     // Check if it is undirectional graph
@@ -68,6 +80,10 @@ Graph::Graph(const std::string& gName) {
     std::cout << "vertex num: " << vertexNum << std::endl;
     std::cout << "edge num: " << edgeNum << std::endl;
 
+    elo.assign(data.begin(), data.end());
+    //print2dvector(elo);
+    eli = getReverseEL(elo);
+    
     for (int i = 0; i < vertexNum; i++) {
         Vertex* v = new Vertex(i);
         vertices.push_back(v);
@@ -90,7 +106,7 @@ Graph::Graph(const std::string& gName) {
     }
 }
 
-CSR::CSR(const Graph &g) : vertexNum(g.vertexNum), edgeNum(g.edgeNum) {
+CSR::CSR(const Graph &g) : vertexNum(g.vertexNum), edgeNum(g.edgeNum), elo(g.elo), eli(g.eli), isWeighted(g.isWeighted) {
     rpao.resize(vertexNum + 1);
     rpai.resize(vertexNum + 1);
     rpao[0] = 0;
@@ -100,22 +116,27 @@ CSR::CSR(const Graph &g) : vertexNum(g.vertexNum), edgeNum(g.edgeNum) {
         rpai[i + 1] = rpai[i] + g.vertices[i]->inDeg;
     }
 
+    sort(elo.begin(), elo.end(), [](std::vector<int> &a, std::vector<int> &b){
+        return (a[0] == b[0]) ? a[1] < b[1] : a[0] < b[0]; 
+    });
+
+    sort(eli.begin(), eli.end(), [](std::vector<int> &a, std::vector<int> &b){
+        return (a[0] == b[0]) ? a[1] < b[1] : a[0] < b[0]; 
+    });
+
     // sort the input and output vertex
-    for (int i = 0; i < vertexNum; i++) {
-        std::sort(g.vertices[i]->outVid.begin(), g.vertices[i]->outVid.end());
-        std::sort(g.vertices[i]->inVid.begin(), g.vertices[i]->inVid.end());
-        for (auto id : g.vertices[i]->outVid) {
-            ciao.push_back(id);
-        }
-        for (auto id : g.vertices[i]->inVid) {
-            ciai.push_back(id);
+    for (auto edge : elo) {
+        ciao.push_back(edge[1]);
+        if (isWeighted) {
+            ePropso.push_back(edge[2]);
         }
     }
-#if 0
-    for (int i = 0; i < edgeNum; i++) {
-        eProps.push_back(rand() % 10);
+    for (auto edge : eli) {
+        ciai.push_back(edge[1]);
+        if (isWeighted) {
+            ePropsi.push_back(edge[2]);
+        }
     }
-#endif
 }
 
 int CSR::save2File(const std::string &fName)
@@ -161,47 +182,4 @@ int CSR::save2File(const std::string &fName)
     return 0;
 
 
-}
-
-CSR_BLOCK::CSR_BLOCK(
-    const int _cordx,
-    const int _cordy,
-    CSR* csr
-) : cordx(_cordx), cordy(_cordy)
-{
-    vertexNum = PARTITION_SIZE;
-    srcStart = cordx * PARTITION_SIZE;
-    srcEnd = (cordx + 1) * PARTITION_SIZE;
-    if (srcEnd > csr->vertexNum) {
-        srcEnd = csr->vertexNum;
-    }
-    vertexNum = srcEnd - srcStart;
-
-    sinkStart = cordy * PARTITION_SIZE;
-    sinkEnd = (cordy + 1) * PARTITION_SIZE;
-    if (sinkEnd > csr->vertexNum) {
-        sinkEnd = csr->vertexNum;
-    }
-
-    int blkStart = 0;
-    rpa.push_back(0);
-    for (int i = srcStart; i < srcEnd; i++) {
-        int start = csr->rpao[i];
-        int num = csr->rpao[i + 1] - csr->rpao[i];
-        int blkNum = 0;
-        for (int j = 0; j < num; j++) {
-            int ngbVidx = csr->ciao[start + j];
-            prop_t eProp = csr->ciao[start + j];
-            if (ngbVidx >= sinkStart && ngbVidx < sinkEnd) {
-                cia.push_back(ngbVidx);
-                eProps.push_back(eProp);
-                blkNum++;
-            }
-        }
-
-        //update block csr data
-        blkStart += blkNum;
-        rpa.push_back(blkStart);
-    }
-    edgeNum = blkStart;
 }

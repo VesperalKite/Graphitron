@@ -60,6 +60,20 @@ he_mem_t local_mem[] = {
         ATTR_HOST_ONLY,
         sizeof(prop_t),
         SIZE_IN_EDGE,
+    },
+    {
+        MEM_ID_EDGE_PROP,
+        "edge prop",
+        ATTR_HOST_ONLY,
+        sizeof(prop_t),
+        SIZE_IN_EDGE,
+    },
+    {
+        MEM_ID_PART_EDGE_PROP,
+        "part edge prop",
+        ATTR_HOST_ONLY,
+        sizeof(int),
+        SIZE_IN_EDGE,
     }
 };
 

@@ -50,4 +50,13 @@ void partition_mem_init(cl_context &context, int blkIndex, int size)
     partition->partDst.size_attr = SIZE_DEFAULT;
     partition->partDst.ext_attr.flags = bank[1];
     he_mem_init(context, &partition->partDst);
+    partition->parteProp.id = MEM_ID_PARTITION_BASE + blkIndex * MEM_ID_PARTITION_OFFSET + 2;
+    partition->parteProp.name = "partition edge prop";
+    partition->parteProp.attr = ATTR_PL_HBM;
+    partition->parteProp.unit_size = size * sizeof(int);
+    partition->parteProp.size_attr = SIZE_DEFAULT;
+    partition->parteProp.ext_attr.flags = bank[5];
+#if HAVE_EDGE_PROP
+    he_mem_init(context, &partition->parteProp);
+#endif
 }

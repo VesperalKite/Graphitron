@@ -1423,6 +1423,7 @@ namespace graphitron {
         intrinsics_.push_back("getOutEdges");
         // intrinsics_.push_back("relabel");
         intrinsics_.push_back("dst");
+        intrinsics_.push_back("weight");
         // // library functions for vertexset
         intrinsics_.push_back("getProperty");
         intrinsics_.push_back("update");

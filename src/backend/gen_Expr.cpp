@@ -78,6 +78,10 @@ namespace graphitron {
             oss_ << "partCIA[";
             expr->args[0]->accept(this);
             oss_ << "]";
+        } else if (expr->name == "builtin_weight") {
+            oss_ << "partEdgeProp[";
+            expr->args[0]->accept(this);
+            oss_ << "]";
         } else {
             oss_ << expr->name;
             oss_ << "(";

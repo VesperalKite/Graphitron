@@ -1,7 +1,7 @@
 #include <graphitron/backend/codegen_alpha.h>
 #include <graphitron/midend/mir.h>
-#define BANK_ID_USER_DEFINE_BASE    (4)
-#define GMEM_ID_USER_DEFINE_BASE    (4)
+#define BANK_ID_USER_DEFINE_BASE    (5)
+#define GMEM_ID_USER_DEFINE_BASE    (5)
 using namespace std;
 namespace graphitron {
     int CodeGenAlpha::genFPGA() {
@@ -12,6 +12,7 @@ namespace graphitron {
         oss.open(output_path_+"/config.mk");
         reset();
         oss << "FREQ=" << mir_context_->freq << endl;
+        oss << "HAVE_EDGE_PROP=" << mir_context_->have_edge_prop << endl;
         oss.close();
         return 0;   
     }

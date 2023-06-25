@@ -25,6 +25,7 @@ typedef struct
     float        compressRatio;
     he_mem_t     partSrc;
     he_mem_t     partDst;
+    he_mem_t     parteProp;
 
     unsigned int mapedTotalIndex;
     unsigned int partEdgeNum;

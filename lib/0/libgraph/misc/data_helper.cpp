@@ -8,12 +8,7 @@
 Graph* createGraph(const std::string &gName, const std::string &mode) {
     Graph* gptr;
     std::string dir;
-    if (mode == "normal") dir = DEFAULT_DATASET_PATH;
-
-    else {
-        std::cout << "unknown execution environment." << std::endl;
-        exit(0);
-    }
+    dir = DEFAULT_DATASET_PATH;
 
     if (gName == "dblp") {
         gptr = new Graph(dir + "dblp.ungraph.txt");
@@ -93,6 +88,9 @@ Graph* createGraph(const std::string &gName, const std::string &mode) {
     else {
         gptr = new Graph(gName);
     }
+
+    if (mode == "weighted") gptr->isWeighted = true;
+    
     return gptr;
 }
 

@@ -1,6 +1,6 @@
 element Vertex end
 element Edge end
-const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const edges : edgeset{Edge}(Vertex, Vertex, int) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
 const dis : vector{Vertex}(int);
 const frontier : vector{Vertex}(int);
@@ -13,7 +13,7 @@ end
 
 func calc(v : Vertex)
     for e in v.getOutEdges()
-        var newdis : int = dis[v] + map_w[e];
+        var newdis : int = dis[v] + e.weight();
         var ngh : Vertex = e.dst();
         if newdis < dis[ngh]
             frontier[ngh] = 1;

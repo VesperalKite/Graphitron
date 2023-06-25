@@ -38,6 +38,9 @@ class Graph{
         int vertexNum;
         int edgeNum;
         std::vector<Vertex*> vertices; 
+        std::vector<std::vector<int>> elo;
+        std::vector<std::vector<int>> eli;
+        bool isWeighted=false;
 
         Graph(const std::string &fName);
         ~Graph(){
@@ -52,6 +55,7 @@ class Graph{
         bool isUgraph;
         int getMaxIdx(const std::vector<std::vector<int>> &data);
         int getMinIdx(const std::vector<std::vector<int>> &data);
+        std::vector<std::vector<int>> getReverseEL(std::vector<std::vector<int>> ori);
         void loadFile(
 				const std::string& fName,
                 std::vector<std::vector<int>> &data
@@ -69,27 +73,17 @@ class CSR{
         std::vector<int> ciai;
 		std::vector<prop_t> eProps;
 
+        std::vector<std::vector<int>> elo;
+        std::vector<std::vector<int>> eli;
+
+        std::vector<int> ePropso;
+        std::vector<int> ePropsi;
+
+        bool isWeighted;
         // The CSR is constructed based on the simple graph
         explicit CSR(const Graph &g);
         int save2File(const std::string & fName);
 		~CSR();
-};
-
-class CSR_BLOCK{
-	public:
-		const int cordx;
-		const int cordy;
-		int vertexNum;
-		int edgeNum;
-		int srcStart;
-		int srcEnd;
-		int sinkStart;
-		int sinkEnd;
-		std::vector<int> rpa;
-		std::vector<int> cia;
-		std::vector<prop_t> eProps;
-		explicit CSR_BLOCK(const int _cordx, const int _cordy, CSR* csr);
-		~CSR_BLOCK(){};
 };
 
 #endif

@@ -24,6 +24,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
 
     int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia = (int*)get_host_mem_pointer(MEM_ID_CIA);
+    int *edgeProp = (int*)get_host_mem_pointer(MEM_ID_EDGE_PROP);
 
     //int *outDeg         = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
     int *outDegOriginal = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
@@ -40,6 +41,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     rpa[vertexNum] = csr->rpao[vertexNum];
     for (int i = 0; i < edgeNum; i++) {
         cia[i] = csr->ciao[i];
+        edgeProp[i] = csr->ePropso[i];
     }
 
     // /* compress vertex*/
@@ -95,6 +97,9 @@ static void partitionTransfer(graphInfo* info) {
 
     DEBUG_PRINTF("%s", "transfer user mem\n");
     int user_mem_id[] = {
+        MEM_ID_MAP_W,
+        MEM_ID_DIS,
+        MEM_ID_FRONTIER,
         // insert
     };
     transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));
@@ -121,6 +126,8 @@ void partitionFunction(graphInfo *info) {
         unsigned int cur_edge_num = 0;
         int *edgePartitionSrcArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_SRC);
         int *edgePartitionDstArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_DST);
+        int *edgePartitionPropArray = (int*)get_host_mem_pointer(MEM_ID_PART_EDGE_PROP);
+        int *edgeProp = (int*)get_host_mem_pointer(MEM_ID_EDGE_PROP);
         for (int src = 0; src < vertexNum; src++) {
             int start = rpa[src];
             int num = rpa[src+1] - rpa[src];
@@ -131,6 +138,7 @@ void partitionFunction(graphInfo *info) {
                 if ((dst >= i * MAX_VERTICES_IN_ONE_PARTITION) && (dst < (i+1) * MAX_VERTICES_IN_ONE_PARTITION)) {
                     edgePartitionSrcArray[cur_edge_num] = src;
                     edgePartitionDstArray[cur_edge_num] = dst;
+                    edgePartitionPropArray[cur_edge_num] = edgeProp[cia_idx];
                     cur_edge_num++;
                 }
             }
@@ -154,6 +162,9 @@ void partitionFunction(graphInfo *info) {
 
         memcpy(partition->partSrc.data, &edgePartitionSrcArray[0], partition->partEdgeNum * sizeof(int));
         memcpy(partition->partDst.data, &edgePartitionDstArray[0], partition->partEdgeNum * sizeof(int));
+#if HAVE_EDGE_PROP
+        memcpy(partition->parteProp.data, &edgePartitionPropArray[0], partition->partEdgeNum * sizeof(int));
+#endif
     }
 
     for (int i = 0; i < info->blkNum; i++) {

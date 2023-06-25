@@ -7,6 +7,9 @@ extern "C" {
         int  *partOutdegArray,
         int  *partRPA,
         int  *partCIA,
+#if HAVE_EDGE_PROP
+        int  *partEdgeProp,
+#endif
         // insert1
         unsigned int partVertexNum,
         unsigned int partDstIdStart  
@@ -17,6 +20,10 @@ extern "C" {
 #pragma HLS INTERFACE s_axilite port=partRPA bundle=control
 #pragma HLS INTERFACE m_axi port=partCIA offset=slave bundle=gmem4
 #pragma HLS INTERFACE s_axilite port=partCIA bundle=control
+#if HAVE_EDGE_PROP
+#pragma HLS INTERFACE m_axi port=partEdgeProp offset=slave bundle=gmem4
+#pragma HLS INTERFACE s_axilite port=partEdgeProp bundle=control
+#endif
 // insert2
 
 #pragma HLS INTERFACE s_axilite port=partVertexNum      bundle=control
