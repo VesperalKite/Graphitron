@@ -32,6 +32,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
 
     int *rpa        = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia        = (int*)get_host_mem_pointer(MEM_ID_CIA);
+    prop_t *edgeProp               = (prop_t*)get_host_mem_pointer(MEM_ID_EDGE_PROP);
 
     int *outDeg         = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG);
     int *outDegOriginal = (int*)get_host_mem_pointer(MEM_ID_OUT_DEG_ORIGIN);
@@ -48,6 +49,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     rpa[vertexNum] = csr->rpao[vertexNum];
     for (int i = 0; i < edgeNum; i++) {
         cia[i] = csr->ciao[i];
+        edgeProp[i] = csr->ePropso[i];
     }
 
     /* compress vertex*/
