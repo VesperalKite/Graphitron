@@ -90,6 +90,9 @@ namespace graphitron {
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_RPA));" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_CIA));" << endl;
+            if (mir_context_->have_edge_prop == "true") {
+                oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(partition->parteProp.id));" << endl;
+            }
             oss << setkernel_buffer.str();
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partVertexNum);" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partDstIdStart);" << endl;
