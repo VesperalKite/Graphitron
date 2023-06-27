@@ -1,6 +1,5 @@
 # Graphitron
 A powerful, high-performance language for graph processing
-* version: 1.0
 ## Run the Code
 #### Prerequisites
 * The gcc-8.3 or above
