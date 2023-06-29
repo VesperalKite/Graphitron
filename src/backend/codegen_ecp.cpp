@@ -110,6 +110,7 @@ namespace graphitron {
         //AddScalarArg(mir_context_->Iteration);
         auto body = main_func->body;
         body->accept(stmt_visitor);
+        oss << "  acceleratorDeinit();" << endl;
         oss << "  return 0;" << endl;
         oss << "}" << endl;
     }
