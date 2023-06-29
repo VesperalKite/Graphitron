@@ -41,7 +41,9 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     rpa[vertexNum] = csr->rpao[vertexNum];
     for (int i = 0; i < edgeNum; i++) {
         cia[i] = csr->ciao[i];
+#if HAVE_EDGE_PROP
         edgeProp[i] = csr->ePropso[i];
+#endif
     }
 
     // /* compress vertex*/
