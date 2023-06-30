@@ -7,19 +7,19 @@ const frontier : vector{Vertex}(int);
 
 func reset(v : Vertex)
     parent[v] = -1;
+    frontier[v] = 0;
 end
 
 func tryvisit(v : Vertex)
-    for ngh in v.getNeighbors()
-        if parent[ngh] == -1
-            parent[ngh] = v;
-            frontier[ngh] = 1;
+    if frontier[v] == 1 
+        frontier[v] = 0;
+        for ngh in v.getNeighbors()
+            if parent[ngh] == -1
+                parent[ngh] = v;
+                frontier[ngh] = 1;
+            end
         end
     end
-end
-
-func frontier_reset(v : Vertex)
-    frontier[v] = 0;
 end
 
 func getSize() -> size : int
@@ -33,13 +33,13 @@ func getSize() -> size : int
 end
 
 func main()
-    startTimer();
     vertices.init(reset);
     parent[1] = 1;
+    frontier[1] = 1;
     edges.partition();
     var frontier_size : int = 1;
+    startTimer();
     while (frontier_size != 0)
-        vertices.process(frontier_reset);
         vertices.process(tryvisit);
         frontier.update();
         frontier_size = getSize();
