@@ -41,7 +41,9 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     rpa[vertexNum] = csr->rpao[vertexNum];
     for (int i = 0; i < edgeNum; i++) {
         cia[i] = csr->ciao[i];
+#if HAVE_EDGE_PROP
         edgeProp[i] = csr->ePropso[i];
+#endif
     }
 
     // /* compress vertex*/
@@ -97,9 +99,6 @@ static void partitionTransfer(graphInfo* info) {
 
     DEBUG_PRINTF("%s", "transfer user mem\n");
     int user_mem_id[] = {
-        MEM_ID_MAP_W,
-        MEM_ID_DIS,
-        MEM_ID_FRONTIER,
         // insert
     };
     transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));
