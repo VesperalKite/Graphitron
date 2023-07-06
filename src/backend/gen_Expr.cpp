@@ -49,7 +49,7 @@ namespace graphitron {
                 oss_ << ")";
             }
         } else if (expr->name == "builtin_getVertices" || 
-                    expr->name == "builtin_partition" || 
+                    expr->name == "builtin_migrate" || 
                     expr->name == "builtin_getEdges") 
         {
             oss_ << expr->name;

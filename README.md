@@ -29,8 +29,13 @@ After you have cloned the directory:
     ./host_graph_fpga_bfs $(DATASET)/wiki-Talk.el
 ```
 ## Optimize Option
-#### To obtain better performance, we introduce a GAS-model version
+- To obtain better performance, we introduce a GAS-model version
 ```
-    make app=pagerank_delta all opt=1
+    make app=$(APP) all opt=1
 ```
 opt defalut will be set as 0
+- To apply Graph Partition, here you can use
+```
+    make app=$(APP) all gp=true
+```
+gp means graph partition, defalut will be set as false

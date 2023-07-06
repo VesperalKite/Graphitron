@@ -123,6 +123,12 @@ LDCLFLGAS += --xp prop:solution.kernel_compiler_margin=10% --kernel_frequency=$(
 ##################################################
 VAR_TRUE = true
 
+ifeq ($(strip $(GP)), $(strip $(VAR_TRUE)))
+CXXFLAGS += -DGRAPH_PARTITION=1
+else
+CXXFLAGS += -DGRAPH_PARTITION=0
+endif
+
 ifeq ($(strip $(HAVE_APPLY)), $(strip $(VAR_TRUE)))
 CXXFLAGS += -DHAVE_APPLY=1
 else

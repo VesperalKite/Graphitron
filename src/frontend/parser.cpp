@@ -1415,7 +1415,7 @@ namespace graphitron {
 
         // //library functions for edgeset
         intrinsics_.push_back("getVertices");
-        intrinsics_.push_back("partition");
+        intrinsics_.push_back("migrate");
         intrinsics_.push_back("getOutDegrees");
         // intrinsics_.push_back("getOutDegreesUint");
         // intrinsics_.push_back("getOutDegree");

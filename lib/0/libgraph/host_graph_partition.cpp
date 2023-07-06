@@ -107,9 +107,63 @@ static void partitionTransfer(graphInfo* info) {
     DEBUG_PRINTF("data transfer %lf \n", (end - begin) * 1000);
 }
 
+void migrateFunction(graphInfo *info) {
+    graphAccelerator* acc = getAccelerator();
+    info->blkNum = 1;
+    partitionDescriptor* partition = getPartition(0);
+    DEBUG_PRINTF("\nGraph migrate with no partition\n");
+    int *edgePartitionSrcArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_SRC);
+    int *edgePartitionDstArray = (int*)get_host_mem_pointer(MEM_ID_EDGE_DST);
+    int *edgePartitionPropArray = (int*)get_host_mem_pointer(MEM_ID_PART_EDGE_PROP);
+    int *edgeProp = (int*)get_host_mem_pointer(MEM_ID_EDGE_PROP);
+    int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
+    int *cia = (int*)get_host_mem_pointer(MEM_ID_CIA);
+
+    int vertexNum = info->vertexNum;
+    unsigned int cur_edge_num = 0;
+    for (int src = 0; src < vertexNum; src++) {
+        int start = rpa[src];
+        int num = rpa[src+1] - rpa[src];
+        for (int j = 0; j < num; j++) {
+            int cia_idx = start + j;
+            int dst = cia[cia_idx];
+            //int mapedDst_idx = vertexMap[cia[cia_idx]];
+            edgePartitionSrcArray[cur_edge_num] = src;
+            edgePartitionDstArray[cur_edge_num] = dst;
+            edgePartitionPropArray[cur_edge_num] = edgeProp[cia_idx];
+            cur_edge_num++;
+        }
+    }
+    partition->partEdgeNum = cur_edge_num;
+    partition->dstStart = 0;
+    partition->dstEnd = vertexNum;
+    partition->srcStart = edgePartitionSrcArray[0];
+    partition->srcEnd   = edgePartitionSrcArray[partition->partEdgeNum - 1];
+    //partition->mapedTotalIndex = mapedSrc_idx;
+    partition->totalVertexNum = vertexNum;
+
+    partition_mem_init(acc->context, 0, partition->partEdgeNum);
+
+    memcpy(partition->partSrc.data, &edgePartitionSrcArray[0], partition->partEdgeNum * sizeof(int));
+    memcpy(partition->partDst.data, &edgePartitionDstArray[0], partition->partEdgeNum * sizeof(int));
+#if HAVE_EDGE_PROP
+    memcpy(partition->parteProp.data, &edgePartitionPropArray[0], partition->partEdgeNum * sizeof(int));
+#endif
+    DEBUG_PRINTF("\n----------------------------------------------------------------------------------\n");
+    DEBUG_PRINTF("[INFO]: Graph data: \n");
+    DEBUG_PRINTF("\t edgelist from 0 to %d\n", partition->partEdgeNum - 1);
+    DEBUG_PRINTF("\t dst. vertex from %d to %d\n", partition->dstStart, partition->dstEnd);
+    DEBUG_PRINTF("\t src. vertex from %d to %d\n", partition->srcStart, partition->srcEnd);
+    DEBUG_PRINTF("v: %d e: %d \n", (partition->dstEnd - partition->dstStart + 1), partition->partEdgeNum);
+    DEBUG_PRINTF("v/e %lf \n", (partition->dstEnd - partition->dstStart + 1) / ((float)(partition->partEdgeNum)));
+    DEBUG_PRINTF("est. efficient %lf\n", ((float)(partition->partEdgeNum)) / partition->totalVertexNum);
+    //DEBUG_PRINTF("[PART] compressRatio %lf \n\n", partition->compressRatio);     
+    partitionTransfer(info);
+}
+
 void partitionFunction(graphInfo *info) {
     graphAccelerator* acc = getAccelerator();
-
+    DEBUG_PRINTF("\nGraph migrate with partition\n");
     int *rpa = (int*)get_host_mem_pointer(MEM_ID_RPA);
     int *cia = (int*)get_host_mem_pointer(MEM_ID_CIA);
     // unsigned int *vertexMap = (unsigned int *)get_host_mem_pointer(MEM_ID_VERTEX_INDEX_MAP);
