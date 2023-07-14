@@ -2,27 +2,21 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const parent : vector{Vertex}(int);
-const next_frontier : vector{Vertex}(int);
+const parent : vector{Vertex}(intx);
 const frontier : vector{Vertex}(int);
 
 func reset(v : Vertex)
     parent[v] = -1;
     frontier[v] = 0;
-    next_frontier[v] = 0;
-end
-
-func frontier_set(v : Vertex)
-    frontier[v] = next_frontier[v];
-    next_frontier[v] = 0;
 end
 
 func tryvisit(v : Vertex)
     if frontier[v] == 1 
+        frontier[v] = 0;
         for ngh in v.getNeighbors()
             if parent[ngh] == -1
                 parent[ngh] = v;
-                next_frontier[ngh] = 1;
+                frontier[ngh] = 1;
             end
         end
     end
@@ -39,21 +33,20 @@ func getSize() -> size : int
 end
 
 func main()
+    startTimer();
     vertices.init(reset);
     parent[1] = 1;
     frontier[1] = 1;
     edges.migrate();
     var frontier_size : int = 1;
     while (frontier_size != 0)
-        startTimer();
         vertices.process(tryvisit);
-        vertices.process(frontier_set);
-        var elapsed_time : double = stopTimer();
-        print "elapsed time: ";
-        println elapsed_time;
         frontier.update();
         frontier_size = getSize();
         print "frontier size: ";
         println frontier_size;
     end
+    var elapsed_time : double = stopTimer();
+    print "elapsed time: ";
+    println elapsed_time;
 end
