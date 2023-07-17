@@ -4,20 +4,26 @@ const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
 const parent : vector{Vertex}(intx);
 const frontier : vector{Vertex}(int);
+const next_frontier ：vector{Vertex}(int);
 
 func reset(v : Vertex)
     parent[v] = -1;
+    frontier[v] = 0;
+    next_frontier[v] = 0;
 end
 
 func tryvisit(src : Vertex, dst : Vertex)
-    if parent[dst] == -1
-       parent[dst] = src;
-       frontier[dst] = 1;
+    if frontier[src] == 1
+        if parent[dst] == -1
+            parent[dst] = src;
+            next_frontier[dst] = 1;
+        end
     end
 end
 
-func frontier_reset(v : Vertex)
-    frontier[v] = 0;
+func frontier_set(v : Vertex)
+    frontier[v] = next_frontier[v];
+    next_frontier[v] = 0;
 end
 
 func getSize() -> size : int
@@ -31,20 +37,21 @@ func getSize() -> size : int
 end
 
 func main()
-    startTimer();
     vertices.init(reset);
     parent[1] = 1;
-    edges.partition();
+    frontier[1] = 1;
+    edges.migrate();
     var frontier_size : int = 1;
     while (frontier_size != 0)
-        vertices.process(frontier_reset);
+        startTimer();
         edges.process(tryvisit);
+        vertices.process(frontier_reset);
+        var elapsed_time : double = stopTimer();
+        print "elapsed time: ";
+        println elapsed_time;
         frontier.update();
         frontier_size = getSize();
         print "frontier size: ";
         println frontier_size;
     end
-    var elapsed_time : double = stopTimer();
-    print "elapsed time: ";
-    println elapsed_time;
 end
