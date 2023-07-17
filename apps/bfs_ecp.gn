@@ -4,7 +4,7 @@ const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
 const parent : vector{Vertex}(intx);
 const frontier : vector{Vertex}(int);
-const next_frontier ：vector{Vertex}(int);
+const next_frontier : vector{Vertex}(int);
 
 func reset(v : Vertex)
     parent[v] = -1;
