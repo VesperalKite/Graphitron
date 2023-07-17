@@ -45,7 +45,7 @@ func main()
     while (frontier_size != 0)
         startTimer();
         edges.process(tryvisit);
-        vertices.process(frontier_reset);
+        vertices.process(frontier_set);
         var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
