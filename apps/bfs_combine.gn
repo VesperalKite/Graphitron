@@ -1,0 +1,73 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const parent : vector{Vertex}(intx);
+const frontier : vector{Vertex}(int);
+const next_frontier : vector{Vertex}(int);
+const threshold : int = 0.35;
+
+func reset(v : Vertex)
+    parent[v] = -1;
+    frontier[v] = 0;
+    next_frontier[v] = 0;
+end
+
+func tryvisit_ecp(src : Vertex, dst : Vertex)
+    if frontier[src] == 1
+        if parent[dst] == -1
+            parent[dst] = src;
+            next_frontier[dst] = 1;
+        end
+    end
+end
+
+func tryvisit_vcp(v : Vertex)
+    if frontier[v] == 1 
+        for ngh in v.getNeighbors()
+            if parent[ngh] == -1
+                parent[ngh] = v;
+                next_frontier[ngh] = 1;
+            end
+        end
+    end
+end
+
+func frontier_set(v : Vertex)
+    frontier[v] = next_frontier[v];
+    next_frontier[v] = 0;
+end
+
+func getSize() -> size : int
+    var num : int = 0;
+    for i in 0:edges.getVertices()
+        if (frontier[i]==1)
+           num += 1;
+        end
+    end
+    size = num;
+end
+
+func main()
+    vertices.init(reset);
+    parent[1] = 1;
+    frontier[1] = 1;
+    edges.migrate();
+    var frontier_size : int = 1;
+    while (frontier_size != 0)
+        startTimer();
+        if frontier_size > threshold * edges.getVertices()
+            edges.process(tryvisit_ecp);
+        else
+            vertices.process(tryvisit_vcp);
+        end
+        vertices.process(frontier_set);
+        var elapsed_time : double = stopTimer();
+        print "elapsed time: ";
+        println elapsed_time;
+        frontier.update();
+        frontier_size = getSize();
+        print "frontier size: ";
+        println frontier_size;
+    end
+end
