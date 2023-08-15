@@ -21,6 +21,9 @@ namespace graphitron {
         if (token == "iter") return Token::Type::ITER;
         if (token == "gs") return Token::Type::GS;
         if (token == "apply") return Token::Type::APPLY;
+        if (token == "gather") return Token::Type::GATHER;
+        if (token == "scatter") return Token::Type::SCATTER;
+        if (token == "filter") return Token::Type::FILTER;
         if (token == "init") return Token::Type::INIT;
         if (token == "process") return Token::Type::PROC;
         if (token == "if") return Token::Type::IF;

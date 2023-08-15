@@ -42,9 +42,14 @@ namespace graphitron {
                 return "gs";
             case Token::Type::APPLY:
                 return "apply";
+            case Token::Type::GATHER:
+                return "gather";
+            case Token::Type::SCATTER:  
+                return "scatter";
+            case Token::Type::FILTER:
+                return "filter";
             case Token::Type::INIT: 
                 return "init";
-
             case Token::Type::PROC:
                 return "process";
 

@@ -24,15 +24,15 @@ func reset(v : Vertex)
     end
 end
 
-func scatter(srcProp : intx)->update : intx
+func scatterfunc(srcProp : intx)->update : intx
     update = srcProp;
 end
 
-func filter(update : intx) -> active : bool
+func filterfunc(update : intx) -> active : bool
     active = (update != -2147483647);
 end
 
-func gather(ori : intx, update : intx)->ngh_sum : intx
+func gatherfunc(ori : intx, update : intx)->ngh_sum : intx
     ngh_sum = ori + update;
 end
 
@@ -82,7 +82,7 @@ func main()
     for it in 1:11
         round_id = it;
         startTimer();
-        #s1# edges.iter(round_id).gs(scatter, filter, gather);
+        #s1# edges.iter(round_id).scatter(scatterfunc).filter(filterfunc).gather(gatherfunc);
         vertices.apply(v_update);
         var exetime : double = stopTimer();
         delta.update();

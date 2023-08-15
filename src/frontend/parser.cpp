@@ -623,6 +623,27 @@ namespace graphitron {
                 }
                 gs_expr->iter_expr = iter_expr;
                 expr = gs_expr;
+            } else if (tryConsume(Token::Type::SCATTER)) {
+                consume(Token::Type::LP);
+                auto gs_expr = std::make_shared<fir::GsExpr>();
+                gs_expr->target = expr;
+                gs_expr->input_scatter_function = parseFunctorExpr();
+                consume(Token::Type::RP);
+                consume(Token::Type::PERIOD);
+                if (tryConsume(Token::Type::FILTER)) {
+                    consume(Token::Type::LP);
+                    gs_expr->input_active_function = parseFunctorExpr();
+                    consume(Token::Type::RP);
+                    consume(Token::Type::PERIOD);
+                }
+                consume(Token::Type::GATHER);
+                consume(Token::Type::LP);
+                gs_expr->input_gather_function = parseFunctorExpr();
+                consume(Token::Type::RP);                
+                
+                gs_expr->iter_expr = iter_expr;
+                expr = gs_expr;
+
             } else if (tryConsume(Token::Type::APPLY)) {
                 consume(Token::Type::LP);
                 auto apply_expr = std::make_shared<fir::ApplyExpr>();

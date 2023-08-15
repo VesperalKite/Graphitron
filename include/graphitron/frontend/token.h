@@ -27,6 +27,9 @@ namespace graphitron {
             ITER,//iter
             GS,//gs
             APPLY,//apply
+            GATHER,//gather
+            SCATTER,//scatter
+            FILTER,//filter
             INIT,//init
 
             PROC,//process
