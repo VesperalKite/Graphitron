@@ -40,19 +40,15 @@ HOST_SRCS = $(FPGA_APP_PATH)/main.cpp
 # kernel 
 HOST_SRCS += $(FPGA_PATH)/libgraph/kernel/host_graph_kernel.cpp
 # memory
-ifeq ($(strip $(OPT)), 1)
 HOST_SRCS += $(FPGA_PATH)/libgraph/memory/he_mapping.cpp
-endif
 HOST_SRCS += $(FPGA_PATH)/libgraph/memory/he_mem.cpp
 # misc
 HOST_SRCS += $(FPGA_PATH)/libgraph/misc/data_helper.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/misc/graph.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/misc/host_graph_mem.cpp
 # scheduler
-ifeq ($(strip $(OPT)), 1)
 HOST_SRCS += $(FPGA_PATH)/libgraph/scheduler/host_graph_scheduler.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/scheduler/$(SCHEDULER)/scheduler.cpp
-endif
 # libgraph
 HOST_SRCS += $(FPGA_PATH)/libgraph/host_graph_dataflow.cpp
 HOST_SRCS += $(FPGA_PATH)/libgraph/host_graph_partition.cpp
@@ -122,12 +118,6 @@ LDCLFLGAS += --xp prop:solution.kernel_compiler_margin=10% --kernel_frequency=$(
 #												 #
 ##################################################
 VAR_TRUE = true
-
-ifeq ($(strip $(GP)), $(strip $(VAR_TRUE)))
-CXXFLAGS += -DGRAPH_PARTITION=1
-else
-CXXFLAGS += -DGRAPH_PARTITION=0
-endif
 
 ifeq ($(strip $(HAVE_APPLY)), $(strip $(VAR_TRUE)))
 CXXFLAGS += -DHAVE_APPLY=1

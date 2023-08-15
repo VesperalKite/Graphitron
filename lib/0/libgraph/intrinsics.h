@@ -35,12 +35,12 @@ static int builtin_getEdges(graphInfo &edges){
 static int builtin_getVertices(graphInfo &edges){
     return edges.vertexNum;
 }
-static void builtin_migrate(graphInfo &edges){
-#if GRAPH_PARTITION
-    partitionFunction(&edges);
-#else
-    migrateFunction(&edges);
-#endif
+static void builtin_migrate(graphInfo &edges, bool graph_partition=false){
+    if (graph_partition) {
+        partitionFunction(&edges);
+    } else {
+        migrateFunction(&edges);
+    }
 }
 //may deprecated
 template <typename T, typename Body> 

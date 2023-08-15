@@ -411,6 +411,8 @@ namespace graphitron {
             mir_gs_expr->input_scatter_function = scatter_funcExpr;
             ctx->set_gs_func(scatter, gather);
 
+            ctx->gs_option = true;
+            
             retExpr = mir_gs_expr;
         } else {
             std::cout << "Gather-Scatter function must target edge set" << std::endl;

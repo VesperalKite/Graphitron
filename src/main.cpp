@@ -63,6 +63,8 @@ int main(int argc, char* argv[]) {
 
 
     Backend* be= new Backend(mir_context);
+    std::cout << "INFO: Generate LIB.." << std::endl;
+    be->emitLIB(output_path, optimization_option);
     std::cout << "INFO: Generate Synthesizable Code.." << std::endl;
     be->emitACC(output_path, optimization_option);
 

@@ -4,13 +4,9 @@ DEVICE := $(DEVICES)
 
 OPT := 0
 
-GP := false
 #graph partition
 ifdef opt
 OPT := $(opt)
-endif
-ifdef gp 
-GP := $(gp)
 endif
 
 COMMON_REPO     = ./

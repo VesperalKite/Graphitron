@@ -40,7 +40,7 @@ func main()
     vertices.init(reset);
     parent[1] = 1;
     frontier[1] = 1;
-    edges.migrate();
+    edges.migrate(true);
     var frontier_size : int = 1;
     while (frontier_size != 0)
         startTimer();

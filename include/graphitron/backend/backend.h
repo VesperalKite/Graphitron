@@ -14,6 +14,7 @@ namespace graphitron {
     class Backend {
     public:  
         Backend(MIRContext* mir_context) : mir_context_(mir_context){}
+        int emitLIB(std::string output_path, std::string opt);
         int emitACC(std::string output_path, std::string opt);
     private:
         MIRContext* mir_context_;

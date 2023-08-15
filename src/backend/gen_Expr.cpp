@@ -49,13 +49,24 @@ namespace graphitron {
                 oss_ << ")";
             }
         } else if (expr->name == "builtin_getVertices" || 
-                    expr->name == "builtin_migrate" || 
                     expr->name == "builtin_getEdges") 
         {
             oss_ << expr->name;
             oss_ << "(";
             expr->args[0]->accept(this);
             oss_ << ")";
+        
+        } else if (expr->name == "builtin_migrate")
+        {
+            oss_ << expr->name;
+            oss_ << "(";
+            expr->args[0]->accept(this);
+            if (expr->args[1] != nullptr) {
+                oss_ << ", ";
+                expr->args[1]->accept(this);
+            }
+            oss_ << ")";
+        
         } else if (expr->name == "builtin_update"){
             string mem_name;
             string var_name;
