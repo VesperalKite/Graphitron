@@ -106,9 +106,9 @@ void partition_mem_init(cl_context &context, int blkIndex, int size, int cuIndex
         partitionItem->edgeProp.size_attr = SIZE_USER_DEFINE;
 
         partitionItem->edgeProp.ext_attr.flags = bank[5 * cuIndex + 4]; // marked as unused
-
+#if HAVE_EDGE_PROP
         he_mem_init(context, &partitionItem->edgeProp);
-
+#endif
         partitionItem->tmpProp.id = MEM_ID_PARTITION_BASE + i * MEM_ID_PARTITION_OFFSET + 3;
         partitionItem->tmpProp.name = "partition tmpProp";
         partitionItem->tmpProp.attr = PARTITION_DDR;

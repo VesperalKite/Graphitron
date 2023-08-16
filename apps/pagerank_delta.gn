@@ -77,7 +77,7 @@ func main()
     vertices.init(reset);
     beta_score = float2int((1.0 - damp) / vertices.size());
     x_score = float2int(1.0 / vertices.size());
-    edges.partition();
+    edges.migrate(true);
     var Bigv : int = 0;
     for it in 1:11
         round_id = it;
