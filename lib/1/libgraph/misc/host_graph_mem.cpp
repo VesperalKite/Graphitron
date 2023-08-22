@@ -62,10 +62,10 @@ static void gs_mem_init(cl_context &context, gatherScatterDescriptor *gsItem, in
 
 void process_mem_init(cl_context &context)
 {
-    int *vertexPushinPropMapped = (int*)get_host_mem_pointer(MEM_ID_PUSHIN_PROP_MAPPED);
+    int *vertexPushinProp = (int*)get_host_mem_pointer(MEM_ID_PUSHIN_PROP);
     for (int i = 0; i < SUB_PARTITION_NUM; i++)
     {
-        gs_mem_init(context, getGatherScatter(i), i, vertexPushinPropMapped);
+        gs_mem_init(context, getGatherScatter(i), i, vertexPushinProp);
     }
 }
 

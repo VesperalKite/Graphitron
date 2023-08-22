@@ -14,6 +14,9 @@ extern "C" {
         unsigned int partVertexNum,
         unsigned int partDstIdStart  
     ){
+
+#pragma HLS DATAFLOW
+
 #pragma HLS INTERFACE m_axi port=partOutdegArray offset=slave bundle=gmem2
 #pragma HLS INTERFACE s_axilite port=partOutdegArray bundle=control
 #pragma HLS INTERFACE m_axi port=partRPA offset=slave bundle=gmem3

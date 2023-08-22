@@ -11,7 +11,7 @@ int normalInitHanlder(void *arg)
     return 0;
 }
 
-int soeSubPartitionArrangementHandler(int partIndex)
+int normalSubPartitionArrangementHandler(int partIndex)
 {
     partitionDescriptor * partition =getPartition(partIndex);
     if (stepCounter % 2 == 0)

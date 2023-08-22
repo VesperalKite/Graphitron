@@ -11,6 +11,9 @@ extern "C" {
         // insert1
         unsigned int partEdgeNum
     ){
+
+#pragma HLS DATAFLOW
+
 #pragma HLS INTERFACE m_axi port=partSrcArray offset=slave bundle=gmem0 
 #pragma HLS INTERFACE s_axilite port=partSrcArray bundle=control
 
