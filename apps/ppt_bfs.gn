@@ -1,0 +1,28 @@
+func reset(v : Vertex)
+    parent[v] = -1;
+    next_parent[v] = -1;
+    frontier[v] = 0;
+    next_frontier[v] = 0;
+end
+func tryvisit(src : Vertex, dst : Vertex)
+    if frontier[src] == 1
+        if parent[dst] == -1
+            next_parent[dst] = src;
+            next_frontier[dst] = 1;
+        end
+    end
+end
+func merge(v : Vertex)
+    parent[v] = next_parent[v];
+    frontier[v] = next_frontier[v];
+    next_frontier[v] = 0;
+end
+func main()
+    vertices.init(reset);
+    ...
+        #s1# edges.process(tryvisit);
+        vertices.process(merge);
+    ...
+end
+parameter:
+    program->configCacheBurstSize("s1", 7);
