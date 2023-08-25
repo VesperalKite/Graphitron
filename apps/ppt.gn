@@ -1,0 +1,39 @@
+func scatterfunc(srcProp : intx)->update : intx
+    update = srcProp;
+end
+func filterfunc(update : intx) -> active : bool
+    active = (update != -2147483647);
+end
+func gatherfunc(ori : intx, update : intx)->ngh_sum : intx
+    ngh_sum = ori + update;
+end
+func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
+    var tProp : intx;
+    if (round_id == 1)
+        tProp = damp*ngh_sum + beta_score;
+        cur_rank[v] += tProp;
+        tProp = tProp - x_score;
+    else
+        tProp = damp*ngh_sum;
+        cur_rank[v] += tProp;
+    end
+    if (tProp < epsilon*cur_rank[v]) and (tProp > -epsilon*cur_rank[v]) 
+        delta[v] = -2147483647;
+        if (out_degree != 0) 
+            newProp = -2147483647;
+        end
+    else
+        delta[v] = tProp;
+        if (out_degree != 0)
+            newProp = tProp/out_degree;
+        end
+    end
+end
+func main()
+    ...
+        #s1# edges.iter(round_id).scatter(scatterfunc).filter(filterfunc).gather(gatherfunc);
+        vertices.apply(v_update);
+    ...
+end
+parameter:
+    program->configSubpartitionPlan("s1", "estimator");
