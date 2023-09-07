@@ -13,6 +13,7 @@ namespace graphitron {
         reset();
         oss << "FREQ=" << mir_context_->freq << endl;
         oss << "HAVE_EDGE_PROP=" << mir_context_->have_edge_prop << endl;
+        oss << "LOG_SCATTER_CACHE_BURST_SIZE=" << mir_context_->log_scatter_cache_burst_size << endl;
         oss.close();
         return 0;   
     }

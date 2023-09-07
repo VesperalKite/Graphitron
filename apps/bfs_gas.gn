@@ -8,8 +8,8 @@ const newTuple : vector{Vertex}(int);
 const round_id : int;
 
 func reset(v : Vertex)
-    parent[v] = -1;
-    frontier[v] = 0;
+    parent[v] = 2147483647-1;
+    % 0x7FFF_FFFF - 1
 end
 
 func tryvisit(srcProp : intx)->update : intx
@@ -17,7 +17,7 @@ func tryvisit(srcProp : intx)->update : intx
 end
 
 func isActive(update : intx) -> active : bool
-    active = (update > 0);
+    active = (update & 2147483648);
 end
 
 func reduce(ori : intx, update : intx) -> newState : intx
