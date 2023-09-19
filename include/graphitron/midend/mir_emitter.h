@@ -64,7 +64,11 @@ namespace graphitron {
 
         virtual void visit(fir::OrExpr::Ptr);
 
+        virtual void visit(fir::BitOrExpr::Ptr);
+
         virtual void visit(fir::XorExpr::Ptr);
+
+        virtual void visit(fir::BitAndExpr::Ptr);
 
         virtual void visit(fir::NotExpr::Ptr);
 

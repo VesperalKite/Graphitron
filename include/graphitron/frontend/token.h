@@ -52,6 +52,8 @@ namespace graphitron {
             BREAK,//break
             NUMBER_SIGN,//#
 
+            BIT_AND,// &
+            BIT_OR,// |
             AND,//and
             OR,//or
             NOT,//not
@@ -99,7 +101,7 @@ namespace graphitron {
         Type type;
 
         union {
-            int num;
+            long num;
             double fnum;
         };
         std::string str;

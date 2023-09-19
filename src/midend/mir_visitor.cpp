@@ -138,7 +138,15 @@ namespace graphitron {
         visitBinaryExpr(expr);
     }
 
+    void MIRVisitor::visit(BitOrExpr::Ptr expr) {
+        visitBinaryExpr(expr);
+    }
+
     void MIRVisitor::visit(XorExpr::Ptr expr) {
+        visitBinaryExpr(expr);
+    }
+
+    void MIRVisitor::visit(BitAndExpr::Ptr expr) {
         visitBinaryExpr(expr);
     }
 

@@ -269,8 +269,22 @@ namespace graphitron {
         retExpr = mir_expr;
     }
 
+    void MIREmitter::visit(fir::BitOrExpr::Ptr fir_expr) {
+        auto mir_expr = std::make_shared<mir::BitOrExpr>();
+        mir_expr->lhs = emitExpr(fir_expr->lhs);
+        mir_expr->rhs = emitExpr(fir_expr->rhs);
+        retExpr = mir_expr;
+    }    
+
     void MIREmitter::visit(fir::XorExpr::Ptr fir_expr) {
         auto mir_expr = std::make_shared<mir::XorExpr>();
+        mir_expr->lhs = emitExpr(fir_expr->lhs);
+        mir_expr->rhs = emitExpr(fir_expr->rhs);
+        retExpr = mir_expr;
+    }
+
+    void MIREmitter::visit(fir::BitAndExpr::Ptr fir_expr) {
+        auto mir_expr = std::make_shared<mir::BitAndExpr>();
         mir_expr->lhs = emitExpr(fir_expr->lhs);
         mir_expr->rhs = emitExpr(fir_expr->rhs);
         retExpr = mir_expr;

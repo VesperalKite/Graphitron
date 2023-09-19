@@ -40,7 +40,9 @@ namespace graphitron {
         struct NaryExpr;
         struct OrExpr;
         struct AndExpr;
+        struct BitOrExpr;
         struct XorExpr;
+        struct BitAndExpr;
         struct EqExpr;
         struct NotExpr;
         struct RshiftExpr;
@@ -176,7 +178,11 @@ namespace graphitron {
 
             virtual void visit(std::shared_ptr<AndExpr>);
 
+            virtual void visit(std::shared_ptr<BitOrExpr>);
+
             virtual void visit(std::shared_ptr<XorExpr>);
+
+            virtual void visit(std::shared_ptr<BitAndExpr>);
 
             virtual void visit(std::shared_ptr<EqExpr>);
 

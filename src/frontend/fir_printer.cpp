@@ -334,8 +334,16 @@ namespace graphitron {
             printBinaryExpr(expr, "and");
         }
 
+        void FIRPrinter::visit(BitOrExpr::Ptr expr) {
+            printBinaryExpr(expr, "|");
+        }
+
         void FIRPrinter::visit(XorExpr::Ptr expr) {
             printBinaryExpr(expr, "xor");
+        }
+
+        void FIRPrinter::visit(BitAndExpr::Ptr expr) {
+            printBinaryExpr(expr, "&");
         }
 
         void FIRPrinter::visit(EqExpr::Ptr expr) {

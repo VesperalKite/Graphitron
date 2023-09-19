@@ -371,15 +371,15 @@ namespace graphitron {
 
         return expr;
     }
-// and_expr: xor_expr {'and' xor_expr}
+// and_expr: '|' {'and' '|'}
     fir::Expr::Ptr Parser::parseAndExpr() {
-        fir::Expr::Ptr expr = parseXorExpr();
+        fir::Expr::Ptr expr = parseBitOrExpr();
 
         while (tryConsume(Token::Type::AND)) {
             auto andExpr = std::make_shared<fir::AndExpr>();
 
             andExpr->lhs = expr;
-            andExpr->rhs = parseXorExpr();
+            andExpr->rhs = parseBitOrExpr();
 
             expr = andExpr;
         }
@@ -387,17 +387,48 @@ namespace graphitron {
         return expr;
     }
 
-// xor_expr: eq_expr {'xor' eq_expr}
+// BitOr_expr: xor_expr {'|' xor_expr}
+    fir::Expr::Ptr Parser::parseBitOrExpr() {
+        fir::Expr::Ptr expr = parseXorExpr();
+
+        while (tryConsume(Token::Type::BIT_OR)) {
+            auto bitorExpr = std::make_shared<fir::BitOrExpr>();
+
+            bitorExpr->lhs = expr;
+            bitorExpr->rhs = parseXorExpr();
+
+            expr = bitorExpr;
+        }
+
+        return expr;
+    }
+
+// xor_expr: '&' {'xor' '&'}
     fir::Expr::Ptr Parser::parseXorExpr() {
-        fir::Expr::Ptr expr = parseEqExpr();
+        fir::Expr::Ptr expr = parseBitAndExpr();
 
         while (tryConsume(Token::Type::XOR)) {
             auto xorExpr = std::make_shared<fir::XorExpr>();
 
             xorExpr->lhs = expr;
-            xorExpr->rhs = parseEqExpr();
+            xorExpr->rhs = parseBitAndExpr();
 
             expr = xorExpr;
+        }
+
+        return expr;
+    }
+
+// BitAnd_expr: eq_expr {'&' eq_expr}
+    fir::Expr::Ptr Parser::parseBitAndExpr() {
+        fir::Expr::Ptr expr = parseEqExpr();
+        while (tryConsume(Token::Type::BIT_AND)) {
+            auto bitandExpr = std::make_shared<fir::BitAndExpr>();
+
+            bitandExpr->lhs = expr;
+            bitandExpr->rhs = parseEqExpr();
+            
+            expr = bitandExpr;
         }
 
         return expr;

@@ -110,7 +110,11 @@ namespace graphitron{
 
         fir::Expr::Ptr parseAndExpr();
 
+        fir::Expr::Ptr parseBitOrExpr();
+
         fir::Expr::Ptr parseXorExpr();
+
+        fir::Expr::Ptr parseBitAndExpr();
 
         fir::Expr::Ptr parseEqExpr();
 

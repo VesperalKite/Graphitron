@@ -130,7 +130,7 @@ namespace graphitron {
 
         struct IntLiteral : public Expr {
             typedef std::shared_ptr<IntLiteral> Ptr;
-            int val = 0;
+            long val = 0;
 
             virtual void accept(MIRVisitor *visitor) {
                 visitor->visit(self<IntLiteral>());
@@ -799,6 +799,14 @@ namespace graphitron {
             }
         };
 
+        struct BitOrExpr : public BinaryExpr {
+            typedef std::shared_ptr<BitOrExpr> Ptr;
+
+            virtual void accept(MIRVisitor * visitor) {
+                visitor->visit(self<BitOrExpr>());
+            } 
+        };
+
         struct XorExpr : public BinaryExpr {
             typedef std::shared_ptr<XorExpr> Ptr;
 
@@ -806,6 +814,15 @@ namespace graphitron {
                 visitor->visit(self<XorExpr>());
             }
         };
+
+        struct BitAndExpr : public BinaryExpr {
+            typedef std::shared_ptr<BitAndExpr> Ptr;
+
+            virtual void accept(MIRVisitor * visitor) {
+                visitor->visit(self<BitAndExpr>());
+            }
+        };
+
 
         struct NotExpr : public Expr {
             Expr::Ptr operand;

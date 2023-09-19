@@ -453,6 +453,14 @@ namespace graphitron{
             }
         };
 
+        struct BitOrExpr : public BinaryExpr {
+            typedef std::shared_ptr<BitOrExpr> Ptr;
+
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<BitOrExpr>());
+            }
+        };
+
         struct XorExpr : public BinaryExpr {
             typedef std::shared_ptr<XorExpr> Ptr;
 
@@ -460,6 +468,15 @@ namespace graphitron{
                 visitor->visit(self<XorExpr>());
             }
         };
+
+        struct BitAndExpr : public BinaryExpr {
+            typedef std::shared_ptr<BitAndExpr> Ptr;
+
+            virtual void accept(FIRVisitor *visitor) {
+                visitor->visit(self<BitAndExpr>());
+            }
+        };
+
         struct EqExpr : public NaryExpr {
             enum class Op {
                 LT, LE, GT, GE, EQ, NE
@@ -619,7 +636,7 @@ namespace graphitron{
         };
 
         struct IntLiteral : public TensorLiteral {
-            int val = 0;
+            long val = 0;
 
             typedef std::shared_ptr<IntLiteral> Ptr;
 

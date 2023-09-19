@@ -239,12 +239,28 @@ namespace graphitron {
         oss_ << ')';
     };
 
+    void ExprGenerator::visit(mir::BitOrExpr::Ptr expr) {
+        oss_ << "(";
+        expr->lhs->accept(this);
+        oss_ << " | ";
+        expr->rhs->accept(this);
+        oss_ << ")";
+    };
+
     void ExprGenerator::visit(mir::XorExpr::Ptr expr) {
         oss_ << '(';
         expr->lhs->accept(this);
         oss_ << " ^ ";
         expr->rhs->accept(this);
         oss_ << ')';
+    };
+
+    void ExprGenerator::visit(mir::BitAndExpr::Ptr expr) {
+        oss_ << "(";
+        expr->lhs->accept(this);
+        oss_ << " & ";
+        expr->rhs->accept(this);
+        oss_ << ")";
     };
 
     void ExprGenerator::visit(mir::NotExpr::Ptr not_expr) {

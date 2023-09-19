@@ -37,6 +37,8 @@ namespace graphitron {
         if (token == "return") return Token::Type::RETURN;
         if (token == "print") return Token::Type::PRINT;
         if (token == "println") return Token::Type::PRINTLN;
+        if (token == "&")   return Token::Type::BIT_AND;
+        if (token == "|")   return Token::Type::BIT_OR;
         if (token == "and") return Token::Type::AND;
         if (token == "or") return Token::Type::OR;
         if (token == "not") return Token::Type::NOT;
@@ -63,7 +65,7 @@ namespace graphitron {
         while (programStream.peek() != EOF) {
             //tokens made up of alphas
             //start with alpha or #
-            if (programStream.peek() == '#' || programStream.peek() == '_' || std::isalpha(programStream.peek())) {
+            if (programStream.peek() == '#' || programStream.peek() == '_' || programStream.peek() == '&' || programStream.peek() == '|' || std::isalpha(programStream.peek())) {
                 std::string tokenString(1, programStream.get());
                 //# is a sign label
                 if (tokenString != "#") {

@@ -87,6 +87,11 @@ namespace graphitron {
             case Token::Type::NUMBER_SIGN:
                 return "#-label";
             
+            case Token::Type::BIT_AND:
+                return "'&'";
+            case Token::Type::BIT_OR:  
+                return "'|";
+
             case Token::Type::AND:
                 return "'and'";
             case Token::Type::OR:
