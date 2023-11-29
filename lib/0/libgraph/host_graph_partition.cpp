@@ -16,7 +16,7 @@ int acceleratorDataLoad(const std::string &gName, const std::string &mode, graph
     int edgeNum = csr->edgeNum;
 
     register_size_attribute(SIZE_IN_EDGE    , EDEG_MEMORY_SIZE);
-    register_size_attribute(SIZE_IN_VERTEX  , vertexNum);
+    register_size_attribute(SIZE_IN_VERTEX  , VERTEX_MEMORY_SIZE);
     register_size_attribute(SIZE_DEFAULT, 1);
 
     base_mem_init(acc->context);

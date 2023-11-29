@@ -1,0 +1,64 @@
+Date : 2023-11-06 13:03:50
+Directory : /Users/vesperal_kite/important_files/Graphitron/src
+Total : 34 files,  6098 codes, 364 comments, 1051 blanks, all 7513 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         33 |      6,022 |        354 |      1,025 |      7,401 |
+| Python   |          1 |         76 |         10 |         26 |        112 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                   | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                      |         34 |      6,098 |        364 |      1,051 |      7,513 |
+| . (Files)                                                                              |          3 |        129 |         20 |         44 |        193 |
+| backend                                                                                |          8 |      1,606 |         69 |        153 |      1,828 |
+| frontend                                                                               |          8 |      2,649 |        169 |        535 |      3,353 |
+| midend                                                                                 |         13 |      1,535 |         98 |        295 |      1,928 |
+| utils                                                                                  |          2 |        179 |          8 |         24 |        211 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                               | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/backend.cpp                | C++      |         11 |         31 |          2 |         44 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/codegen_alpha.cpp          | C++      |        514 |          3 |         40 |        557 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/codegen_ecp.cpp            | C++      |        365 |         11 |         39 |        415 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/gen_Apply_decl.cpp         | C++      |         57 |          3 |          5 |         65 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/gen_Expr.cpp               | C++      |        306 |          5 |         40 |        351 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/gen_ScatterGather_decl.cpp | C++      |        133 |          7 |          9 |        149 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/gen_Stmt.cpp               | C++      |        177 |          4 |         10 |        191 |
+| /Users/vesperal_kite/important_files/Graphitron/src/backend/gen_Type.cpp               | C++      |         43 |          5 |          8 |         56 |
+| /Users/vesperal_kite/important_files/Graphitron/src/default_schedule.cpp               | C++      |          5 |          0 |          2 |          7 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/error.cpp                 | C++      |         80 |          7 |         18 |        105 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/fir.cpp                   | C++      |         18 |          3 |          6 |         27 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/fir_printer.cpp           | C++      |        520 |          4 |        116 |        640 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/fir_visitor.cpp           | C++      |        249 |          4 |         62 |        315 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/frontend.cpp              | C++      |         18 |          6 |          9 |         33 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/parser.cpp                | C++      |      1,119 |        127 |        264 |      1,510 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/scanner.cpp               | C++      |        390 |         14 |         29 |        433 |
+| /Users/vesperal_kite/important_files/Graphitron/src/frontend/token.cpp                 | C++      |        255 |          4 |         31 |        290 |
+| /Users/vesperal_kite/important_files/Graphitron/src/graphitronc.py                     | Python   |         76 |         10 |         26 |        112 |
+| /Users/vesperal_kite/important_files/Graphitron/src/main.cpp                           | C++      |         48 |         10 |         16 |         74 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/configuration_lower.cpp     | C++      |         44 |         11 |         10 |         65 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/edgeset_lower.cpp           | C++      |         23 |          3 |          2 |         28 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/midend.cpp                  | C++      |        163 |          3 |          2 |        168 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir.cpp                     | C++      |          5 |          3 |          3 |         11 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_context.cpp             | C++      |          3 |          3 |          2 |          8 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_emitter.cpp             | C++      |        750 |         53 |        155 |        958 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_lower.cpp               | C++      |         12 |          3 |          2 |         17 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_printer.cpp             | C++      |         35 |          3 |          9 |         47 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_visitor.cpp             | C++      |        203 |          4 |         50 |        257 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/mri_rewriter.cpp            | C++      |         13 |          3 |          3 |         19 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter.cpp               | C++      |        212 |          3 |         53 |        268 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter_space.cpp         | C++      |         52 |          3 |          2 |         57 |
+| /Users/vesperal_kite/important_files/Graphitron/src/midend/prop_array_lower.cpp        | C++      |         20 |          3 |          2 |         25 |
+| /Users/vesperal_kite/important_files/Graphitron/src/utils/exec_cmd.cpp                 | C++      |         13 |          3 |          2 |         18 |
+| /Users/vesperal_kite/important_files/Graphitron/src/utils/util.cpp                     | C++      |        166 |          5 |         22 |        193 |
+| Total                                                                                  |          |      6,098 |        364 |      1,051 |      7,513 |
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

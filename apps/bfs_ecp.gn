@@ -2,47 +2,42 @@ element Vertex end
 element Edge end
 const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
-const parent : vector{Vertex}(intx);
-const frontier : vector{Vertex}(int);
-const next_frontier : vector{Vertex}(int);
+const prop : vector{Vertex}(intx);
+const next_prop : vector{Vectex}(intx);
 
 func reset(v : Vertex)
-    parent[v] = -1;
-    frontier[v] = 0;
-    next_frontier[v] = 0;
+    prop[v] = 2147483646;
+    next_prop[v] = 0;
 end
 
-func tryvisit(src : Vertex, dst : Vertex)
-    if frontier[src] == 1
-        if parent[dst] == -1
-            parent[dst] = src;
-            next_frontier[dst] = 1;
-        end
-    end
+
+func Visit(src : Vertex, dst : Vertex)
+    var update : intx = prop[src]+1;
+    var ori : intx = prop[dst];
+    var tProp : intx;
+    if ((update & 2147483648) == 2147483648) {
+        if ((ori & 2147483647) > (update & 2147483647)) {
+            tProp = update;
+        } else {
+            tProp = ori;
+        }
+    }
+    
+
 end
 
-func frontier_set(v : Vertex)
-    frontier[v] = next_frontier[v];
-    next_frontier[v] = 0;
-end
-
-func getSize() -> size : int
-    var num : int = 0;
-    for i in 0:edges.getVertices()
-        if (frontier[i]==1)
-           num += 1;
-        end
-    end
-    size = num;
+func PropUpdate(v : Vertex) 
+    var tProp : intx = next_prop[v];
+    var uProp : intx = prop[v];
+    if ()
 end
 
 func main()
     vertices.init(reset);
-    parent[1] = 1;
-    frontier[1] = 1;
+    parent[1] = 2147483649;
     edges.migrate(true);
-    var frontier_size : int = 1;
-    while (frontier_size != 0)
+    var activeVertices: int = 1;
+    while (activeVertices != 0)
         startTimer();
         edges.process(tryvisit);
         vertices.process(frontier_set);

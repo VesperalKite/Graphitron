@@ -5,6 +5,7 @@ const vertices : vertexset{Vertex} = edges.getVertices();
 const parent : vector{Vertex}(intx) = vertices.getProperty();
 const round_id : int;
 const outreg : vector{Vertex}(int);
+const test : vector(int) = {4};
 
 func reset(v : Vertex)
     parent[v] = 2147483646;

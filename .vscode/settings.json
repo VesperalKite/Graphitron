@@ -71,6 +71,7 @@
         "cinttypes": "cpp",
         "regex": "cpp",
         "complex": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "climits": "cpp"
     }
 }
