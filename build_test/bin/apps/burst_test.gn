@@ -1,0 +1,40 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const parent : vector{Vertex}(intx);
+const src_test : vector{Edge}(int);
+const dst_test : vector{Edge}(int);
+const prop_test : vector{Edge}(int);
+
+func reset(v : Vertex)
+    parent[v] = -1;
+end
+
+func e_reset(e : Edge)
+    src_test[e] = -2;
+    dst_test[e] = -2;
+    prop_test[e] = -2;
+end
+
+func compute(src : Vertex, dst : Vertex)
+    parent[dst] = src;
+end
+
+func main()
+    vertices.init(reset);
+    edges.init(e_reset);
+    edges.migrate(true);
+    startTimer();
+    edges.process(compute);
+    var elapsed_time : double = stopTimer();
+    print "elapsed time: ";
+    println elapsed_time;
+    src_test.update();
+    dst_test.update();
+    for i in 0:edges.getEdges()
+        print src_test[i];
+        print " - ";
+        println dst_test[i];
+    end
+end

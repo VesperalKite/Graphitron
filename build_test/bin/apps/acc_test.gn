@@ -1,0 +1,61 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const parent : vector{Vertex}(int);
+const parent_tmp : vector{Vertex}(int);
+const prop_test : vector{Vertex}(int);
+const level : int = 1;
+const activeVertex : vector{Vertex}(int);
+const secondprop : vector{Vertex}(int);
+
+func reset(v : Vertex)
+    parent[v] = -1;
+    parent_tmp[v] = -1;
+    secondprop[v] = 1;
+end
+
+func compute(src : Vertex, dst : Vertex)
+    if (parent[src] == level) 
+        prop_test[dst] = parent[src]+secondprop[src];
+    end
+end
+
+func update(v : Vertex) 
+    if (prop_test[v] == (level+1) and (parent[v] == -1)) 
+        parent_tmp[v] = prop_test[v];
+        activeVertex[0] = activeVertex[0] + 1;
+    end
+end
+
+func propapply(v : Vertex)
+    parent[v] = parent_tmp[v];
+end
+
+func main()
+    vertices.init(reset);
+    parent[1] = 1;
+    parent_tmp[1] = 1;
+    edges.migrate(true);
+    var frontier_size : int = 1;
+    while(frontier_size) 
+        startTimer();
+        edges.process(compute);
+        vertices.process(update);
+        vertices.process(propapply);
+        var elapsed_time : double = stopTimer();
+        print "elapsed time: ";
+        println elapsed_time;
+        prop_test.update();
+        for i in 0:edges.getVertices()
+            print i;
+            print " id - ";
+            println prop_test[i];
+        end
+        activeVertex.update();
+        frontier_size = activeVertex[0];
+        activeVertex[0] = 0;
+        print " frontier size : ";
+        println frontier_size;
+    end
+end

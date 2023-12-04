@@ -1,0 +1,59 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const parent : vector{Vertex}(intx) = vertices.getProperty();
+const round_id : int;
+const outreg : vector{Vertex}(int);
+const test : vector(int) = {4};
+
+func reset(v : Vertex)
+    parent[v] = 2147483646;
+end
+
+func tryvisit(srcProp : intx)->update : intx
+    update = srcProp+1;
+end
+
+func isActive(update : intx) -> active : bool
+    active = ((update & 2147483648) == 2147483648);
+end
+
+func reduce(ori : intx, update : intx) -> newState : intx
+    if (((ori & 2147483647) > (update & 2147483647)) and (update != 0)) or (ori == 0)
+        newState = update;
+    else
+        newState = ori;
+    end
+end
+
+func v_update(newState : intx, srcProp : intx, v : Vertex) -> newProp : intx
+    if ((newState & 2147483648) == 2147483648) and (srcProp == 2147483646) 
+        newProp = newState;
+    else
+        newProp = srcProp & 2147483647;
+    end
+end    
+
+func main()
+    vertices.init(reset);
+    parent[1] = 2147483649;
+    edges.migrate(true);
+    var activeVertices : int = 1;
+    round_id = 0;
+    while (activeVertices != 0)
+        startTimer();
+        #s1# edges.iter(round_id).scatter(tryvisit).filter(isActive).gather(reduce);
+        vertices.apply(v_update);
+        var elapsed_time : double = stopTimer();
+        print "elapsed time: ";
+        println elapsed_time;
+        outreg.update();
+        activeVertices = outreg[0]; 
+        print "activeVertices: ";
+        println activeVertices;
+        round_id = round_id+1;
+    end
+end
+parameter:
+    program->configUnsignedProp("s1", true);

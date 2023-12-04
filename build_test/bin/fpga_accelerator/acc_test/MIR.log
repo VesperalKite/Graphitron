@@ -1,0 +1,78 @@
+[INFO] input_filename_map_:
+Edge - argv[(1)]
+[INFO] num_elements_map_:
+Edge - builtin_getEdges(edges)
+Vertex - builtin_getVertices(edges)
+[INFO] properties_map_:
+Edge - 
+Vertex - parent parent_tmp prop_test activeVertex secondprop 
+[INFO] const_vertex_sets_:
+vertices 
+[INFO] const_edge_sets_:
+edges 
+[INFO] vector_set_element_type_map_:
+activeVertex - int 
+parent - int 
+parent_tmp - int 
+prop_test - int 
+secondprop - int 
+vertices - int 
+[INFO] vector_item_type_map_:
+activeVertex - int 
+parent - int 
+parent_tmp - int 
+prop_test - int 
+secondprop - int 
+[INFO] edgeset_element_type_map_:
+edges - graphInfo 
+[INFO] vertex_element_type_list_:
+Vertex 
+[INFO] edge_element_type_list_:
+Edge 
+[INFO] constants_:
+level 
+[INFO] lowered_constants_:
+parent - parent
+parent_tmp - parent_tmp
+prop_test - prop_test
+activeVertex - activeVertex
+secondprop - secondprop
+level - 
+
+[INFO] functions_map_:
+compute - compute
+main - main
+propapply - propapply
+reset - reset
+update - update
+[INFO] functions_list_:
+reset - functor
+compute - not functor
+update - not functor
+propapply - not functor
+main - functor
+
+[INFO] symbol_table_:
+activeVertex - activeVertex - activeVertex
+argv - argv - 
+edges - edges - edges
+level - level - level
+parent - parent - parent
+parent_tmp - parent_tmp - parent_tmp
+prop_test - prop_test - prop_test
+secondprop - secondprop - secondprop
+vertices - vertices - vertices
+[INFO] edgeset_alloc_stmts:
+acceleratorDataLoad(argv[(1)], "normal", &edges);
+[INFO] field_vector_alloc_stmts:
+[INFO] field_vector_init_stmts:
+[INFO] Iteration: 
+[INFO] Init Function: reset 
+[INFO] Scatter Function: 
+[INFO] Active Function: 
+[INFO] Gather Function: 
+[INFO] Apply Function: 
+[INFO] vertex process functions: [2]
+update propapply 
+[INFO] edge process functions: [1]
+compute 

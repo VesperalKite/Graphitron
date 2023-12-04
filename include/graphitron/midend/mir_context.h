@@ -406,7 +406,6 @@ namespace graphitron {
       mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ParameterSpace* parameter_; 
-      bool gs_option = false;
       // scatter-gather 
       std::string have_edge_prop = "true";
       std::string have_unsigned_prop = "false";

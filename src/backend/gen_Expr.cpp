@@ -153,9 +153,9 @@ namespace graphitron {
             assert(associated_element_type);
             auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
             assert(associated_element_type_size);
-            oss_ << "loop_for_lambda((int)0, (int)";
+            oss_ << "loop_for_lambda((int)0, ALIGNVERTEX((int)";
             associated_element_type_size->accept(this);
-            oss_ << ", [&] (int init_iter) {"<< endl;
+            oss_ << "), [&] (int init_iter) {"<< endl;
             indent();
             printIndent();
             expr->input_function->accept(this);

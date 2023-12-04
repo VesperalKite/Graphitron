@@ -1,0 +1,95 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const cur_rank : vector{Vertex}(intx);
+const delta : vector{Vertex}(intx);
+const vProp : vector{Vertex}(intx) = vertices.getProperty();
+const out_degree : vector{Vertex}(intx) = vertices.getOutDegrees();
+const damp : double = 0.85;
+const beta_score : int;
+const x_score : int;
+const epsilon : double = 0.1;
+const round_id : int;
+
+func float2int (x : double) -> y : int
+    y = x * pow(2, 30);
+end
+
+func reset(v : Vertex) 
+    cur_rank[v] = 0;
+    delta[v] = float2int(1.0 / vertices.size());
+    if (out_degree[v] != 0) 
+        vProp[v] = delta[v] / out_degree[v];
+    end
+end
+
+func scatter(srcProp : intx)->update : intx
+    update = srcProp;
+end
+
+func filter(update : intx) -> active : bool
+    active = (update != -2147483647);
+end
+
+func gather(ori : intx, update : intx)->ngh_sum : intx
+    ngh_sum = ori + update;
+end
+
+func v_update(ngh_sum : intx, srcProp : intx, v : Vertex)-> newProp : intx
+    var tProp : intx;
+    if (round_id == 1)
+        tProp = damp*ngh_sum + beta_score;
+        cur_rank[v] += tProp;
+        tProp = tProp - x_score;
+    else
+        tProp = damp*ngh_sum;
+        cur_rank[v] += tProp;
+    end
+    if (tProp < epsilon*cur_rank[v]) and (tProp > -epsilon*cur_rank[v]) 
+        delta[v] = -2147483647;
+        if (out_degree[v] != 0) 
+            newProp = -2147483647;
+        end
+    else
+        delta[v] = tProp;
+        if (out_degree[v] != 0)
+            newProp = tProp/out_degree[v];
+        end
+    end
+end
+
+func printFrontier() -> n : int
+    n = 0;
+    var max : int = -2147483647;
+    for i in 0:vertices.size()
+        if (delta[i] > max)
+            n = n+1;
+            print i;
+            print ", ";
+        end
+    end
+    print "frontier size: ";
+    println n;
+end
+
+func main()
+    vertices.init(reset);
+    beta_score = float2int((1.0 - damp) / vertices.size());
+    x_score = float2int(1.0 / vertices.size());
+    edges.partition();
+    var Bigv : int = 0;
+    for it in 1:11
+        round_id = it;
+        startTimer();
+        #s1# edges.iter(round_id).gs(scatter, filter, gather);
+        vertices.apply(v_update);
+        var exetime : double = stopTimer();
+        delta.update();
+        printFrontier();
+        print "elapsed time: ";
+        println exetime;
+    end
+end
+parameter:
+    program->configSubpartitionPlan("s1", "estimator");

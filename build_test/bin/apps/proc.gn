@@ -1,0 +1,34 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const prop : vector{Vertex}(int);
+const degree : vector{Vertex}(int) = vertices.getOutDegrees();
+
+func reset(v : Vertex)
+    prop[v]=1;
+end
+
+func calc(v : Vertex)
+    prop[v] = prop[v] + 1;
+end
+
+func eSet(src : Vertex, dst : Vertex)
+    prop[dst] = src + dst;
+end
+
+func res_print()
+    for i in 0:10
+        print prop[i];
+    end
+    println "";
+end
+
+func main()
+    vertices.init(reset);
+    edges.partition();
+    edges.process(eSet);
+    vertices.process(calc);
+    prop.update();
+    res_print();
+end

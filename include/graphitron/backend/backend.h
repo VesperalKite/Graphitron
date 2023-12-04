@@ -7,15 +7,15 @@
 
 #include <graphitron/midend/mir_context.h>
 #include <graphitron/midend/mir_visitor.h>
-#include <graphitron/backend/codegen_ecp.h>
-#include <graphitron/backend/codegen_alpha.h>
+#include <graphitron/backend/codegen.h>
 
 namespace graphitron {
     class Backend {
     public:  
         Backend(MIRContext* mir_context) : mir_context_(mir_context){}
-        int emitLIB(std::string output_path, std::string opt);
-        int emitACC(std::string output_path, std::string opt);
+        // int emitLIB(std::string output_path, std::string opt);
+        // int emitACC(std::string output_path, std::string opt);
+        int emitACC(std::string output_path);
     private:
         MIRContext* mir_context_;
     };
