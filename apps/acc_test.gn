@@ -17,7 +17,7 @@ end
 
 func compute(src : Vertex, dst : Vertex)
     if (parent[src] == level) 
-        prop_test[dst] = parent[src]+secondprop[src];
+        prop_test[dst] min= parent[src]+secondprop[src];
     end
 end
 
