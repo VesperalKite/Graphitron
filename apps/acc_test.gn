@@ -46,15 +46,10 @@ func main()
         var elapsed_time : double = stopTimer();
         print "elapsed time: ";
         println elapsed_time;
-        prop_test.update();
-        for i in 0:edges.getVertices()
-            print i;
-            print " id - ";
-            println prop_test[i];
-        end
-        activeVertex.update();
+        activeVertex.get();
         frontier_size = activeVertex[0];
         activeVertex[0] = 0;
+        activeVertex.put();
         print " frontier size : ";
         println frontier_size;
     end
