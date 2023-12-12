@@ -25,6 +25,8 @@ func update(v : Vertex)
     if (prop_test[v] == (level+1) and (parent[v] == -1)) 
         parent_tmp[v] = prop_test[v];
         activeVertex[0] = activeVertex[0] + 1;
+    else
+        parent_tmp[v] = parent[v];
     end
 end
 
