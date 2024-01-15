@@ -367,7 +367,7 @@ namespace graphitron {
 
         struct ReduceStmt : public AssignStmt {
             enum class ReductionOp {
-                SUM
+                SUM, SUB, MAX, MIN
             };
             ReductionOp reduce_op_;
             std::string tracking_var_name_ = "";

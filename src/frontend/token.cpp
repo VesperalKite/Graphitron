@@ -160,6 +160,12 @@ namespace graphitron {
                 return "/";
             case Token::Type::PLUS_REDUCE:
                 return "+=";
+            case Token::Type::SUB_REDUCE: 
+                return "-=";
+            case Token::Type::MAX_REDUCE:
+                return "max=";
+            case Token::Type::MIN_REDUCE: 
+                return "min=";
 
             case Token::Type::END: 
                 return "end of file";

@@ -9,6 +9,13 @@
 #include "acc_stream.h"
 #include "acc_funcmap.h"
 
+#define GATHER_MIN(a,b) ((a == 0)?(b):((a>b)?b:a))
+#define GATHER_MIN(a,b) ((a == 0)?(b):((a>b)?b:a))
+#define GATHER_MIN(a,b) ((a == 0)?(b):((a>b)?b:a))
+#define GATHER_MIN(a,b) ((a == 0)?(b):((a>b)?b:a))
+
+
+
 /* 4 distance */
 void rawSolver(hls::stream<tuple_token>  &in , hls::stream<tuple_token> &out)
 {

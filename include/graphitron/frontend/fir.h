@@ -363,7 +363,7 @@ namespace graphitron{
         struct ReduceStmt : public ExprStmt {
             std::vector<Expr::Ptr> lhs;
             enum class ReductionOp {
-                SUM
+                SUM, SUB, MAX, MIN
             };
             ReductionOp reduction_op;
 

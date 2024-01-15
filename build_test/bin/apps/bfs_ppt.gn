@@ -1,0 +1,40 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex, Vertex) = load(argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const parent : vector{Vertex}(int);
+const parent_tmp : vector{Vertex}(int);
+const tuple : vector{Vertex}(int);
+const level : int = 1;
+const activeVertex : vector{Vertex}(int);
+func reset(v : Vertex)
+    parent[v] = -1;
+    parent_tmp[v] = -1;
+end
+func EdgeTravse(src : Vertex, dst : Vertex)
+    if (parent[src] == level) 
+        tuple[dst] = parent[src]+1;
+    end
+end
+func VertexUpdate(v : Vertex) 
+    if (tuple[v] == (level+1) and (parent[v] == -1)) 
+        parent_tmp[v] = tuple[v];
+        activeVertex[0] = activeVertex[0] + 1;
+    end
+end
+func VertexApply(v : Vertex)
+    parent[v] = parent_tmp[v];
+end
+func main()
+    vertices.init(reset); parent[1] = 1; parent_tmp[1] = 1;
+    edges.migrate(true);
+    var frontier_size : int = 1;
+    while(frontier_size) 
+        #s1#edges.process(EdgeTravse);
+        #s2#vertices.process(VertexUpdate);
+        vertices.process(VertexApply);
+        activeVertex.pull(); frontier_size = activeVertex[0]; activeVertex[0] = 0; activeVertex.push();
+    end
+end
+parameter:
+    program->configCacheBurstSize("s1", 7)->configReadBurstSize("s2", 6);

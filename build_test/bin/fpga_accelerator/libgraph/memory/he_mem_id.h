@@ -27,11 +27,10 @@
 #define SetUserMemId(i)             (MEM_ID_USER_DEFINE_BASE+i)
 #define GetUserBankId(mem_id)       (mem_id-MEM_ID_USER_DEFINE_BASE+BANK_ID_USER_DEFINE_BASE)
 
-#define MEM_ID_PARENT     SetUserMemId(1)
-#define MEM_ID_PARENT_TMP     SetUserMemId(2)
-#define MEM_ID_PROP_TEST     SetUserMemId(3)
-#define MEM_ID_ACTIVEVERTEX     SetUserMemId(4)
-#define MEM_ID_SECONDPROP     SetUserMemId(5)
+#define MEM_ID_OLD_RANK     SetUserMemId(1)
+#define MEM_ID_NEW_RANK     SetUserMemId(2)
+#define MEM_ID_CONTRIB     SetUserMemId(3)
+#define MEM_ID_ERROR     SetUserMemId(4)
 // insert
 
 #endif

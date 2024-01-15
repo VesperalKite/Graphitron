@@ -1,0 +1,88 @@
+[INFO] input_filename_map_:
+Edge - argv[(1)]
+[INFO] num_elements_map_:
+Edge - builtin_getEdges(edges)
+Vertex - builtin_getVertices(edges)
+[INFO] properties_map_:
+Edge - 
+Vertex - old_rank new_rank out_degree contrib error 
+[INFO] const_vertex_sets_:
+vertices 
+[INFO] const_edge_sets_:
+edges 
+[INFO] vector_set_element_type_map_:
+contrib - int 
+error - int 
+new_rank - int 
+old_rank - int 
+out_degree - int 
+vertices - int 
+[INFO] vector_item_type_map_:
+contrib - int 
+error - int 
+new_rank - int 
+old_rank - int 
+out_degree - int 
+[INFO] edgeset_element_type_map_:
+edges - graphInfo 
+[INFO] vertex_element_type_list_:
+Vertex 
+[INFO] edge_element_type_list_:
+Edge 
+[INFO] constants_:
+damp dampFixPoint init_score beta_score 
+[INFO] lowered_constants_:
+old_rank - old_rank
+new_rank - new_rank
+out_degree - out_deg
+contrib - contrib
+error - error
+damp - 
+dampFixPoint - 
+init_score - 
+beta_score - 
+
+[INFO] functions_map_:
+computeContrib - computeContrib
+computeError - computeError
+errorSum - errorSum
+float2int - float2int
+main - main
+reset - reset
+updateVertex - updateVertex
+[INFO] functions_list_:
+float2int - functor
+reset - functor
+computeContrib - not functor
+computeError - not functor
+updateVertex - not functor
+errorSum - functor
+main - functor
+
+[INFO] symbol_table_:
+argv - argv - 
+beta_score - beta_score - beta_score
+contrib - contrib - contrib
+damp - damp - damp
+dampFixPoint - dampFixPoint - dampFixPoint
+edges - edges - edges
+error - error - error
+init_score - init_score - init_score
+new_rank - new_rank - new_rank
+old_rank - old_rank - old_rank
+out_degree - out_degree - out_deg
+vertices - vertices - vertices
+[INFO] edgeset_alloc_stmts:
+acceleratorDataLoad(argv[(1)], "normal", &edges);
+[INFO] field_vector_alloc_stmts:
+[INFO] field_vector_init_stmts:
+[INFO] Iteration: 
+[INFO] Init Function: reset 
+[INFO] Scatter Function: 
+[INFO] Active Function: 
+[INFO] Gather Function: 
+[INFO] Apply Function: 
+[INFO] vertex process functions: [2]
+computeError updateVertex 
+[INFO] edge process functions: [1]
+computeContrib 

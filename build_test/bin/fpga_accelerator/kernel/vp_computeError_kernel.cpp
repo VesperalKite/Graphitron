@@ -12,19 +12,21 @@
 #include "acc_gather.h"
 
 extern "C" {
-    void vp_update_kernel(
+    void vp_computeError_kernel(
         int  *partOutdegArray,
         int  *partRPA,
         int  *partCIA,
 #if HAVE_EDGE_PROP
         int  *partEdgeProp,
 #endif
-        int  *         parent,
-        int  *         parent_tmp,
-        int  *         prop_test,
-        int  *         activeVertex,
-        int  *         secondprop,
-        int         level,
+        int  *         old_rank,
+        int  *         new_rank,
+        int  *         contrib,
+        int  *         error,
+        double         damp,
+        int         dampFixPoint,
+        int         init_score,
+        int         beta_score,
         // insert1
         unsigned int partVertexNum,
         unsigned int partDstIdStart  
@@ -42,30 +44,36 @@ extern "C" {
 #pragma HLS INTERFACE m_axi port=partEdgeProp offset=slave bundle=gmem4
 #pragma HLS INTERFACE s_axilite port=partEdgeProp bundle=control
 #endif
-#pragma HLS INTERFACE m_axi port=parent offset=slave bundle=gmem6
-#pragma HLS INTERFACE s_axilite port=parent bundle=control
-#pragma HLS INTERFACE m_axi port=parent_tmp offset=slave bundle=gmem7
-#pragma HLS INTERFACE s_axilite port=parent_tmp bundle=control
-#pragma HLS INTERFACE m_axi port=prop_test offset=slave bundle=gmem8
-#pragma HLS INTERFACE s_axilite port=prop_test bundle=control
-#pragma HLS INTERFACE m_axi port=activeVertex offset=slave bundle=gmem9
-#pragma HLS INTERFACE s_axilite port=activeVertex bundle=control
-#pragma HLS INTERFACE m_axi port=secondprop offset=slave bundle=gmem10
-#pragma HLS INTERFACE s_axilite port=secondprop bundle=control
-#pragma HLS INTERFACE s_axilite port=level bundle=control
+#pragma HLS INTERFACE m_axi port=old_rank offset=slave bundle=gmem6
+#pragma HLS INTERFACE s_axilite port=old_rank bundle=control
+#pragma HLS INTERFACE m_axi port=new_rank offset=slave bundle=gmem7
+#pragma HLS INTERFACE s_axilite port=new_rank bundle=control
+#pragma HLS INTERFACE m_axi port=contrib offset=slave bundle=gmem8
+#pragma HLS INTERFACE s_axilite port=contrib bundle=control
+#pragma HLS INTERFACE m_axi port=error offset=slave bundle=gmem9
+#pragma HLS INTERFACE s_axilite port=error bundle=control
+#pragma HLS INTERFACE s_axilite port=damp bundle=control
+#pragma HLS INTERFACE s_axilite port=dampFixPoint bundle=control
+#pragma HLS INTERFACE s_axilite port=init_score bundle=control
+#pragma HLS INTERFACE s_axilite port=beta_score bundle=control
 // insert2
 
 #pragma HLS INTERFACE s_axilite port=partVertexNum      bundle=control
 #pragma HLS INTERFACE s_axilite port=partDstIdStart     bundle=control
 #pragma HLS INTERFACE s_axilite port=return              bundle=control
-        
+        int* out_degree = partOutdegArray;
+
 
         unsigned int v = partDstIdStart;
         for (int i = 0; i < partVertexNum; i++) {
-            if (((prop_test[v]) == ((level + (1))) && (parent[v]) == ( -(1))))
+            int old_score = old_rank[v];
+            new_rank[v] = (beta_score + ((dampFixPoint * contrib[v]) >> (7)));
+            if ((old_score) > (new_rank[v]))
             {
-              parent_tmp[v] = prop_test[v];
-              activeVertex[(0)] = (activeVertex[(0)] + (1));
+              error[v] = (old_score - new_rank[v]);
+            } else
+            {
+              error[v] = (new_rank[v] - old_score);
             }
             v++;
         }

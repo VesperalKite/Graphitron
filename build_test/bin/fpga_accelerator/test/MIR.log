@@ -1,0 +1,60 @@
+[INFO] input_filename_map_:
+Edge - argv[(1)]
+[INFO] num_elements_map_:
+Edge - builtin_getEdges(edges)
+Vertex - builtin_getVertices(edges)
+[INFO] properties_map_:
+Edge - 
+Vertex - label labelcount 
+[INFO] const_vertex_sets_:
+vertices 
+[INFO] const_edge_sets_:
+edges 
+[INFO] vector_set_element_type_map_:
+label - int 
+labelcount - int 
+vertices - int 
+[INFO] vector_item_type_map_:
+label - int 
+labelcount - int 
+[INFO] edgeset_element_type_map_:
+edges - graphInfo 
+[INFO] vertex_element_type_list_:
+Vertex 
+[INFO] edge_element_type_list_:
+Edge 
+[INFO] constants_:
+
+[INFO] lowered_constants_:
+label - label
+labelcount - labelcount
+
+[INFO] functions_map_:
+main - main
+reset - reset
+tryvisit - tryvisit
+[INFO] functions_list_:
+reset - functor
+tryvisit - not functor
+main - functor
+
+[INFO] symbol_table_:
+argv - argv - 
+edges - edges - edges
+label - label - label
+labelcount - labelcount - labelcount
+vertices - vertices - vertices
+[INFO] edgeset_alloc_stmts:
+acceleratorDataLoad(argv[(1)], "normal", &edges);
+[INFO] field_vector_alloc_stmts:
+[INFO] field_vector_init_stmts:
+[INFO] Iteration: 
+[INFO] Init Function: reset 
+[INFO] Scatter Function: 
+[INFO] Active Function: 
+[INFO] Gather Function: 
+[INFO] Apply Function: 
+[INFO] vertex process functions: [1]
+tryvisit 
+[INFO] edge process functions: [0]
+

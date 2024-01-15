@@ -50,6 +50,8 @@ namespace graphitron {
         if (token == "load") return Token::Type::LOAD;
         if (token == "break") return Token::Type::BREAK;
         if (token == "#") return Token::Type::NUMBER_SIGN;
+        if (token == "min=") return Token::Type::MIN_REDUCE;
+        if (token == "max=") return Token::Type::MAX_REDUCE;
 
         // If string does not correspond to a keyword, assume it is an identifier.
         return Token::Type::IDENT;
@@ -74,6 +76,10 @@ namespace graphitron {
                     } 
                 }
 
+                if ((tokenString == "min" || tokenString == "max") && programStream.peek() == '=') {
+                    tokenString += programStream.get();
+                }
+                
                 Token newToken;
                 newToken.type = getTokenType(tokenString);
                 newToken.lineBegin = line;
@@ -218,6 +224,10 @@ namespace graphitron {
                             programStream.get();
                             tokens.addToken(Token::Type::RARROW, line, col, 2);
                             col += 2;
+                        } else if (programStream.peek() == '=') {
+                            // -= token is plusreduce
+                            programStream.get();
+                            tokens.addToken(Token::Type::SUB_REDUCE, line, col, 2);
                         } else {
                             tokens.addToken(Token::Type::SUB, line, col++);
                         }

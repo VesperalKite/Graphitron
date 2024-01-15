@@ -313,6 +313,14 @@ namespace graphitron {
                 case ReduceStmt::ReductionOp::SUM:
                     oss << " += ";
                     break;
+                case ReduceStmt::ReductionOp::SUB: 
+                    oss << " -= ";
+                case ReduceStmt::ReductionOp::MAX:
+                    oss << " max= ";
+                    break;
+                case ReduceStmt::ReductionOp::MIN:
+                    oss << " min= ";
+                    break;
             }
             stmt->expr->accept(this);
             oss << ";";

@@ -117,5 +117,7 @@ typedef  int                prop_t;
 #define IS_VALID(a)     ((a == INVALID)?0:1)
 #define MIN(a,b) ((a > b)?b:a)
 #define MAX(a,b) ((a > b)?a:b)
+#define PLUS(a,b) (a+b)
+#define SUB(a,b) (a-b)
 
 #endif //GRAPHITRON_ACC_PARAMETERS_H

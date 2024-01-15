@@ -1328,6 +1328,18 @@ namespace graphitron {
                         stmt = parseReduceStmt(Token::Type::PLUS_REDUCE, fir::ReduceStmt::ReductionOp::SUM, expr);
                         break;
                     }
+                    case Token::Type::SUB_REDUCE: {
+                        stmt = parseReduceStmt(Token::Type::SUB_REDUCE, fir::ReduceStmt::ReductionOp::SUB, expr);
+                        break;
+                    }
+                    case Token::Type::MIN_REDUCE: {
+                        stmt = parseReduceStmt(Token::Type::MIN_REDUCE, fir::ReduceStmt::ReductionOp::MIN, expr);
+                        break;
+                    }
+                    case Token::Type::MAX_REDUCE: {
+                        stmt = parseReduceStmt(Token::Type::MAX_REDUCE, fir::ReduceStmt::ReductionOp::MAX, expr);
+                        break;
+                    }
                     default:
                         stmt = std::make_shared<fir::ExprStmt>();
                         stmt->expr = expr;
@@ -1479,7 +1491,8 @@ namespace graphitron {
         intrinsics_.push_back("weight");
         // // library functions for vertexset
         intrinsics_.push_back("getProperty");
-        intrinsics_.push_back("update");
+        intrinsics_.push_back("pull");
+        intrinsics_.push_back("push");
         // intrinsics_.push_back("getVertexSetSize");
         // intrinsics_.push_back("addVertex");
 

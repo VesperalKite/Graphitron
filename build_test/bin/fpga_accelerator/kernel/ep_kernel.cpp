@@ -21,6 +21,9 @@ extern "C" {
         unsigned int partEdgeNum
     ){
 
+        const int stream_depth_filter = QUEUE_SIZE_FILTER;
+        const int stream_depth_memory = QUEUE_SIZE_MEMORY;
+
 #pragma HLS DATAFLOW
 
 #pragma HLS INTERFACE m_axi port=partSrcArray offset=slave bundle=gmem0 

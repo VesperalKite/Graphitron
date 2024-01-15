@@ -67,7 +67,7 @@ namespace graphitron {
             }
             oss_ << ")";
         
-        } else if (expr->name == "builtin_update"){
+        } else if (expr->name == "builtin_pull"){
             string mem_name;
             string var_name;
             if (mir::isa<mir::VarExpr>(expr->args[0])) {
@@ -84,6 +84,24 @@ namespace graphitron {
                 oss_ << "*)get_host_mem_pointer(getGatherScatter(0)->prop[resultPropId].id)";
             } else {
                 oss_ << "transfer_data_from_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
+            }
+        } else if (expr->name == "builtin_push"){
+            string mem_name;
+            string var_name;
+            if (mir::isa<mir::VarExpr>(expr->args[0])) {
+                auto var_expr = mir::to<mir::VarExpr>(expr->args[0]);
+                mem_name = var_expr->var.getAlias();
+                var_name = var_expr->var.getName();
+            }
+            if (mem_name == "pushin_prop") {
+                oss_ << "int resultPropId = (" << mir_context_->Iteration->name << " + 1) % 2;" << endl;
+                oss_ << "    transfer_data_from_pl(acc->context, acc->device, getGatherScatter(0)->prop[resultPropId].id);" << endl;
+                oss_ << "    " << var_name << " = (";
+                auto var_item_type = mir_context_->vector_item_type_map_.find(var_name)->second;
+                var_item_type->accept(type_visitor);
+                oss_ << "*)get_host_mem_pointer(getGatherScatter(0)->prop[resultPropId].id)";
+            } else {
+                oss_ << "transfer_data_to_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
             }
         } else if (expr->name == "builtin_dst") {
             oss_ << "partCIA[";

@@ -126,6 +126,15 @@ namespace graphitron {
             case fir::ReduceStmt::ReductionOp::SUM:
                 mir_reduce_stmt->reduce_op_ = mir::ReduceStmt::ReductionOp::SUM;
                 break;
+            case fir::ReduceStmt::ReductionOp::SUB:
+                mir_reduce_stmt->reduce_op_ = mir::ReduceStmt::ReductionOp::SUB;
+                break;
+            case fir::ReduceStmt::ReductionOp::MIN:
+                mir_reduce_stmt->reduce_op_ = mir::ReduceStmt::ReductionOp::MIN;
+                break;
+            case fir::ReduceStmt::ReductionOp::MAX:
+                mir_reduce_stmt->reduce_op_ = mir::ReduceStmt::ReductionOp::MAX;
+                break;
         }
         retStmt = mir_reduce_stmt;
     }

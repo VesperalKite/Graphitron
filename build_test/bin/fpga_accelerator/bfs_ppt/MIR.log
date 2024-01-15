@@ -1,0 +1,74 @@
+[INFO] input_filename_map_:
+Edge - argv[(1)]
+[INFO] num_elements_map_:
+Edge - builtin_getEdges(edges)
+Vertex - builtin_getVertices(edges)
+[INFO] properties_map_:
+Edge - 
+Vertex - parent parent_tmp tuple activeVertex 
+[INFO] const_vertex_sets_:
+vertices 
+[INFO] const_edge_sets_:
+edges 
+[INFO] vector_set_element_type_map_:
+activeVertex - int 
+parent - int 
+parent_tmp - int 
+tuple - int 
+vertices - int 
+[INFO] vector_item_type_map_:
+activeVertex - int 
+parent - int 
+parent_tmp - int 
+tuple - int 
+[INFO] edgeset_element_type_map_:
+edges - graphInfo 
+[INFO] vertex_element_type_list_:
+Vertex 
+[INFO] edge_element_type_list_:
+Edge 
+[INFO] constants_:
+level 
+[INFO] lowered_constants_:
+parent - parent
+parent_tmp - parent_tmp
+tuple - tuple
+activeVertex - activeVertex
+level - 
+
+[INFO] functions_map_:
+EdgeTravse - EdgeTravse
+VertexApply - VertexApply
+VertexUpdate - VertexUpdate
+main - main
+reset - reset
+[INFO] functions_list_:
+reset - functor
+EdgeTravse - not functor
+VertexUpdate - not functor
+VertexApply - not functor
+main - functor
+
+[INFO] symbol_table_:
+activeVertex - activeVertex - activeVertex
+argv - argv - 
+edges - edges - edges
+level - level - level
+parent - parent - parent
+parent_tmp - parent_tmp - parent_tmp
+tuple - tuple - tuple
+vertices - vertices - vertices
+[INFO] edgeset_alloc_stmts:
+acceleratorDataLoad(argv[(1)], "normal", &edges);
+[INFO] field_vector_alloc_stmts:
+[INFO] field_vector_init_stmts:
+[INFO] Iteration: 
+[INFO] Init Function: reset 
+[INFO] Scatter Function: 
+[INFO] Active Function: 
+[INFO] Gather Function: 
+[INFO] Apply Function: 
+[INFO] vertex process functions: [2]
+VertexUpdate VertexApply 
+[INFO] edge process functions: [1]
+EdgeTravse 

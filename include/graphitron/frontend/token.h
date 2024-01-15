@@ -91,6 +91,9 @@ namespace graphitron {
             MUL,//*
             DIV,///
             PLUS_REDUCE,//+=
+            SUB_REDUCE,//-=
+            MAX_REDUCE,//max=
+            MIN_REDUCE,//min=
 
             END,
             UNKNOWN,

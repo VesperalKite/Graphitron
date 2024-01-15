@@ -99,11 +99,10 @@ static void partitionTransfer(graphInfo* info) {
 
     DEBUG_PRINTF("%s", "transfer user mem\n");
     int user_mem_id[] = {
-        MEM_ID_PARENT,
-        MEM_ID_PARENT_TMP,
-        MEM_ID_PROP_TEST,
-        MEM_ID_ACTIVEVERTEX,
-        MEM_ID_SECONDPROP,
+        MEM_ID_OLD_RANK,
+        MEM_ID_NEW_RANK,
+        MEM_ID_CONTRIB,
+        MEM_ID_ERROR,
         // insert
     };
     transfer_data_to_pl(acc->context, acc->device, user_mem_id, ARRAY_SIZE(user_mem_id));

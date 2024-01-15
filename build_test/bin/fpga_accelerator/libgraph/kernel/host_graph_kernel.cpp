@@ -3,15 +3,15 @@
 
 epDescriptor localepKernel[] = {
     {
-        .name = "ep_compute_kernel",
+        .name = "ep_computeContrib_kernel",
     },
 };
 vpDescriptor localvpKernel[] = {
     {
-        .name = "vp_update_kernel",
+        .name = "vp_computeError_kernel",
     },
     {
-        .name = "vp_propapply_kernel",
+        .name = "vp_updateVertex_kernel",
     },
 };
 // insert

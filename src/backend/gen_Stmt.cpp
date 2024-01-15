@@ -140,6 +140,39 @@ namespace graphitron {
                 stmt->expr->accept(expr_visitor);
                 oss_ << ";" << endl;
                 break;
+            case mir::ReduceStmt::ReductionOp::SUB:
+                printIndent();
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " -= ";
+                stmt->expr->accept(expr_visitor);
+                oss_ << ";" << endl;
+                break;
+            case mir::ReduceStmt::ReductionOp::MAX:  
+                printIndent();
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " = (( ";
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " ) > (";
+                stmt->expr->accept(expr_visitor);
+                oss_ << " ) ? ";
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " : ";
+                stmt->expr->accept(expr_visitor);
+                oss_ << ");" << endl;
+                break;
+            case mir::ReduceStmt::ReductionOp::MIN:  
+                printIndent();
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " = (( ";
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " ) < (";
+                stmt->expr->accept(expr_visitor);
+                oss_ << " ) ? ";
+                stmt->lhs->accept(expr_visitor);
+                oss_ << " : ";
+                stmt->expr->accept(expr_visitor);
+                oss_ << ");" << endl;
+                break;
         }
     }
 

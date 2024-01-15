@@ -1,0 +1,74 @@
+element Vertex end
+element Edge end
+const edges : edgeset{Edge}(Vertex,Vertex) = load (argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const old_rank : vector{Vertex}(int) = 1.0/vertices.size();
+const new_rank : vector{Vertex}(int) = 0.0;
+const out_degree : vector {Vertex}(int) = vertices.getOutDegrees();
+const contrib : vector{Vertex}(int) = 0.0;
+const error : vector{Vertex}(int) = 0.0;
+const damp : double = 0.85;
+const dampFixPoint : int = 128;
+const init_score : int;
+const beta_score : int;
+
+func float2int (x : double) -> y : int;
+    y = x*pow(2,30);
+end
+
+func reset(v: Vertex)
+    old_rank[v] = init_score;
+    new_rank[v] = 0;
+end
+
+func computeContrib(src : Vertex, dst : Vertex)
+    if (out_degree[src] > 0)
+        contrib[dst] += old_rank[src]/out_degree[src];
+    end
+end
+
+func computeError(v : Vertex)
+    var old_score : int = old_rank[v];
+    new_rank[v] = beta_score + (dampFixPoint*contrib[v] >> 7);
+    if (old_score > new_rank[v])
+        error[v] = old_score - new_rank[v];
+    else 
+        error[v] = new_rank[v] - old_score;
+    end
+end
+
+func updateVertex(v : Vertex)
+    old_rank[v] = new_rank[v];
+end
+
+func errorSum() -> sum : int
+    for v in 0:vertices.size()
+        sum += error[v];
+    end
+end
+
+func main()
+    beta_score = float2int((1.0 - damp) / vertices.size());
+    init_score = float2int(1.0/vertices.size());
+    vertices.init(reset);
+    edges.migrate(true);
+    var sum : int;
+    for trail in 0:10
+        startTimer();
+        edges.process(computeContrib);
+        vertices.process(computeError);
+        vertices.process(updateVertex);
+        var elapsed_time : double = stopTimer();
+        error.pull();
+        sum = errorSum();
+        print "iteration: ";
+        println trail;
+        print "errorSum: ";
+        println sum;
+        print "elapsed time: ";
+        println elapsed_time;
+        var test : int;
+        test min= 1;
+    end
+end
+
