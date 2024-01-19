@@ -122,34 +122,9 @@ namespace graphitron {
         for (auto it : mir_context_->field_vector_init_stmts) {
             it->accept(stmt_visitor);
         }
-        oss << "[INFO] Iteration: ";
-        if (mir_context_->Iteration != nullptr) {
-            oss << mir_context_->Iteration->name;
-        }
-        oss << endl;
         oss << "[INFO] Init Function: ";
         for (auto it : mir_context_->InitFuncs) {
             oss << it->name << " ";
-        }
-        oss << endl;
-        oss << "[INFO] Scatter Function: ";
-        if (mir_context_->ScatterFunc != nullptr) {
-            oss << mir_context_->ScatterFunc->name;
-        }
-        oss << endl;
-        oss << "[INFO] Active Function: ";
-        if (mir_context_->ActiveFunc != nullptr) {
-            oss << mir_context_->ActiveFunc->name;
-        }
-        oss << endl;
-        oss << "[INFO] Gather Function: ";
-        if (mir_context_->GatherFunc != nullptr) {
-            oss << mir_context_->GatherFunc->name;
-        }
-        oss << endl;
-        oss << "[INFO] Apply Function: ";
-        if (mir_context_->ApplyFunc != nullptr) {
-            oss << mir_context_->ApplyFunc->name;
         }
         oss << endl;
         oss << "[INFO] vertex process functions: ["<< mir_context_->vertex_process_funcs.size() << "]" << endl;
@@ -162,6 +137,47 @@ namespace graphitron {
             oss << it->name << " ";
         }
         oss << endl;
+        oss << endl;
+
+        oss << "[INFO] parameter space: " << endl;
+        if (mir_context_->parameter_ != nullptr) {
+            oss << *(mir_context_->parameter_) << endl;
+        }
+        oss << "[INFO] Kernel Space: " << endl;
+        for (auto ep_kernel : mir_context_->ep_kernels) {
+            oss << "[" << ep_kernel.first << "]" << endl;
+            auto kernel = ep_kernel.second;
+            oss << "function body: " << kernel.input_func->name << endl;
+            oss << "read property: ";
+            for (auto prop : kernel.readProps) {
+                oss << prop << " ";
+            }
+            oss << endl;
+            oss << "write property: ";
+            for (auto prop : kernel.writeProps) {
+                oss << prop << " ";
+            }
+            oss << endl;
+            oss << "parameter space: " << endl;
+            oss << kernel.parameter << endl;
+        }
+        for (auto vp_kernel : mir_context_->vp_kernels) {
+            oss << "[" << vp_kernel.first << "]" << endl;
+            auto kernel = vp_kernel.second;
+            oss << "function body: " << kernel.input_func->name << endl;
+            oss << "read property: ";
+            for (auto prop : kernel.readProps) {
+                oss << prop << " ";
+            }
+            oss << endl;
+            oss << "write property: ";
+            for (auto prop : kernel.writeProps) {
+                oss << prop << " ";
+            }
+            oss << endl;
+            oss << "parameter space: " << endl;
+            oss << kernel.parameter << endl;
+        }
         oss.close();
         return 0;
     }

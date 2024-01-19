@@ -96,6 +96,7 @@ namespace graphitron {
         void replaceSstream(std::stringstream &inbuf, std::stringstream &outbuf, const std::string &from, const std::string &to);
         void replaceFile(std::istream &in, std::ostream &out, const std::string &from, const std::string &to);
         void replaceFile(const std::string &in, const std::string &out, const std::string &from, const std::stringstream &wbf);
+        std::stringstream getReplacedSstreamFromFile(const std::string &filename, const std::map<std::string, std::string> &replaceList);
         void insertFile(const std::string &in, const std::string &out, const std::string &key, const std::stringstream &wbf);
     }}
 #endif //GRAPHITRON_UTIL_H

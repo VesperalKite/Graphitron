@@ -12,8 +12,8 @@ namespace graphitron {
         oss.open(output_path_+"/config.mk");
         reset();
         oss << "FREQ=" << mir_context_->freq << endl;
-        oss << "HAVE_EDGE_PROP=" << mir_context_->have_edge_prop << endl;
-        oss << "LOG_SCATTER_CACHE_BURST_SIZE=" << mir_context_->log_scatter_cache_burst_size << endl;
+        oss << "TARGET_PARTITION_SIZE="<< mir_context_->TargetPartitionSize << endl;
+        oss << "TARGET_BANDWIDTH=" << mir_context_->TargetBandWidth << endl;
         oss.close();
         return 0;   
     }
@@ -91,9 +91,6 @@ namespace graphitron {
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_OUT_DEG));" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_RPA));" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(MEM_ID_CIA));" << endl;
-            if (mir_context_->have_edge_prop == "true") {
-                oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(cl_mem), get_cl_mem_pointer(partition->parteProp.id));" << endl;
-            }
             oss << setkernel_buffer.str();
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partVertexNum);" << endl;
             oss << "        clSetKernelArg(Handler->kernel, argvi++, sizeof(int), &partDstIdStart);" << endl;

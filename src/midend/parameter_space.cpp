@@ -6,7 +6,16 @@
 #include <graphitron/midend/parameter_space.h>
 
 namespace graphitron {
-    std::ostream &operator<<(std::ostream &oss, ParameterSpace &parameter) {
+    std::ostream& operator<<(std::ostream& os, const KernelParameter& p) {
+        os << "[WriteBurstSize] " << p.WriteBurstSize << std::endl;
+        os << "[ReadBurstSize] " << p.ReadBurstSize << std::endl;
+        os << "[CacheBurstSize] " << p.CacheBurstSize << std::endl;
+        os << "[FilterFifoDepth] " << p.StreamFilterDepth << std::endl;
+        os << "[MemoryFifoDepth] " << p.StreamMemoryDepth << std::endl;
+        return os;
+    }
+
+    std::ostream &operator<<(std::ostream &oss, const ParameterSpace &parameter) {
         oss << "### Parameter Space ###" << std::endl;
         oss << "## FPGA Parameter ##" << std::endl;
         oss << "* ";
@@ -14,42 +23,25 @@ namespace graphitron {
             oss << "Default ";
         }
         oss << "Frequency: " << parameter.fpga_parameters->Frequency << std::endl;
+        oss << "* ";
+        if (parameter.fpga_parameters->TargetPartitionSize == DEFAULT_PARTITION_SIZE) {
+            oss << "Default ";
+        }
+        oss << "TargetPartitionSize: " << parameter.fpga_parameters->TargetPartitionSize << std::endl;
+        oss << "* TargetBandWidth: " << parameter.fpga_parameters->TargetBandWidth << std::endl;
         oss << std::endl;
-        oss << "## Gather-Scatter Phase Parameter ##" << std::endl;
-        if (parameter.gs_parameters->size() > 0) {
-            for (auto it=parameter.gs_parameters->begin(); it != parameter.gs_parameters->end(); it++){
-                oss << "# gs label: " << it->first << " #" << std::endl;
-                oss << "* EdgeProp: " << (it->second.EdgeProp?"true":"false")<< std::endl;
-                oss << "* UnsignedProp: " << (it->second.UnsignedProp?"true":"false") << std::endl;
+        oss << "## Kernel Parameter ##" << std::endl;
+        if (parameter.kernel_parameters->size() > 0) {
+            for (auto it=parameter.kernel_parameters->begin(); it!= parameter.kernel_parameters->end(); it++) {
+                oss << "# kernel label: " << it->first << " #" << std::endl;
+                oss << "* WirteBurstSize: " << it->second.WriteBurstSize << std::endl;
                 oss << "* ReadBurstSize: " << it->second.ReadBurstSize << std::endl;
                 oss << "* CacheBurstSize: " << it->second.CacheBurstSize << std::endl;
                 oss << "* StreamFilterDepth: " << it->second.StreamFilterDepth << std::endl;
                 oss << "* StreamMemoryDepth: " << it->second.StreamMemoryDepth << std::endl;
-                if (it->second.TargetPartitionFlag) {
-                    oss << "* TargetPartitionSize: " << it->second.TargetPartitionSize << std::endl;
-                }
-                oss << "* TargetBandWidth: " << it->second.TargetBandWidth << std::endl;
-                oss << "* UramUpbound: " << it->second.UramUpbound << std::endl;
-                oss << "* SubpartitionPlan: ";
-                if (it->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::normal) {
-                    oss << "normal Plan" << std::endl;
-                } else if (it->second.subpartitionplan == GatherScatterParameter::SubpartitionPlan::secondOrderEstimator) {
-                    oss << "estimator Plan" << std::endl;
-                }
             }
         } else {
-            oss << "no gs function has such a parameter" << std::endl;
-        }
-        oss << std::endl;
-        oss << "## Apply Phase Parameter ##" << std::endl;
-        if (parameter.apply_parameters->size() > 0) {
-            for (auto it=parameter.apply_parameters->begin(); it != parameter.apply_parameters->end(); it++) {
-                oss << "# apply label: " << it->first << " #" << std::endl;
-                oss << "* ApplyOutDeg: " << (it->second.ApplyOutDeg?"true":"false") << std::endl;
-                oss << "* ApplyNumSize: " << (it->second.ApplyNumSize?"true":"false") << std::endl;
-            }
-        } else {
-            oss << "no apply function has such a parameter" << std::endl;
+            oss << "no graph process function has such a parameter" << std::endl;
         }
         oss << std::endl;
         return oss;

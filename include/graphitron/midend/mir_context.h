@@ -11,13 +11,19 @@
 #include <list>
 #include <map>
 #include <utility>
+#include <set>
 
 #include <graphitron/utils/scopedmap.h>
 #include <graphitron/midend/mir.h>
 #include <graphitron/midend/parameter_space.h>
 
 namespace graphitron {
-
+   struct ProcessKernelSpace {
+      mir::FuncDecl::Ptr input_func;
+      std::set<std::string> readProps;
+      std::set<std::string> writeProps;
+      KernelParameter parameter;
+   };
    // Data structure that holds the internal representation of the program
    class MIRContext {
 
@@ -292,37 +298,37 @@ namespace graphitron {
          exit(-1);
          return nullptr;
       }
-      void set_iter_func(mir::Expr::Ptr iter) {
-         if (mir::isa<mir::VarExpr>(iter)) {
-            auto iter_var_expr = mir::to<mir::VarExpr>(iter);
-            auto iter_var = iter_var_expr->var;
-            mir::VarDecl::Ptr iter_val_decl = std::make_shared<mir::VarDecl>();
-            iter_val_decl->name = iter_var.getName();
-            iter_val_decl->type = iter_var.getType();
-            iter_val_decl->alias = "iteration_arg";
-            Iteration = iter_val_decl;
-         }
-      }
-      void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr gather){
-         scatter->isFunctor = false;
-         gather->isFunctor = false;
-         have_frontier = false;
-         ScatterFunc = scatter;
-         GatherFunc = gather;
-      }
-      void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr active, mir::FuncDecl::Ptr gather){
-         scatter->isFunctor = false;
-         active->isFunctor = false;
-         gather->isFunctor = false;
-         have_frontier = true;
-         ScatterFunc = scatter;
-         ActiveFunc = active;
-         GatherFunc = gather;  
-      }
-      void set_apply_func(mir::FuncDecl::Ptr apply){
-         apply->isFunctor = false;
-         ApplyFunc = apply;
-      }
+      // void set_iter_func(mir::Expr::Ptr iter) {
+      //    if (mir::isa<mir::VarExpr>(iter)) {
+      //       auto iter_var_expr = mir::to<mir::VarExpr>(iter);
+      //       auto iter_var = iter_var_expr->var;
+      //       mir::VarDecl::Ptr iter_val_decl = std::make_shared<mir::VarDecl>();
+      //       iter_val_decl->name = iter_var.getName();
+      //       iter_val_decl->type = iter_var.getType();
+      //       iter_val_decl->alias = "iteration_arg";
+      //       Iteration = iter_val_decl;
+      //    }
+      // }
+      // void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr gather){
+      //    scatter->isFunctor = false;
+      //    gather->isFunctor = false;
+      //    have_frontier = false;
+      //    ScatterFunc = scatter;
+      //    GatherFunc = gather;
+      // }
+      // void set_gs_func(mir::FuncDecl::Ptr scatter, mir::FuncDecl::Ptr active, mir::FuncDecl::Ptr gather){
+      //    scatter->isFunctor = false;
+      //    active->isFunctor = false;
+      //    gather->isFunctor = false;
+      //    have_frontier = true;
+      //    ScatterFunc = scatter;
+      //    ActiveFunc = active;
+      //    GatherFunc = gather;  
+      // }
+      // void set_apply_func(mir::FuncDecl::Ptr apply){
+      //    apply->isFunctor = false;
+      //    ApplyFunc = apply;
+      // }
       void set_init_func(mir::FuncDecl::Ptr init){
          InitFuncs.push_back(init);
       }
@@ -402,28 +408,25 @@ namespace graphitron {
 
       bool have_frontier;
 
-      mir::VarDecl::Ptr Iteration;
-      mir::FuncDecl::Ptr ScatterFunc, ActiveFunc, GatherFunc, ApplyFunc;
       std::vector<mir::FuncDecl::Ptr> InitFuncs;
       ParameterSpace* parameter_; 
-      // scatter-gather 
-      std::string have_edge_prop = "true";
-      std::string have_unsigned_prop = "false";
-      int queue_size_filter = 16; 
-      int queue_size_memory = 512;
-      int read_burst_size = 6;
-      int log_scatter_cache_burst_size = 6;
-      int TargetPartitionSize = 0;
-      bool TargetPartitionFlag = false;
-      int TargetBandWidth = 77;
-      float UramUpbound = 0.9;
-      std::string subpartitionplan = "secondOrderEstimator";
-      // apply
-      std::string have_apply = "false";
-      std::string customize_apply = "false";
-      // config
-      int freq = 280;
-   
+
+      bool have_edge_prop = false;
+
+      // kernel
+      // int queue_size_filter = 16; 
+      // int queue_size_memory = 512;
+      // int write_burst_size = 6;
+      // int read_burst_size = 7;
+      // int log_scatter_cache_burst_size = 6;
+      // fpga global config
+      int freq;
+      int TargetPartitionSize;
+      int TargetBandWidth;
+
+
+      std::map<std::string, ProcessKernelSpace> ep_kernels;
+      std::map<std::string, ProcessKernelSpace> vp_kernels;
       
     };
  }

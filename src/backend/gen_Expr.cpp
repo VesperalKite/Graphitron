@@ -75,16 +75,7 @@ namespace graphitron {
                 mem_name = var_expr->var.getAlias();
                 var_name = var_expr->var.getName();
             }
-            if (mem_name == "pushin_prop") {
-                oss_ << "int resultPropId = (" << mir_context_->Iteration->name << " + 1) % 2;" << endl;
-                oss_ << "    transfer_data_from_pl(acc->context, acc->device, getGatherScatter(0)->prop[resultPropId].id);" << endl;
-                oss_ << "    " << var_name << " = (";
-                auto var_item_type = mir_context_->vector_item_type_map_.find(var_name)->second;
-                var_item_type->accept(type_visitor);
-                oss_ << "*)get_host_mem_pointer(getGatherScatter(0)->prop[resultPropId].id)";
-            } else {
-                oss_ << "transfer_data_from_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
-            }
+            oss_ << "transfer_data_from_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
         } else if (expr->name == "builtin_push"){
             string mem_name;
             string var_name;
@@ -93,16 +84,7 @@ namespace graphitron {
                 mem_name = var_expr->var.getAlias();
                 var_name = var_expr->var.getName();
             }
-            if (mem_name == "pushin_prop") {
-                oss_ << "int resultPropId = (" << mir_context_->Iteration->name << " + 1) % 2;" << endl;
-                oss_ << "    transfer_data_from_pl(acc->context, acc->device, getGatherScatter(0)->prop[resultPropId].id);" << endl;
-                oss_ << "    " << var_name << " = (";
-                auto var_item_type = mir_context_->vector_item_type_map_.find(var_name)->second;
-                var_item_type->accept(type_visitor);
-                oss_ << "*)get_host_mem_pointer(getGatherScatter(0)->prop[resultPropId].id)";
-            } else {
-                oss_ << "transfer_data_to_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
-            }
+            oss_ << "transfer_data_to_pl(acc->context, acc->device, MEM_ID_" << toUpper(mem_name) << ")";
         } else if (expr->name == "builtin_dst") {
             oss_ << "partCIA[";
             expr->args[0]->accept(this);
@@ -150,19 +132,19 @@ namespace graphitron {
         oss_ << "edgesetloadexpr";
     }
 
-    void ExprGenerator::visit(mir::ApplyExpr::Ptr expr) {
-        oss_ << "//have apply stage";
-    }
+    // void ExprGenerator::visit(mir::ApplyExpr::Ptr expr) {
+    //     oss_ << "//have apply stage";
+    // }
 
-    void ExprGenerator::visit(mir::GsExpr::Ptr expr) {
-        expr->scope_label_name = label_scope_.getCurrentScope();
+    // void ExprGenerator::visit(mir::GsExpr::Ptr expr) {
+    //     expr->scope_label_name = label_scope_.getCurrentScope();
         
-        oss_ << "acceleratorSuperStep(";
-        expr->iter->accept(this);
-        oss_ << ", &";
-        expr->target->accept(this);
-        oss_<<")";
-    }
+    //     oss_ << "acceleratorSuperStep(";
+    //     expr->iter->accept(this);
+    //     oss_ << ", &";
+    //     expr->target->accept(this);
+    //     oss_<<")";
+    // }
 
     void ExprGenerator::visit(mir::InitExpr::Ptr expr) {
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
@@ -184,21 +166,41 @@ namespace graphitron {
         }
     }
 
-    void ExprGenerator::visit(mir::ProcExpr::Ptr expr) {
+    //void ExprGenerator::visit(mir::ProcExpr::Ptr expr) {
+    //     auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
+    //     if (mir_context_->isConstVertexSet(mir_var->var.getName())){
+    //         auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+    //         assert(associated_element_type);
+    //         auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+    //         assert(associated_element_type_size);
+    //         oss_ << "vp_" << expr->input_function->function_name->name << "_fpga_kernel()";
+    //     } else if ( mir_context_->isEdgeSet(mir_var->var.getName())) {
+    //         auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+    //         assert(associated_element_type);
+    //         auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+    //         assert(associated_element_type_size);
+    //         oss_ << "ep_" << expr->input_function->function_name->name << "_fpga_kernel()";
+    //     }
+    // }
+
+    void ExprGenerator::visit(mir::VertexSetProcExpr::Ptr expr) {
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
-        if (mir_context_->isConstVertexSet(mir_var->var.getName())){
-            auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
-            assert(associated_element_type);
-            auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
-            assert(associated_element_type_size);
-            oss_ << "vp_" << expr->input_function->function_name->name << "_fpga_kernel()";
-        } else if ( mir_context_->isEdgeSet(mir_var->var.getName())) {
-            auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
-            assert(associated_element_type);
-            auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
-            assert(associated_element_type_size);
-            oss_ << "ep_" << expr->input_function->function_name->name << "_fpga_kernel()";
-        }
+        auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+        assert(associated_element_type);
+        auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+        assert(associated_element_type_size);
+        oss_ << "vp_" << expr->input_function->function_name->name << "_fpga_kernel()";   
+    }
+
+    void ExprGenerator::visit(mir::EdgeSetProcExpr::Ptr expr) {
+        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(expr->target);
+        auto associated_element_type = mir_context_->getElementTypeFromVectorOrSetName(mir_var->var.getName());
+        assert(associated_element_type);
+        auto associated_element_type_size = mir_context_->getElementCount(associated_element_type);
+        assert(associated_element_type_size);
+        // oss_ << "// busrt_read_size: " << expr->burst_read_size << ", burst_write_size: " << expr->burst_write_size << ", cacahe_burst_size: " << expr->cacahe_burst_size << endl;
+        // oss_ << "    // filter_fifo_depth: " << expr->filter_fifo_depth << ", memory_fifo_depth: " << expr->memory_fifo_depth << endl;
+        oss_ << "ep_" << expr->input_function->function_name->name << "_fpga_kernel()";
     }
 
     void ExprGenerator::visit(mir::EqExpr::Ptr expr) {

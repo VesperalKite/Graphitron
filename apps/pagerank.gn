@@ -55,8 +55,8 @@ func main()
     var sum : int;
     for trail in 0:10
         startTimer();
-        edges.process(computeContrib);
-        vertices.process(computeError);
+        #s1#edges.process(computeContrib);
+        #s2#vertices.process(computeError);
         vertices.process(updateVertex);
         var elapsed_time : double = stopTimer();
         error.pull();
@@ -71,4 +71,6 @@ func main()
         test min= 1;
     end
 end
+parameter:
+    program->configStreamFilterDepth("s1", 1024)->configFreq(250)->configReadBurstSize("s2", 5);
 

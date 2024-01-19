@@ -666,33 +666,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/midend/configuration_lower.o: src/midend/configuration_lower.cpp.o
-.PHONY : src/midend/configuration_lower.o
-
-# target to build an object file
-src/midend/configuration_lower.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/configuration_lower.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o
-.PHONY : src/midend/configuration_lower.cpp.o
-
-src/midend/configuration_lower.i: src/midend/configuration_lower.cpp.i
-.PHONY : src/midend/configuration_lower.i
-
-# target to preprocess a source file
-src/midend/configuration_lower.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/configuration_lower.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.i
-.PHONY : src/midend/configuration_lower.cpp.i
-
-src/midend/configuration_lower.s: src/midend/configuration_lower.cpp.s
-.PHONY : src/midend/configuration_lower.s
-
-# target to generate assembly for a file
-src/midend/configuration_lower.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/configuration_lower.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.s
-.PHONY : src/midend/configuration_lower.cpp.s
-
 src/midend/edgeset_lower.o: src/midend/edgeset_lower.cpp.o
 .PHONY : src/midend/edgeset_lower.o
 
@@ -990,6 +963,33 @@ src/midend/parameter_space.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.s
 .PHONY : src/midend/parameter_space.cpp.s
 
+src/midend/processkernel_lower.o: src/midend/processkernel_lower.cpp.o
+.PHONY : src/midend/processkernel_lower.o
+
+# target to build an object file
+src/midend/processkernel_lower.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/processkernel_lower.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o
+.PHONY : src/midend/processkernel_lower.cpp.o
+
+src/midend/processkernel_lower.i: src/midend/processkernel_lower.cpp.i
+.PHONY : src/midend/processkernel_lower.i
+
+# target to preprocess a source file
+src/midend/processkernel_lower.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/processkernel_lower.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.i
+.PHONY : src/midend/processkernel_lower.cpp.i
+
+src/midend/processkernel_lower.s: src/midend/processkernel_lower.cpp.s
+.PHONY : src/midend/processkernel_lower.s
+
+# target to generate assembly for a file
+src/midend/processkernel_lower.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronc.dir/build.make CMakeFiles/graphitronc.dir/src/midend/processkernel_lower.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/graphitronlib.dir/build.make CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.s
+.PHONY : src/midend/processkernel_lower.cpp.s
+
 src/midend/prop_array_lower.o: src/midend/prop_array_lower.cpp.o
 .PHONY : src/midend/prop_array_lower.o
 
@@ -1137,9 +1137,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/midend/configuration_lower.o"
-	@echo "... src/midend/configuration_lower.i"
-	@echo "... src/midend/configuration_lower.s"
 	@echo "... src/midend/edgeset_lower.o"
 	@echo "... src/midend/edgeset_lower.i"
 	@echo "... src/midend/edgeset_lower.s"
@@ -1173,6 +1170,9 @@ help:
 	@echo "... src/midend/parameter_space.o"
 	@echo "... src/midend/parameter_space.i"
 	@echo "... src/midend/parameter_space.s"
+	@echo "... src/midend/processkernel_lower.o"
+	@echo "... src/midend/processkernel_lower.i"
+	@echo "... src/midend/processkernel_lower.s"
 	@echo "... src/midend/prop_array_lower.o"
 	@echo "... src/midend/prop_array_lower.i"
 	@echo "... src/midend/prop_array_lower.s"

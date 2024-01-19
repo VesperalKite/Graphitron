@@ -296,24 +296,10 @@ CMakeFiles/graphitronlib.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/graphitronlib.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vesperal_kite/important_files/Graphitron/src/main.cpp -o CMakeFiles/graphitronlib.dir/src/main.cpp.s
 
-CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
-CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/configuration_lower.cpp
-CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/configuration_lower.cpp
-
-CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/vesperal_kite/important_files/Graphitron/src/midend/configuration_lower.cpp > CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.i
-
-CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vesperal_kite/important_files/Graphitron/src/midend/configuration_lower.cpp -o CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.s
-
 CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/edgeset_lower.cpp
 CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/edgeset_lower.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.i: cmake_force
@@ -327,7 +313,7 @@ CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/midend.cpp
 CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/midend.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.i: cmake_force
@@ -341,7 +327,7 @@ CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.i: cmake_force
@@ -355,7 +341,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_context.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_context.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.i: cmake_force
@@ -369,7 +355,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir_context.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_emitter.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_emitter.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.i: cmake_force
@@ -383,7 +369,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir_emitter.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_lower.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_lower.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.i: cmake_force
@@ -397,7 +383,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir_lower.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_printer.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_printer.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.i: cmake_force
@@ -411,7 +397,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir_printer.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_visitor.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mir_visitor.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.i: cmake_force
@@ -425,7 +411,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/mri_rewriter.cpp
 CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/mri_rewriter.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.i: cmake_force
@@ -439,7 +425,7 @@ CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter.cpp
 CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.i: cmake_force
@@ -453,7 +439,7 @@ CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.s: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter_space.cpp
 CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter_space.cpp
 
 CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.i: cmake_force
@@ -463,6 +449,20 @@ CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.i: cmake_force
 CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vesperal_kite/important_files/Graphitron/src/midend/parameter_space.cpp -o CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.s
+
+CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
+CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/processkernel_lower.cpp
+CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o: CMakeFiles/graphitronlib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/vesperal_kite/important_files/Graphitron/build_test/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o -MF CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o.d -o CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o -c /Users/vesperal_kite/important_files/Graphitron/src/midend/processkernel_lower.cpp
+
+CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/vesperal_kite/important_files/Graphitron/src/midend/processkernel_lower.cpp > CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.i
+
+CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/vesperal_kite/important_files/Graphitron/src/midend/processkernel_lower.cpp -o CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.s
 
 CMakeFiles/graphitronlib.dir/src/midend/prop_array_lower.cpp.o: CMakeFiles/graphitronlib.dir/flags.make
 CMakeFiles/graphitronlib.dir/src/midend/prop_array_lower.cpp.o: /Users/vesperal_kite/important_files/Graphitron/src/midend/prop_array_lower.cpp
@@ -524,7 +524,6 @@ graphitronlib_OBJECTS = \
 "CMakeFiles/graphitronlib.dir/src/frontend/scanner.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/frontend/token.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/main.cpp.o" \
-"CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o" \
@@ -536,6 +535,7 @@ graphitronlib_OBJECTS = \
 "CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o" \
+"CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/midend/prop_array_lower.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/utils/exec_cmd.cpp.o" \
 "CMakeFiles/graphitronlib.dir/src/utils/util.cpp.o"
@@ -559,7 +559,6 @@ lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/frontend/parser.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/frontend/scanner.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/frontend/token.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/main.cpp.o
-lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/configuration_lower.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/edgeset_lower.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/midend.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/mir.cpp.o
@@ -571,6 +570,7 @@ lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/mir_visitor.cpp.
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/mri_rewriter.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/parameter.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/parameter_space.cpp.o
+lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/processkernel_lower.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/midend/prop_array_lower.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/utils/exec_cmd.cpp.o
 lib/libgraphitronlib.a: CMakeFiles/graphitronlib.dir/src/utils/util.cpp.o

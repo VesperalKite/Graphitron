@@ -173,6 +173,22 @@ namespace graphitron {
             input.close();
             output.close();
         }
+
+        std::stringstream getReplacedSstreamFromFile(const std::string &filename, const std::map<std::string, std::string> &replaceList) {
+            std::ifstream infile(filename);
+            std::stringstream inbuf;
+            inbuf << infile.rdbuf();
+            std::stringstream outbuf;
+
+            std::string line;
+            while (std::getline(inbuf, line)) {
+                for (auto pair : replaceList) {
+                    replaceLine(line, pair.first, pair.second);
+                }
+                outbuf << line << std::endl;
+            }
+            return outbuf;
+        }
         //insert before key
         void insertFile(const std::string &in, const std::string &out, const std::string &key, const std::stringstream &wbf) {
             std::ifstream input(in);

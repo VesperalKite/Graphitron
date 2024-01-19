@@ -115,10 +115,10 @@ namespace graphitron {
                 auto edgeset_type = mir_context_->getEdgesetType(mir::to<mir::VarExpr>(stmt->lhs)->var.getName());
                 if (edgeset_type->weight_type != nullptr) {
                     oss_ << ", \"weighted\", &";
-                    mir_context_->have_edge_prop = "true";
+                    mir_context_->have_edge_prop = true;
                 } else {
                     oss_ << ", \"normal\", &";
-                    mir_context_->have_edge_prop = "false";
+                    mir_context_->have_edge_prop = false;
                 }
             }
             stmt->lhs->accept(expr_visitor);

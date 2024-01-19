@@ -45,6 +45,8 @@ namespace graphitron {
         struct InitExpr;
 
         struct ProcExpr;
+        struct VertexSetProcExpr;
+        struct EdgeSetProcExpr;
 
         struct TensorReadExpr;
 
@@ -127,6 +129,10 @@ namespace graphitron {
             virtual void visit(std::shared_ptr<InitExpr>);
 
             virtual void visit(std::shared_ptr<ProcExpr>);
+
+            virtual void visit(std::shared_ptr<VertexSetProcExpr>);
+
+            virtual void visit(std::shared_ptr<EdgeSetProcExpr>);
 
             virtual void visit(std::shared_ptr<TensorReadExpr>);
 

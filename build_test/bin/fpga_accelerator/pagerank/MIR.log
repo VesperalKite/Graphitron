@@ -76,13 +76,65 @@ vertices - vertices - vertices
 acceleratorDataLoad(argv[(1)], "normal", &edges);
 [INFO] field_vector_alloc_stmts:
 [INFO] field_vector_init_stmts:
-[INFO] Iteration: 
 [INFO] Init Function: reset 
-[INFO] Scatter Function: 
-[INFO] Active Function: 
-[INFO] Gather Function: 
-[INFO] Apply Function: 
 [INFO] vertex process functions: [2]
 computeError updateVertex 
 [INFO] edge process functions: [1]
 computeContrib 
+
+[INFO] parameter space: 
+### Parameter Space ###
+## FPGA Parameter ##
+* Frequency: 250
+* Default TargetPartitionSize: 524288
+* TargetBandWidth: 77
+
+## Kernel Parameter ##
+# kernel label: s1 #
+* WirteBurstSize: 6
+* ReadBurstSize: 7
+* CacheBurstSize: 6
+* StreamFilterDepth: 1024
+* StreamMemoryDepth: 512
+# kernel label: s2 #
+* WirteBurstSize: 6
+* ReadBurstSize: 5
+* CacheBurstSize: 6
+* StreamFilterDepth: 16
+* StreamMemoryDepth: 512
+
+
+[INFO] Kernel Space: 
+[ep_computeContrib_kernel]
+function body: computeContrib
+read property: old_rank out_degree 
+write property: contrib 
+parameter space: 
+[WriteBurstSize] 6
+[ReadBurstSize] 7
+[CacheBurstSize] 6
+[FilterFifoDepth] 1024
+[MemoryFifoDepth] 512
+
+[vp_computeError_kernel]
+function body: computeError
+read property: 
+write property: 
+parameter space: 
+[WriteBurstSize] 6
+[ReadBurstSize] 5
+[CacheBurstSize] 6
+[FilterFifoDepth] 16
+[MemoryFifoDepth] 512
+
+[vp_updateVertex_kernel]
+function body: updateVertex
+read property: 
+write property: 
+parameter space: 
+[WriteBurstSize] 6
+[ReadBurstSize] 7
+[CacheBurstSize] 6
+[FilterFifoDepth] 16
+[MemoryFifoDepth] 512
+

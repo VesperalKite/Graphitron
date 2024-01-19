@@ -115,6 +115,14 @@ namespace graphitron {
         expr->target->accept(this);
     }
 
+    void MIRVisitor::visit(VertexSetProcExpr::Ptr expr) {
+        expr->target->accept(this);
+    }
+
+    void MIRVisitor::visit(EdgeSetProcExpr::Ptr expr) {
+        expr->target->accept(this);
+    }
+
     void MIRVisitor::visit(std::shared_ptr<TensorReadExpr> expr) {
         expr->target->accept(this);
         expr->index->accept(this);

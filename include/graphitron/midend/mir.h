@@ -612,6 +612,7 @@ namespace graphitron {
         struct ProcExpr : public Expr {
             Expr::Ptr target;
             FuncExpr::Ptr input_function = nullptr;
+            std::string scope_label_name;
             typedef std::shared_ptr<ProcExpr> Ptr;
 
             virtual void accept(MIRVisitor *visitor) {
@@ -630,6 +631,31 @@ namespace graphitron {
                 input_function = input_func;}
         };
 
+        struct VertexSetProcExpr : public ProcExpr {
+            typedef std::shared_ptr<VertexSetProcExpr> Ptr;
+
+            int burst_read_size;
+            int burst_write_size;
+
+            virtual void accept(MIRVisitor *visitor) {
+                visitor->visit(self<VertexSetProcExpr>());
+            }
+        };
+
+        struct EdgeSetProcExpr : public ProcExpr {
+            typedef std::shared_ptr<EdgeSetProcExpr> Ptr;
+
+            int burst_read_size;
+            int burst_write_size;
+            int cacahe_burst_size;
+            int memory_fifo_depth;
+            int filter_fifo_depth;
+        
+
+            virtual void accept(MIRVisitor *visitor) {
+                visitor->visit(self<EdgeSetProcExpr>());
+            }
+        };
         // struct MergeReduceField {
         //     std::string field_name;
         //     ScalarType::Ptr scalar_type;

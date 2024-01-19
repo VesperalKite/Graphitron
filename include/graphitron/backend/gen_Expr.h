@@ -28,10 +28,13 @@ namespace graphitron {
         virtual void visit(mir::LoadExpr::Ptr expr);
         virtual void visit(mir::ConstantVectorExpr::Ptr expr);
         virtual void visit(mir::EdgeSetLoadExpr::Ptr expr);
-        virtual void visit(mir::ApplyExpr::Ptr expr);
-        virtual void visit(mir::GsExpr::Ptr expr);
+        // virtual void visit(mir::ApplyExpr::Ptr expr);
+        // virtual void visit(mir::GsExpr::Ptr expr);
         virtual void visit(mir::InitExpr::Ptr expr);
-        virtual void visit(mir::ProcExpr::Ptr expr);
+        // virtual void visit(mir::ProcExpr::Ptr expr);
+        virtual void visit(mir::VertexSetProcExpr::Ptr expr);
+        virtual void visit(mir::EdgeSetProcExpr::Ptr expr);
+
 
         virtual void visit(mir::EqExpr::Ptr expr);
         virtual void visit(mir::NegExpr::Ptr expr);

@@ -402,76 +402,14 @@ namespace graphitron {
     }
 
     void MIREmitter::visit(fir::GsExpr::Ptr gs_expr) {
-        auto target_expr = emitExpr(gs_expr->target);
-
-        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
-        if (!mir_var) {
-            std::cout << "error in getting name of the target in GsExpr" << std::endl;
-            return;
-        }
-
-        if(mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
-            auto mir_gs_expr = std::make_shared<mir::GsExpr>();
-            mir_gs_expr->target = target_expr;
-            auto iter_expr = gs_expr->iter_expr;
-            assert(iter_expr->args.size() == 1);
-            mir_gs_expr->iter = emitExpr(iter_expr->args.front());
-            ctx->set_iter_func(mir_gs_expr->iter);
-
-
-            auto gather_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_gather_function));
-            auto gather = ctx->getFunction(gather_funcExpr->function_name->name);
-            auto scatter_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_scatter_function));
-            auto scatter = ctx->getFunction(scatter_funcExpr->function_name->name);
-            if (gs_expr->input_active_function != nullptr) {
-                auto active_funcExpr = mir::to<mir::FuncExpr>(emitExpr(gs_expr->input_active_function));
-                auto active = ctx->getFunction(active_funcExpr->function_name->name);
-                mir_gs_expr->input_active_function = active_funcExpr;
-                mir_gs_expr->have_frontier = true;
-                ctx->set_gs_func(scatter, active, gather);
-            }
-            mir_gs_expr->input_gather_function = gather_funcExpr;
-            mir_gs_expr->input_scatter_function = scatter_funcExpr;
-            ctx->set_gs_func(scatter, gather);
-
-            
-            retExpr = mir_gs_expr;
-        } else {
-            std::cout << "Gather-Scatter function must target edge set" << std::endl;
-            return;
-        }
+        //deprecated
     }
 
     void MIREmitter::visit(fir::ApplyExpr::Ptr apply_expr) {
-        //dense vector apply
-        auto target_expr = emitExpr(apply_expr->target);
-
-        auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
-        if (!mir_var) {
-            std::cout << "error in getting name of the target in ApplyExpr" << std::endl;
-            return;
-        }
-
-        //if (ctx->isConstVertexSet(mir_var->var.getName())) {
-        if (mir::isa<mir::VertexSetType>(mir_var->var.getType())) {
-            //dense vertexset apply
-            auto mir_apply_expr = std::make_shared<mir::ApplyExpr>();
-            mir_apply_expr->target = target_expr;
-
-            auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(apply_expr->input_function));
-            auto apply = ctx->getFunction(funcExpr->function_name->name);
-            mir_apply_expr->input_function = funcExpr;
-            ctx->set_apply_func(apply);
-
-            retExpr = mir_apply_expr;
-        } else {
-            std::cout << "Apply function must target vertex set" << std::endl;
-            return;
-        }
+        //deprecated
     }
 
     void MIREmitter::visit(fir::InitExpr::Ptr init_expr) {
-        //dense vector apply
         auto target_expr = emitExpr(init_expr->target);
 
         auto mir_var = std::dynamic_pointer_cast<mir::VarExpr>(target_expr);
@@ -507,21 +445,32 @@ namespace graphitron {
             return;
         }
 
-        if (mir::isa<mir::VertexSetType>(mir_var->var.getType()) || mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
-            auto mir_process_expr = std::make_shared<mir::ProcExpr>();
-            mir_process_expr->target = target_expr;
+        if (mir::isa<mir::VertexSetType>(mir_var->var.getType())) {
+            auto vertexset_proc_expr = std::make_shared<mir::VertexSetProcExpr>();
+            vertexset_proc_expr->target = target_expr;
 
             auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(process_expr->input_function));
+
             auto process = ctx->getFunction(funcExpr->function_name->name);
             process->isFunctor = false;
-            if (mir::isa<mir::VertexSetType>(mir_var->var.getType())) {
-                ctx->vertex_process_funcs.push_back(process);
-            } else {
-                ctx->edge_process_funcs.push_back(process);
-            }
-            mir_process_expr->input_function = funcExpr;
+            ctx->vertex_process_funcs.push_back(process);
 
-            retExpr = mir_process_expr;
+            vertexset_proc_expr->input_function = funcExpr;
+            
+            retExpr = vertexset_proc_expr;
+        } else if (mir::isa<mir::EdgeSetType>(mir_var->var.getType())) {
+            auto edgeset_proc_expr = std::make_shared<mir::EdgeSetProcExpr>();
+            edgeset_proc_expr->target = target_expr;
+
+            auto funcExpr = mir::to<mir::FuncExpr>(emitExpr(process_expr->input_function));
+
+            auto process = ctx->getFunction(funcExpr->function_name->name);
+            process->isFunctor = false;
+            ctx->edge_process_funcs.push_back(process);
+
+            edgeset_proc_expr->input_function = funcExpr;
+            
+            retExpr = edgeset_proc_expr;
         } else {
             std::cout << "Process function must target vertex set or edgeset set" << std::endl;
             return;

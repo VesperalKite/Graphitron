@@ -37,11 +37,13 @@ namespace graphitron {
 
                 ProgramParameterNode::Ptr configFreq(int freq);
 
-                // Gather-Scatter Parameter
+                ProgramParameterNode::Ptr configTargetPartitionSize(int tps);
 
-                ProgramParameterNode::Ptr configEdgeProp(string gs_label, bool flag);
+                ProgramParameterNode::Ptr configTargetBandWidth(int tbw);
 
-                ProgramParameterNode::Ptr configUnsignedProp(string gs_label, bool flag);
+                // Kernel Parameter
+
+                ProgramParameterNode::Ptr configWriteBurstSize(string gs_label, int rbs);
 
                 ProgramParameterNode::Ptr configReadBurstSize(string gs_label, int rbs);
 
@@ -51,24 +53,23 @@ namespace graphitron {
 
                 ProgramParameterNode::Ptr configStreamMemoryDepth(string gs_label, int smd);
 
-                ProgramParameterNode::Ptr configTargetPartitionSize(string gs_label, int tps);
+                // DEPRECATED
 
-                ProgramParameterNode::Ptr configTargetBandWidth(string gs_label, int tbw);
+                // ProgramParameterNode::Ptr configApplyOutdeg(string apply_label, bool flag);
 
-                ProgramParameterNode::Ptr configUramUpbound(string gs_label, int ratio);
+                // ProgramParameterNode::Ptr configApplyNumSize(string apply_label, bool flag);
 
-                ProgramParameterNode::Ptr configSubpartitionPlan(string gs_label, string plan);
+                // ProgramParameterNode::Ptr configUramUpbound(string gs_label, int ratio);
 
-                //Apply Parameter
+                // ProgramParameterNode::Ptr configSubpartitionPlan(string gs_label, string plan);
 
-                ProgramParameterNode::Ptr configApplyOutdeg(string apply_label, bool flag);
+                // ProgramParameterNode::Ptr configEdgeProp(string gs_label, bool flag);
 
-                ProgramParameterNode::Ptr configApplyNumSize(string apply_label, bool flag);
+                // ProgramParameterNode::Ptr configUnsignedProp(string gs_label, bool flag);
 
             private:
                 ParameterSpace * parameter_;
-                GatherScatterParameter createDefaultGsParameter(string gs_label);
-                ApplyParameter createDefaultApplyParameter(string apply_label);
+                KernelParameter createDefaultKernelParameter(string kernel_label);
             };
         }
     }
